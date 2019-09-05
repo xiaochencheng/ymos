@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="com.ymos.controller">
+        <context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.context.annotation.Configuration"/>
+    </context:component-scan>
+    <mvc:annotation-driven/>
+
+    <!-- 静态资源文件的引用 -->
+    <mvc:resources location="/js/" mapping="/img/**"></mvc:resources>
+    <mvc:resources location="/jsandcss/" mapping="/jsandcss/**"></mvc:resources>
+    <mvc:resources location="/SKU_files/" mapping="/SKU_files/**"></mvc:resources>
+
+
+    <!-- Spring读取配置文件 -->
+    <bean id="prop" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations">
+            <array>
+                <value>classpath:fileupload.properties</value>
+            </array>
+        </property>
+    </bean>
+
+    <!-- 完成视图的对应 -->
+    <!-- 对转向页面的路径解析。prefix：前缀， suffix：后缀 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 全局异常 -->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.RuntimeException">error</prop>
+                <prop key="java.lang.NullPointerException">error1</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件最大尺寸，单位为B -->
+        <property name="maxUploadSize" value="1000000000" />
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login"/>
+            <mvc:exclude-mapping path="/logout"/>
+            <mvc:exclude-mapping path="/home"/>
+            <!-- spID   -->
+            <mvc:exclude-mapping path="/proList/querySpName"/>
+            <!--国家-->
+            <!--<mvc:exclude-mapping path="/country/queryAllcountry"/>-->
+            <!--渠道-->
+            <!--<mvc:exclude-mapping path="/channel/queryAllChannel"/>-->
+            <!--运营商-->
+            <!--<mvc:exclude-mapping path="/isp/queryAllIsp"/>-->
+
+            <!--<mvc:exclude-mapping path="/channelProxy/queryChildChannel"/>-->
+
+
+            <mvc:exclude-mapping path="/user/information"/>
+            <mvc:exclude-mapping path="/user/updatePassword"/>
+            <mvc:exclude-mapping path="/webapp/jsandcss/**"/>
+            <mvc:exclude-mapping path="/webapp/js/**"/>
+            <mvc:exclude-mapping path="/webapp/SKU_files/**"/>
+            <bean class="com.ymos.controller.interceptor.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+</beans>

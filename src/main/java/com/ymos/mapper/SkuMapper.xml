@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.SkuMapper">
+
+    <resultMap id="BaseResultMap" type="Sku">
+        <id column="id" property="id"/>
+        <result column="dangerDesBg" property="dangerDesBg"/>
+        <result column="hgbmBg" property="hgbmBg"/>
+        <result column="skuName" property="skuName"/>
+        <result column="imgUrl" property="imgUrl"/>
+        <result column="name" property="name"/>
+        <result column="nameCnBg" property="nameCnBg"/>
+        <result column="nameEn" property="nameEn"/>
+        <result column="nameEnBg" property="nameEnBg"/>
+        <result column="price" property="price"/>
+        <result column="priceBg" property="priceBg"/>
+        <result column="sbm" property="sbm"/>
+        <result column="skuName" property="skuName"/>
+        <result column="sourceUrl" property="sourceUrl"/>
+        <result column="weight" property="weight"/>
+        <result column="weightBg" property="weightBg"/>
+        <result column="spu" property="spu"/>
+        <result column="create_date" property="create_date"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMap1" type="Product">
+            <id column="id" property="id"/>
+            <result column="soureId" property="soureId"/>
+            <result column="pro_ch_name" property="pro_ch_name"/>
+            <result column="pro_en_name" property="pro_en_name"/>
+            <result column="cus_ch_name" property="cus_ch_name"/>
+            <result column="cus_en_name" property="cus_en_name"/>
+            <result column="cus_price" property="cus_price"/>
+            <result column="cus_weight" property="cus_weight"/>
+            <result column="pro_list" property="pro_list"/>
+            <result column="dateTime" property="dateTime"/>
+            <result column="pro_url" property="pro_url"/>
+            <result column="pro_purchase_price" property="pro_purchase_price"/>
+            <result column="weight" property="weight"/>
+            <result column="presale_price" property="presale_price"/>
+            <result column="url" property="url"/>
+            <result column="url2" property="url2"/>
+            <result column="url3" property="url3"/>
+            <result column="status" property="status"/>
+            <result column="remark" property="remark"/>
+            <result column="spu" property="spu"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,dangerDesBg,hgbmBg,imgUrl,name,nameCnBg,nameEn,nameEnBg,price,priceBg,sbm,skuName,sourceUrl,weight,weightBg,spu,create_date
+  </sql>
+
+    <!--,p.pro_ch_name,p.cus_ch_name,p.pro_en_name,p.cus_en_name,p.cus_price,p.url-->
+    <select id="select" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_sku
+        <where>
+            <if test="query.skuName != null and query.skuName!=''">
+                and  skuName=#{query.skuName}
+            </if>
+            <if test="query.spu != null and query.spu!=''">
+                and  spu=#{query.spu}
+            </if>
+             <if test="query.name != null and query.name!=''">
+                 and  name=#{query.name}
+            </if>
+             <if test="query.dateTime != null and query.dateTime!=''">
+                 and  create_date>=#{query.dateTime}
+            </if>
+            <if test="query.endTime !=null and query.endTime !=''">
+                <![CDATA[and create_date<=#{query.endTime}]]>
+            </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        SELECT count(1) FROM  t_sku
+        <where>
+
+            <if test="query.skuName != null and query.skuName!=''">
+              and  skuName=#{query.skuName}
+            </if>
+            <if test="query.spu != null and query.spu!=''">
+                and  spu=#{query.spu}
+            </if>
+            <if test="query.name != null and query.name!=''">
+             and   name=#{query.name}
+            </if>
+            <if test="query.dateTime != null and query.dateTime!=''">
+              and  create_date=#{query.dateTime}
+            </if>
+            <if test="query.endTime !=null and query.endTime !=''">
+                <![CDATA[and create_date<=#{query.endTime}]]>
+            </if>
+        </where>
+    </select>
+
+    <sql id="Base_Column_List1">
+    id,soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,status,remark,dateTime
+  </sql>
+
+    <select id="exportExcel" resultType="SkuReport">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_sku
+        <where>
+            <if test="skuName != null and skuName!=''">
+                and  skuName=#{skuName}
+            </if>
+            <if test="spu != null and spu!=''">
+                and  spu=#{spu}
+            </if>
+            <if test="name != null and name!=''">
+                and  name=#{name}
+            </if>
+            <if test="dateTime != null and dateTime!=''">
+                and  create_date>=#{dateTime}
+            </if>
+            <if test="endTime !=null and endTime !=''">
+                <![CDATA[and create_date<=#{endTime}]]>
+            </if>
+        </where>
+    </select>
+
+    <select id="getSpuInfo" resultMap="BaseResultMap1" parameterType="string">
+          select <include refid="Base_Column_List1"/> from t_pro where spu=#{spu};
+    </select>
+
+    <select id="getFindSPU" resultType="Product">
+        SELECT spu FROM t_pro
+    </select>
+
+    <insert id="create" parameterType="Sku">
+	 insert into t_sku (dangerDesBg,hgbmBg,imgUrl,name,nameCnBg,nameEn,nameEnBg,price,priceBg,sbm,skuName,sourceUrl,weight,weightBg,spu,create_date)
+	 values (#{dangerDesBg},#{hgbmBg},#{imgUrl},#{name},#{nameCnBg},#{nameEn},#{nameEnBg},#{price},#{priceBg},#{sbm},#{skuName},#{sourceUrl},#{weight},#{weightBg},#{spu},#{create_date})
+  </insert>
+
+    <update id="update" parameterType="Sku">
+        update t_sku
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+            <if test="dangerDesBg != null and dangerDesBg!=''">
+                dangerDesBg=#{dangerDesBg},
+            </if>
+            <if test="hgbmBg != null and hgbmBg!=''">
+                hgbmBg=#{hgbmBg},
+            </if>
+            <if test="imgUrl != null and imgUrl!=''">
+                imgUrl=#{imgUrl},
+            </if>
+            <if test="name != null and name!=''">
+                name=#{name},
+            </if>
+
+            <if test="nameCnBg != null and nameCnBg!=''">
+                nameCnBg=#{nameCnBg},
+            </if>
+            <if test="nameEn != null and nameEn!=''">
+                nameEn=#{nameEn},
+            </if>
+            <if test="nameEnBg != null and nameEnBg!=''">
+                nameEnBg=#{nameEnBg},
+            </if>
+            <if test="price != null and price!=''">
+                price=#{price},
+            </if>
+            <if test="priceBg != null and priceBg!=''">
+                priceBg=#{priceBg},
+            </if>
+            <if test="sbm != null and sbm!=''">
+                sbm=#{sbm},
+            </if>
+            <if test="skuName != null and skuName!=''">
+                skuName=#{skuName},
+            </if>
+            <if test="sourceUrl != null and sourceUrl!=''">
+                sourceUrl=#{sourceUrl},
+            </if>
+            <if test="weight != null and weight!=''">
+                weight=#{weight},
+            </if>
+            <if test="weightBg != null and weightBg!=''">
+                weightBg=#{weightBg},
+            </if>
+            <if test="spu != null and spu!=''">
+                spu=#{spu},
+            </if>
+            <if test="create_date != null and create_date!=''">
+                create_date=#{create_date},
+            </if>
+
+        </trim>
+    </update>
+
+    <delete id="deleteByIds">
+        delete from t_sku where id in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+</mapper>

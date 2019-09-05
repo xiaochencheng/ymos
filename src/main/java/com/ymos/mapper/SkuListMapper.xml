@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.SkuListMapper">
+
+    <resultMap id="BaseResultMap" type="SkuList">
+        <id column="id" property="id"/>
+        <result column="skuName" property="skuName"/>
+        <result column="length" property="length"/>
+        <result column="height" property="height"/>
+        <result column="width" property="width"/>
+        <result column="cus_en_name" property="cus_en_name"/>
+        <result column="weidth" property="weidth"/>
+        <result column="cus_ch_name" property="cus_ch_name"/>
+        <result column="cus_price" property="cus_price"/>
+        <result column="url" property="url"/>
+        <result column="cus_code" property="cus_code"/>
+        <result column="pro_purchase_price" property="pro_purchase_price"/>
+        <result column="presale_price" property="presale_price"/>
+        <result column="identifier" property="identifier"/>
+        <result column="dan_goods" property="dan_goods"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,sku,length,height,width,cus_ch_name,cus_en_name,cus_price,url,cus_code,pro_purchase_price,presale_price,weidth,identifier,dan_goods
+  </sql>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_pro_sku
+        <where>
+            <if test="query.sku !=null and query.sku!=''">
+             and    sku=#{query.sku}
+            </if>
+            <if test="query.cus_ch_name != null and query.cus_ch_name!=''">
+                and  cus_ch_name=#{query.cus_ch_name}
+            </if>
+             <if test="query.cus_en_name != null and query.cus_en_name!=''">
+                 and  cus_en_name=#{query.cus_en_name}
+            </if>
+            <if test="query.dateTime!=null and query.dateTime!=''">
+                and  dateTime>=#{query.dateTime}
+            </if>
+            <if test="query.endTime!=null and query.endTime!=''">
+                <![CDATA[and dateTime<=#{query.endTime}]]>
+            </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        SELECT count(1) FROM t_pro_sku
+        <where>
+            <if test="query.sku !=null and query.sku!=''">
+                and    sku=#{query.sku}
+            </if>
+            <if test="query.cus_ch_name != null and query.cus_ch_name!=''">
+                and  cus_ch_name=#{query.cus_ch_name}
+            </if>
+            <if test="query.cus_en_name != null and query.cus_en_name!=''">
+                and  cus_en_name=#{query.cus_en_name}
+            </if>
+            <if test="query.dateTime!=null and query.dateTime!=''">
+                and  dateTime>=#{query.dateTime}
+            </if>
+            <if test="query.endTime!=null and query.endTime!=''">
+                <![CDATA[and dateTime<=#{query.endTime}]]>
+            </if>
+        </where>
+    </select>
+
+
+    <insert id="create" parameterType="SkuList">
+	 insert into t_pro_sku (sku,length,height,width,cus_ch_name,cus_en_name,cus_price,url,cus_code,pro_purchase_price,presale_price,weidth,identifier,dan_goods)
+	 values (#{sku},#{length},#{height},#{width},#{cus_ch_name},#{cus_en_name},#{cus_price},#{url},#{cus_code},#{pro_purchase_price},#{presale_price},#{weidth},#{identifier},#{dan_goods})
+  </insert>
+
+    <select id="selectById" parameterType="String" resultType="SkuList">
+        select
+        <include refid="Base_Column_List"/>
+        from t_pro_sku where id=#{id}
+    </select>
+
+    <update id="update" parameterType="SkuList">
+        update t_pro_sku
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+            <if test="length != null and length!=''">
+                length=#{length},
+            </if>
+            <if test="height != null and height!=''">
+                height=#{height},
+            </if>
+            <if test="width != null and width!=''">
+                width=#{width},
+            </if>
+            <if test="cus_ch_name != null and cus_ch_name!=''">
+                cus_ch_name=#{cus_ch_name},
+            </if>
+
+            <if test="cus_en_name != null and cus_en_name!=''">
+                cus_en_name=#{cus_en_name},
+            </if>
+            <if test="cus_price != null and cus_price!=''">
+                cus_price=#{cus_price},
+            </if>
+            <if test="url != null and url!=''">
+                url=#{url},
+            </if>
+            <if test="cus_code != null and cus_code!=''">
+                cus_code=#{cus_code},
+            </if>
+            <if test="pro_purchase_price != null and pro_purchase_price!=''">
+                pro_purchase_price=#{pro_purchase_price},
+            </if>
+            <if test="presale_price != null and presale_price!=''">
+                presale_price=#{presale_price},
+            </if>
+            <if test="weidth != null and weidth!=''">
+                weidth=#{weidth},
+            </if>
+            <if test="identifier != null and identifier!=''">
+                identifier=#{identifier},
+            </if>
+            <if test="dan_goods != null and dan_goods!=''">
+                dan_goods=#{dan_goods},
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteByIds">
+        delete from t_pro_sku where id in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+</mapper>

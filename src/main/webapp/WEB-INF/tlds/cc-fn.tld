@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+  version="2.0">
+    
+  <description>JSTL 1.1 functions library</description>
+  <display-name>JSTL functions</display-name>
+  <tlib-version>1.1</tlib-version>
+  <short-name>fn2</short-name>
+  <uri>/cc-fn</uri>
+
+  <function>
+    <name>toString</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>String toString(int)</function-signature>
+    <example>
+      ${fn2:toString(1)}
+    </example>
+  </function>
+  
+  <function>
+    <name>toInt</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>int toInt(java.lang.String)</function-signature>
+    <example>
+      ${fn2:toInt('123')}
+    </example>
+  </function>
+  
+  
+  <function>
+    <name>encoder</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>String encoder(java.lang.String,java.lang.String)</function-signature>
+    <example>
+      ${fn2:encoder('test','utf-8')}
+    </example>
+  </function>
+  
+   <function>
+    <name>decoder</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>String decoder(java.lang.String,java.lang.String)</function-signature>
+    <example>
+     ${fn2:decoder('test','utf-8')}
+    </example>
+  </function>
+  
+  <function>
+    <name>concat</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>String concat(java.lang.String,java.lang.String)</function-signature>
+    <example>
+     ${fn2:concat('a','b')}
+    </example>
+  </function>
+  
+    <function>
+    <name>at</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>boolean at(int,int)</function-signature>
+    <example>
+     ${fn2:at(1,1)}
+    </example>
+  </function>
+  
+  <function>
+    <name>compareDate</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>int compareDate(java.util.Date,java.util.Date,boolean)</function-signature>
+    <example>
+     ${fn2:compareDate(Date date1,Date date2)}
+    </example>
+  </function>
+  
+  <function>
+    <name>fmtIp</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>String fmtIp(java.lang.String)</function-signature>
+    <example>
+     ${fn2:fmtIp('127000000001')}
+    </example>
+  </function>
+  
+  <function>
+    <name>list_p</name>
+    <function-class>cc.core.hback.service.CommonSqlService</function-class>
+    <function-signature>cc.core.core.Paginated list_p(int,int,int,java.lang.String)</function-signature>
+    <example>
+     ${fn2:list_p(14,1,10,null)}
+    </example>
+  </function>
+  
+  <function>
+    <name>list</name>
+    <function-class>cc.core.hback.service.CommonSqlService</function-class>
+    <function-signature>java.util.List list(int,java.lang.String)</function-signature>
+    <example>
+     ${fn2:list(14,null)}
+    </example>
+  </function>
+  
+  <function>
+    <name>detail</name>
+    <function-class>cc.core.hback.service.CommonSqlService</function-class>
+    <function-signature>java.util.HashMap detail(int,int)</function-signature>
+    <example>
+     ${fn2:detail(14,1)}
+    </example>
+  </function>
+  
+  <function>
+    <name>field</name>
+    <function-class>cc.core.hback.service.CommonSqlService</function-class>
+    <function-signature>cc.core.entity.TableColumn field(int,java.lang.String)</function-signature>
+    <example>
+     ${fn2:field(14,'name')}
+    </example>
+  </function>
+  
+  <function>
+    <name>toJson</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>Object toJson(java.lang.String)</function-signature>
+    <example>
+     ${fn2:toJson('{}')}
+    </example>
+  </function>
+  
+  <function>
+    <name>getImg</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>String getImg(java.lang.String,java.lang.String)</function-signature>
+    <example>
+     ${fn2:getImg('/img.jpg','_ext')}   /img_ext.jpg
+    </example>
+  </function>
+  
+  <function>
+    <name>splitList</name>
+    <function-class>com.zh.sp.functions.Functions</function-class>
+    <function-signature>java.lang.Object[][] splitList(java.util.List,int)</function-signature>
+    <example>
+     ${fn2:splitList(java.util.List,2)}   /[][]
+    </example>
+  </function>
+  
+</taglib>

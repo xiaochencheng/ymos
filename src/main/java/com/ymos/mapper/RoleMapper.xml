@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.RoleMapper" >
+	<resultMap id="BaseResultMap" type="com.ymos.entity.Role" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="sql" property="sql" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="create_time" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="creator" property="creator" jdbcType="INTEGER" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id, `name`, `sql`, description, create_time, creator
+    </sql>
+    
+    <select id="select" parameterType="Paginator"  resultMap="BaseResultMap">
+     	SELECT r.id,r.name,r.sql,r.description,r.create_time,r.creator,u.username FROM t_role r,t_user u  
+     	<where>
+     			r.creator=u.id 
+	         <if test="query.roleName !=null and query.roleName!='' ">
+	         	and r.name=#{query.roleName}
+	         </if> 
+     	</where>
+        order by id DESC
+     	limit #{start},#{size}
+    </select>
+     
+    <select id="count" parameterType="Paginator"  resultType="int">
+              	select count(*) from t_role
+        <where>
+	         <if test="query.roleName !=null and query.roleName!='' ">
+	         	and name=#{query.roleName}
+	         </if> 
+     	</where>
+    </select>
+     
+    <update id="modifyRole" parameterType="Role">
+        update t_role set name=#{name} ,`sql`=#{sql,jdbcType=CHAR},description=#{description,jdbcType=CHAR}  
+        where id=#{id}
+    </update>
+     
+    <delete id="deleteByIds"> 
+        delete from t_role where id in
+        <foreach collection="array" item="ids"  open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteUserRolesByIds" parameterType="String">
+         delete from r_user_role where role_id in
+        <foreach collection="array" item="ids"  open="(" separator="," close=")">
+            #{ids}
+        </foreach> 
+    </delete>
+    
+    <delete id="deleteRoleMenusByIds" parameterType="String">
+         delete from r_role_menu where role_id in
+        <foreach collection="array" item="ids"  open="(" separator="," close=")">
+            #{ids}
+        </foreach> 
+    </delete>
+    
+    <insert id="insert" parameterType="Role" >
+     	insert into t_role (name,`sql`,create_time,creator,description)
+		values (#{name},#{sql,jdbcType=CHAR},#{createDate},#{creator},#{description,jdbcType=CHAR})
+    </insert>
+    
+    <select id="selectById" parameterType="String"  resultType="Role">
+        select id, `name`, `sql`, description, create_time createDate, creator from t_role where id=#{id}
+    </select>
+    
+    <update id="update" parameterType="Role">
+        update t_role set name=#{name} ,`sql`=#{sql,jdbcType=CHAR},description=#{description,jdbcType=CHAR}  
+        where id=#{id}
+    </update>
+    
+    <select id="selectAll"   resultType="Role">
+        select id,name from t_role
+    </select>
+    
+    <select id="queryByRoleName" parameterType="String"  resultType="Role">
+        select id,name  from t_role where name=#{name}
+    </select>
+    
+    <select id="queryOtherRoleName" parameterType="String"  resultType="Role">
+        select  name  from t_role where id!=#{id} 
+    </select>
+    
+    <select id="queryMenusByRoleId" parameterType="int" resultType="Menu">
+     	select id,pid,name,url,pid,create_time,creator,seq 
+     	from t_menu where id in(select menu_id from r_role_menu where role_id=#{roleId}) order by seq asc
+    </select>
+    
+    <delete id="deleteRoleMenuById" parameterType="int">
+        delete from r_role_menu where role_id = #{role_id}
+    </delete>
+    
+    <delete id="insertRoleMenu" parameterType="map">
+        insert into r_role_menu(role_id,menu_id) values(#{role_id},#{menu_id})
+    </delete>
+</mapper>

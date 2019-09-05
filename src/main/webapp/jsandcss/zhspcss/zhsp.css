@@ -1,0 +1,87 @@
+/* search */
+/*.search-name{height: 30px;width: 70px;margin-top: 6px;float: left;}
+.search-input{height: 30px;}
+.search-form-item{height: 30px;margin-bottom: 0px;}
+.search-inline{height: 30px;}*/
+.search-name{
+    display: inline;
+}
+/* create*/
+.layui-input-block{width: 400px;}
+.create-input{width: 290px;} 
+.create-radio{width: 288px;border: 1px solid gainsboro;}
+#create-button{margin-left: 10px;margin-top: 5px;} 
+#create-textarea{width: 400px;}
+
+.fieldset{margin-left: 15px;margin-top: 15px;}
+
+
+input,label,img,th{vertical-align:middle;}.font-fixh{font-family: Georgia,Arial; color: #f00; font-size: 16px; font-weight: 700;}address,cite,dfn,em,var{font-style:normal;}
+.error{color: red;} 
+	
+/* layui表格字体样式 */
+.layui-form th{font-weight: bold;}
+.layui-form tr{color: #000000}
+
+
+ 
+div.zhsppagination {
+float: right;
+    margin-top: 6px;
+   margin-right: 12px; 
+    
+}
+div.zhsppagination ul{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+div.zhsppagination ul li
+{
+   display: inline;
+   
+}
+div.zhsppagination ul li span
+{    
+	float: left;
+    padding: 6px 14px;
+    text-decoration: none;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+}
+div.zhsppagination ul li span input
+{    
+	float: left;
+    background-color: #ffffff;
+    width:40px;
+    border: 0px solid #ddd;
+}
+div.zhsppagination ul li a 
+{
+   
+}
+ div.zhsppagination ul li a 
+{
+    color:#1F2F3D;
+    float: left;
+    padding: 6px 14px;
+    text-decoration: none;
+   /*  background-color:#1E9FFF; */
+    border: 1px solid #ddd;
+}
+ div.zhsppagination ul li a:hover
+{
+    background-color: #bfcbd6; 
+    color: #465c71;
+    text-decoration: none;
+} 
+div.zhsppagination ul li a.active
+{
+    background-color: green;
+    color: white;
+}
+.layui-inline{
+    margin:5px 0;
+}
+
+ 

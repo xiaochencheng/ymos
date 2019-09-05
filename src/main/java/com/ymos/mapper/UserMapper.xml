@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="passwd" property="passwd" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+        <result column="create_date" property="create_date" jdbcType="TIMESTAMP"/>
+        <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, username, passwd, status, gender, mobile, email, last_login_time, create_date, last_login_ip, remark
+  </sql>
+
+    <select id="select" resultMap="BaseResultMap" parameterType="User">
+        SELECT DISTINCT a.*,c.id role_id,c.name
+        FROM (SELECT
+        a.id,a.username,a.passwd,a.create_date,a.email,a.gender,a.mobile,a.last_login_time,a.last_login_ip,a.status FROM
+        t_user a
+        <where>
+            <if test="username != null and username!='' ">
+                and username=#{query.username}
+            </if>
+            <if test="username != null and username!='' ">
+                and username=#{query.username}
+            </if>
+            <if test="status !=null and status!= '' ">
+                and status=#{query.status}
+            </if>
+        </where>
+        order by id DESC
+        LIMIT #{start},#{size}) a
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+    </select>
+
+    <select id="getUserByName" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user where username=#{username}
+    </select>
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        select count(*) from t_user
+        <where>
+            <if test="query.username != null and query.username!='' ">
+                and username=#{query.username}
+            </if>
+            <if test="query.status !=null and query.status!= '' ">
+                and status=#{query.status}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByIds">
+        delete from t_user where id in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+	 insert into t_user (username,passwd,create_date,last_login_ip,email,gender,mobile,status)
+	 values (#{username},#{passwd},#{createDate},#{lastLoginIp},#{email,jdbcType=CHAR},#{gender},#{mobile,jdbcType=CHAR},#{status})
+  </insert>
+
+    <select id="selectById" parameterType="String" resultType="User">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user where id=#{id}
+    </select>
+
+    <select id="queryOtherUsername" parameterType="map" resultType="User">
+     select  username  from t_user where id!=#{id}
+  </select>
+    <insert id="insertUserRole" parameterType="map">
+	 insert into r_user_role(user_id,role_id) values(#{user_id},#{role_id})
+  </insert>
+
+    <select id="queryRolesById" parameterType="String" resultMap="BaseResultMap">
+     select a.id,a.username,a.passwd,a.create_date,a.email,a.gender,a.mobile,a.status
+     ,c.id role_id ,c.name
+     from t_user a inner join r_user_role b  on a.id=b.user_id inner join t_role c on b.role_id=c.id
+     where a.id=#{id}
+  </select>
+
+    <delete id="deleteRolesByUserId" parameterType="String">
+     delete from r_user_role where user_id =#{id}
+  </delete>
+
+    <delete id="deleteUserRolesByIds" parameterType="String">
+        delete from r_user_role where user_id in
+        <foreach collection="array" item="ids"  open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="User">
+    update t_user set status=#{status},email=#{email,jdbcType=CHAR},mobile=#{mobile,jdbcType=CHAR},gender=#{gender}
+    where id=#{id}
+  </update>
+
+    <update id="updatePassword" parameterType="User">
+    update t_user set passwd=#{passwd}  where id=#{id}
+  </update>
+
+    <update id="updateLoginInfo" parameterType="User">
+        update t_user set last_login_ip=#{lastLoginIp}
+        ,last_login_time=#{lastLoginTime}   where id=#{id}
+    </update>
+
+</mapper>

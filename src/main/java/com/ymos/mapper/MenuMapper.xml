@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.MenuMapper" >
+    <select id="getMenuByUserId" parameterType="String" resultType="Menu">
+         select a.id,a.pid,a.name,a.url,a.pid,a.create_time,a.creator,a.seq from t_menu a where a.id in(
+         select distinct a.menu_id from r_role_menu a inner join r_user_role b on a.role_id=b.role_id where b.user_id=#{value}
+         ) order by a.seq asc
+    </select>
+
+    <select id="selectAll" resultType="Menu">
+     	select id,pid,name,url,pid,create_time,creator,seq from t_menu order by seq asc
+    </select>
+
+    <insert id="insert" parameterType="Menu">
+		insert into t_menu (id,pid,name,url,create_time,creator,seq)
+		values (#{id},#{pid},#{name},#{url,jdbcType=CHAR},sysdate(),#{creator},#{seq})
+	</insert>
+
+    <update id="update" parameterType="Menu">
+        update t_menu set pid=#{pid}, name=#{name} ,url=#{url,jdbcType=CHAR},seq=#{seq} where id=#{id}
+    </update>
+
+    <select id="queryFatherMenu" resultType="Menu">
+        <!--  select id,name from t_menu where pid=0 -->
+        select id,name from t_menu where pid in(-1,0)
+    </select>
+
+    <select id="selectCount" parameterType="int" resultType="int">
+        select count(0) from t_menu where pid=#{id}
+    </select>
+
+    <delete id="delete" parameterType="int">
+     	delete from t_menu where id=#{id}
+     </delete>
+
+    <delete id="deleteRoleMenuByMenuId" parameterType="int">
+        delete from r_role_menu where menu_id=#{id}
+    </delete>
+
+    <select id="queryMenuUrl" parameterType="string" resultType="Menu">
+        SELECT * FROM t_user u,r_user_role ur,r_role_menu rm,t_menu m
+        WHERE u.id=ur.user_id AND ur.role_id=rm.role_id AND u.id=#{id} AND rm.menu_id=m.id AND m.pid!=0
+
+    </select>
+</mapper>

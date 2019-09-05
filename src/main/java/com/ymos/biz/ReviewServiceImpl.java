@@ -1,0 +1,33 @@
+package com.ymos.biz;
+
+import com.ymos.entity.Product;
+import com.ymos.entity.Review;
+import com.ymos.entity.ReviewReport;
+import com.ymos.mapper.ProductMapper;
+import com.ymos.mapper.ReviewMapper;
+import com.ymos.biz.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@Service("reviewService")
+public class ReviewServiceImpl extends BaseServiceImpl<Review> implements ReviewService {
+
+
+   ReviewMapper reviewMapper;
+
+   @Resource
+    public void setReviewMapper(ReviewMapper reviewMapper) {
+        this.reviewMapper = reviewMapper;
+        this.mapper=reviewMapper;
+    }
+
+    @Override
+    public List<ReviewReport> queryExcelData(ReviewReport reviewReport) {
+        return reviewMapper.queryExcelData(reviewReport);
+
+    }
+}
