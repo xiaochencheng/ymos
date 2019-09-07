@@ -261,7 +261,8 @@
                 type: "POST",
                 url: "${pageContext.request.contextPath}/rev/" + url,
                 data: formData,
-                contentType: false,
+                traditional: true,//必须加上设置为true
+                contentType: 'application/json;charset=utf-8',
                 processData: false,
                 dataType: "json",
                 success: function (reply) {
