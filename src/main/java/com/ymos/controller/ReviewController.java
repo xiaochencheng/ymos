@@ -172,7 +172,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
             }
 
         } catch (Exception e) {
-            return new Result<Product>().setFlag(false);
+            return new Result<Product>().setFlag(true);
         }
         reviewService.create(product);
         return new Result<Product>().setData(product).setFlag(true);
