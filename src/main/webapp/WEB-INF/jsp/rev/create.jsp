@@ -261,13 +261,13 @@
                 type: "POST",
                 url: "${pageContext.request.contextPath}/rev/" + url,
                 data: formData,
-                contentType: 'application/json;charset=utf-8',
+                contentType: false,
                 processData: false,
                 dataType: "json",
                 success: function (reply) {
                     console.info("reply===="+reply);
                     if (reply.flag) {
-                       layer.close(index);
+                        layer.close(index);
                         location.href = "${pageContext.request.contextPath }/rev/list?" + queryStr;
                     }
                 }
