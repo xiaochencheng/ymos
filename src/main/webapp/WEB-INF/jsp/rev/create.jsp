@@ -29,7 +29,7 @@
     <fieldset class="layui-elem-field">
         <legend>${empty form.id?'新增产品数据':'修改产品数据'}</legend>
         <div class="layui-field-box" style="">
-            <form class="layui-form" id="myform" name="myform" action="" method="post" enctype="multipart/form-data" οnsubmit="return false">
+            <form class="layui-form" id="myform" name="myform" action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" value="${form.id }" name="id">
                 <input type="hidden" value="${form.pro_url }" name="pro_url">
 
@@ -160,7 +160,7 @@
                     <label class="layui-form-label">操作:</label>
                     <div class="layui-input-inline" id="create-button">
                         <button class="layui-btn  layui-btn-normal layui-btn-sm dw-dailog" id="btnId" lay-submit=""
-                                lay-filter="offerForm" id="save">
+                                lay-filter="offerForm" >
                             <i class="layui-icon">&#xe654;</i>保存
                         </button>
                         <button class="layui-btn  layui-btn-warm layui-btn-sm dw-dailog" type="button"
@@ -234,7 +234,6 @@
 
         form.on('submit(offerForm)', function (data) {
             var formData = new FormData($('#myform')[0]);
-            console.info(formData);
             var formSelects = '';
             layui.use('formSelects', function () {
                 formSelects = layui.formSelects;
@@ -279,7 +278,7 @@
 
         upload.render({
             elem: '#test1'
-            , url: '${pageContext.request.contextPath }/rev/create'
+            , url: '${pageContext.request.contextPath }/rev/create1'
             , auto: false //选择文件后不自动上传
             , bindAction: '#uploadinvoice' //指向一个按钮触发上传
             , accpet: "file"
