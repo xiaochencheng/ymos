@@ -24,7 +24,7 @@ public class ProductForm extends IdForm<Product> {
     private Date createDate;                //创建时间
     private int   status;
     private String remark;                  //备注
-    private String dateTime;
+    private Date dateTime;
     private String spu;
     private String freight;                 //运费
     //=======================================================
@@ -46,11 +46,11 @@ public class ProductForm extends IdForm<Product> {
         this.spu = spu;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 

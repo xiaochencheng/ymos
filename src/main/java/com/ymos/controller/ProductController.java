@@ -115,7 +115,7 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
         //String date= String.valueOf(new Date());
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        product.setDateTime(sdf.format(date));
+        product.setDateTime(new Date());
         int maxId = productService.queryMaxId();
         //System.out.println(maxId + "maxId");
         //System.out.println(request.getParameter("pro_list"));
@@ -184,7 +184,7 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
         product.setPro_list(uuidAfter);
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        product.setDateTime(sdf.format(date));
+        product.setDateTime(new Date());
         int maxId=productService.queryMaxId();
 
         if (file != null) {

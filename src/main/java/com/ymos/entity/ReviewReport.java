@@ -1,5 +1,7 @@
 package com.ymos.entity;
 
+import java.util.Date;
+
 public class ReviewReport extends AbstractReport {
 
     private String soureId;                 //资源id
@@ -20,9 +22,12 @@ public class ReviewReport extends AbstractReport {
     private String creator;                 //创建者
     private int    status;                  //审核状态
     private String remark;                  //备注
-    private String dateTime;                //标识产品唯一性id
+    private Date dateTime;                //标识产品唯一性id
     private String freight;                 //运费
 
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public String getFreight() {
         return freight;
@@ -184,16 +189,6 @@ public class ReviewReport extends AbstractReport {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    @Override
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    @Override
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
     }
 
     public String getSpu() {

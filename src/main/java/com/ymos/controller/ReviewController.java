@@ -66,7 +66,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Product product = new Product();
-            form.setDateTime(sdf.format(date));
+            form.setDateTime(new Date());
             form.setCreator(product.getCreator());
             form.setCus_ch_name(product.getCus_ch_name());
             form.setCus_en_name(product.getCus_en_name());
@@ -115,7 +115,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
 
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            product.setDateTime(sdf.format(date));
+            product.setDateTime(new Date());
             int maxId = reviewService.queryMaxId();
             int num = (int) ((Math.random() * 9 + 1) * 10000);
             product.setSoureId((num + "" + maxId));
@@ -152,7 +152,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
             //String date= String.valueOf(new Date());
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            product.setDateTime(sdf.format(date));
+            product.setDateTime(new Date());
             int maxId = reviewService.queryMaxId();
             //System.out.println(maxId + "maxId");
             //System.out.println(request.getParameter("pro_list"));

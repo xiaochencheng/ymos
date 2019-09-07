@@ -27,7 +27,7 @@ public class Product extends Id {
     private String    creator;              //创建者
     private int    status;                  //审核状态
     private String remark;                  //备注
-    private String dateTime;
+    private Date dateTime;
     private String spu;                     //标识产品唯一性id
     private String freight;                 //运费
 
@@ -50,11 +50,11 @@ public class Product extends Id {
         this.spu = spu;
     }
 
-    public String getDateTime() {
+    public Date getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
     }
 
