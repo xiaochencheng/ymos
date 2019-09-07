@@ -257,11 +257,13 @@
 
          //  var index=layer.load(2, {shade:[0.5,'#fff']});
             var queryStr = "${queryStr}";
-            alert(url);
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/rev/create1" ,
+                url: "${pageContext.request.contextPath}/rev/" + url,
                 data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "json",
                 async:false,
                 success: function (reply) {
                     console.info("reply===="+reply);
