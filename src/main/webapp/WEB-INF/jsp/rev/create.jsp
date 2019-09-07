@@ -259,10 +259,8 @@
             var queryStr = "${queryStr}";
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/rev/" + url,
+                url: "${pageContext.request.contextPath}/rev/create1" ,
                 data: formData,
-
-                dataType: "json",
                 async:false,
                 success: function (reply) {
                     console.info("reply===="+reply);
