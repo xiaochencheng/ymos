@@ -243,7 +243,7 @@
             var id = "${form.id}";
             var url = '';
             if (id == '') {
-                url = 'create';
+                url = 'create1';
                 var file = $('input[type=file]').value;
                 if ((file != null && file != "") && !(file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif") ||
                     file.endsWith(".JPEG") || file.endsWith(".PNG") || file.endsWith(".GIF") || file.endsWith(".xlsx"))) {

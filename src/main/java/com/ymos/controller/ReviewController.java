@@ -146,7 +146,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
      * 新增产品数据
      */
     @ResponseBody
-    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/create1",method = RequestMethod.POST)
     public Result<Product> create(Product product, MultipartFile[] file, HttpServletRequest request, HttpSession session) {
 
         User user= LoginContext.getUser(session);

@@ -35,6 +35,7 @@
                                 <th>SPU</th>
                                 <th>产品中文名</th>
                                 <th>报关中文名</th>
+                                <th>SKU中文属性</th>
                                 <th>产品英文名</th>
                                 <th>报关英文名</th>
                                 <th>图片img</th>
@@ -57,6 +58,7 @@
                                     <td>${data.spu }</td>
                                     <td>${data.name}</td>
                                     <td>${data.nameCnBg}</td>
+                                    <td>${data.attributes}</td>
                                     <td>${data.nameEn}</td>
                                     <td>${data.nameEnBg}</td>
                                     <td>${data.imgUrl}"></td>

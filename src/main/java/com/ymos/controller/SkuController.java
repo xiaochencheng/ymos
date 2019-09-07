@@ -104,6 +104,12 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
         return list;
     }
 
+    public static String createJsonString(String key, Object value) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(key, value);
+        return jsonObject.toString();
+    }
+
     /**
      * 新增产品数据
      */
@@ -112,27 +118,24 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
     public Result<Sku> create(@RequestBody List<Sku> ids, @RequestParam("name") String name, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         try {
             name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
-            JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
-            JSONArray jsonArray = jsonObject.getJSONArray("name");
-            for (int k = 0; k < jsonArray.size(); k++) {
-                String cu = jsonArray.get(k).toString();
-            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            return new Result<Sku>().setData(new Sku()).setFlag(false);
         }
-
-        //List<String> list=  JSON.parseArray(name,String.class);
-        Sku sku = new Sku();
-
-        User user = LoginContext.getUser(session);
-        String creator = user.getUsername();
-        String sdate;
-        Date ddate = new Date();
-        sdate = (new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
-
-
+        JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
+        String keyChName = jsonObject.toString();
         for (int i = 0; i < ids.size(); i++) {
-            System.out.println(ids.size());
+
+
+            System.out.println(keyChName + ">>>>>>>>>>>>");
+            Sku sku = new Sku();
+            User user = LoginContext.getUser(session);
+            String creator = user.getUsername();
+            String sdate;
+            Date ddate = new Date();
+            sdate = (new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
+
+            //System.out.println(ids.size());
             String spu = ids.get(i).getSku();
             String spuName = spu.substring(0, spu.indexOf("-"));
             sku.setName(ids.get(i).getName());
@@ -152,12 +155,12 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
             sku.setSourceUrl(ids.get(i).getSourceUrl());
             sku.setWeightBg(ids.get(i).getWeightBg());
             sku.setCreator(creator);
-            sku.setAttributes(ids.get(i).getAttributes());
+            sku.setAttributes(keyChName);
             skuService.create(sku);
-            return new Result<Sku>().setData(new Sku()).setFlag(true);
+
+
         }
         return new Result<Sku>().setData(new Sku()).setFlag(true);
-
     }
 
 /*    @ResponseBody
