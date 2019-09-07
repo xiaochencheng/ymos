@@ -256,7 +256,7 @@
                 url = 'review';
             }
 
-
+           var index=layer.load(2, {shade:[0.5,'#fff']});
             var queryStr = "${queryStr}";
             $.ajax({
                 type: "POST",
@@ -268,6 +268,7 @@
                 success: function (reply) {
                     console.info(reply);
                     if (reply.flag) {
+                        layer.close(index);
                         location.href = "${pageContext.request.contextPath }/rev/list?" + queryStr;
 
                     }

@@ -39,13 +39,12 @@ import java.util.List;
 public class ReviewController extends CUDController<Review, ReviewQuery, ReviewForm, ReviewService> {
 
 
-     ReviewService reviewService;
+    ReviewService reviewService;
 
     @Value("#{prop.uploadFile}")
     private String uploadFile;
     @Value("#{prop.filePath}")//图片上传服务器路径
     private String filePath;
-
 
 
     public ReviewController() {
@@ -55,16 +54,15 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
     @Autowired
     public void setReviewService(ReviewService reviewService) {
         this.reviewService = reviewService;
-        this.service=reviewService;
+        this.service = reviewService;
     }
-
 
 
     @Override
     protected void innerSave(ReviewForm form, BindingResult errors, Model model, HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            DecimalFormat df=new DecimalFormat("000000");
+            DecimalFormat df = new DecimalFormat("000000");
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Product product = new Product();
@@ -108,78 +106,76 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
      */
     @ResponseBody
     @RequestMapping(value = "/review", method = RequestMethod.POST)
-    public Result<Product> update(HttpServletRequest request, HttpServletResponse response, Product product, MultipartFile [] file,HttpSession session) {
-        String sp = product.getId();
-        User user= LoginContext.getUser(session);
-        String creator=user.getUsername();
-        DecimalFormat df=new DecimalFormat("000000");
-
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        product.setDateTime(sdf.format(date));
-        int maxId = reviewService.queryMaxId();
-        int num = (int) ((Math.random() * 9 + 1) * 10000);
-        product.setSoureId((num + "" + maxId));
-        String uuid=product.getPro_list();
-        String uuidAfter=product.getPro_list();
-        uuidAfter=uuidAfter.substring(0,uuidAfter.length()-2);
-        uuid= uuid.substring(uuid.length()-2,uuid.length());
-        product.setPro_list(uuidAfter);
-        product.setCreator(creator);
-        product.setStatus(3);
+    public Result<Product> update(HttpServletRequest request, HttpServletResponse response, Product product, MultipartFile[] file, HttpSession session) {
         try {
+            String sp = product.getId();
+            User user = LoginContext.getUser(session);
+            String creator = user.getUsername();
+            DecimalFormat df = new DecimalFormat("000000");
+
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            product.setDateTime(sdf.format(date));
+            int maxId = reviewService.queryMaxId();
+            int num = (int) ((Math.random() * 9 + 1) * 10000);
+            product.setSoureId((num + "" + maxId));
+            String uuid = product.getPro_list();
+            String uuidAfter = product.getPro_list();
+            uuidAfter = uuidAfter.substring(0, uuidAfter.length() - 2);
+            uuid = uuid.substring(uuid.length() - 2, uuid.length());
+            product.setPro_list(uuidAfter);
+            product.setCreator(creator);
+            product.setStatus(3);
+
             if (file != null && file.length != 0) {
                 saveFiles(request, product, file);//文件上传
             }
 
-            reviewService.update(product);
-            return new Result<Product>().setData(product).setFlag(true);
         } catch (Exception e) {
             return new Result<Product>().setFlag(false);
         }
+        reviewService.update(product);
+        return new Result<Product>().setData(product).setFlag(true);
     }
-
-
 
 
     /**
      * 新增产品数据
      */
     @ResponseBody
-    @RequestMapping(value = "/create1",method = RequestMethod.POST)
+    @RequestMapping(value = "/create1", method = RequestMethod.POST)
     public Result<Product> create(Product product, MultipartFile[] file, HttpServletRequest request, HttpSession session) {
-
-        User user= LoginContext.getUser(session);
-        String creator=user.getUsername();
-        DecimalFormat df=new DecimalFormat("000000");
-        //String date= String.valueOf(new Date());
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        product.setDateTime(sdf.format(date));
-        int maxId = reviewService.queryMaxId();
-        //System.out.println(maxId + "maxId");
-        //System.out.println(request.getParameter("pro_list"));
-        int num = (int) ((Math.random() * 9 + 1) * 10000);
-        product.setSoureId((num + "" + maxId));
-        String uuid=product.getPro_list();
-        String uuidAfter=product.getPro_list();
-        uuidAfter=uuidAfter.substring(0,uuidAfter.length()-2);
-        uuid= uuid.substring(uuid.length()-2,uuid.length());
-        product.setPro_list(uuidAfter);
-        product.setStatus(3);
-        product.setSpu(uuid+df.format(maxId));
-        product.setCreator(creator);
-
         try {
+            User user = LoginContext.getUser(session);
+            String creator = user.getUsername();
+            DecimalFormat df = new DecimalFormat("000000");
+            //String date= String.valueOf(new Date());
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            product.setDateTime(sdf.format(date));
+            int maxId = reviewService.queryMaxId();
+            //System.out.println(maxId + "maxId");
+            //System.out.println(request.getParameter("pro_list"));
+            int num = (int) ((Math.random() * 9 + 1) * 10000);
+            product.setSoureId((num + "" + maxId));
+            String uuid = product.getPro_list();
+            String uuidAfter = product.getPro_list();
+            uuidAfter = uuidAfter.substring(0, uuidAfter.length() - 2);
+            uuid = uuid.substring(uuid.length() - 2, uuid.length());
+            product.setPro_list(uuidAfter);
+            product.setStatus(3);
+            product.setSpu(uuid + df.format(maxId));
+            product.setCreator(creator);
+
             if (file != null && file.length != 0) {
                 saveFiles(request, product, file);//文件上传
             }
 
-            reviewService.create(product);
-            return new Result<Product>().setData(product).setFlag(true);
         } catch (Exception e) {
             return new Result<Product>().setFlag(false);
         }
+        reviewService.create(product);
+        return new Result<Product>().setData(product).setFlag(true);
 
     }
 
@@ -194,7 +190,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
                 //System.out.println(filename + "文件原始名");
                 String uploadPath = uploadFile + "/" + product.getSoureId() + i + filename.substring(filename.lastIndexOf("."));
                 String filePaths = filePath + "/" + product.getSoureId() + i + filename.substring(filename.lastIndexOf("."));
-                System.out.println("uploadPath: " + uploadPath + ">>>>>>>" + filePath);
+                //System.out.println("uploadPath: " + uploadPath + ">>>>>>>" + filePath);
                 temp += filePaths;
                 File file1 = new File(uploadPath);
                 if (!file1.exists()) {
@@ -314,11 +310,11 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
                 row.createCell(12).setCellValue(report.getUrl());
                 row.createCell(13).setCellValue(report.getPresale_price());
                 row.createCell(14).setCellValue(report.getFreight());
-                if (report.getStatus()==1) {
+                if (report.getStatus() == 1) {
                     row.createCell(15).setCellValue("通过");
-                } else if (report.getStatus()==2) {
+                } else if (report.getStatus() == 2) {
                     row.createCell(15).setCellValue("未通过");
-                } else if (report.getStatus()==3) {
+                } else if (report.getStatus() == 3) {
                     row.createCell(15).setCellValue("未审核");
                 }
                 row.createCell(16).setCellValue(report.getRemark());
@@ -326,12 +322,11 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
             }
             wk.write(outputStream);
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         } finally {
             wk.close();
         }
     }
-
 
 
 }
