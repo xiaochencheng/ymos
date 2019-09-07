@@ -257,6 +257,7 @@
 
          //  var index=layer.load(2, {shade:[0.5,'#fff']});
             var queryStr = "${queryStr}";
+            alert(url);
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/rev/create1" ,
