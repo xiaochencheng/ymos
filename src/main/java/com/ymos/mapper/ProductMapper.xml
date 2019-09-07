@@ -23,11 +23,12 @@
         <result column="remark" property="remark"/>
         <result column="spu" property="spu"/>
         <result column="freight" property="freight"/>
+        <result column="creator" property="creator"/>
 
     </resultMap>
 
     <sql id="Base_Column_List">
-    id,soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,status,remark,dateTime,freight
+    id,soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,status,remark,dateTime,freight,creator
   </sql>
 
     <select id="select" resultMap="BaseResultMap">
@@ -50,6 +51,10 @@
             <if test="query.endTime !=null and query.endTime !=''">
                 <![CDATA[and dateTime<=#{query.endTime}]]>
             </if>
+            <if test="query.status !=null and query.status !=''">
+                and status=#{query.status}
+            </if>
+
         </where>
         limit #{start},#{size}
     </select>
@@ -72,6 +77,10 @@
             <if test="query.endTime !=null and query.endTime !=''">
                 <![CDATA[and dateTime<=#{query.endTime}]]>
             </if>
+            <if test="query.status !=null and query.status !=''">
+                and status=#{query.status}
+            </if>
+
         </where>
     </select>
 
@@ -95,9 +104,9 @@
     </delete>
 
     <insert id="create" parameterType="Product">
-	 insert into t_pro (soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,dateTime,remark,status,freight)
+	 insert into t_pro (soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,dateTime,remark,status,freight,creator)
 	 values (#{soureId},#{spu},#{pro_ch_name},#{pro_en_name},#{cus_ch_name},#{cus_en_name},#{cus_price},#{cus_weight},#{pro_list},#{pro_url},#{pro_purchase_price},#{weight},#{url},#{url2},
-	 #{url3},#{presale_price},#{dateTime},#{remark},#{status},#{freight})
+	 #{url3},#{presale_price},#{dateTime},#{remark},#{status},#{freight},#{creator})
   </insert>
 
     <select id="selectById" parameterType="String" resultType="Product">
@@ -170,8 +179,8 @@
             <if test="status !=null and status !=''">
                 status=#{status},
             </if>
-            <if test="freight !=null and freight !=''">
-                freight=#{freight},
+            <if test="creator !=null and creator !=''">
+                creator=#{creator},
             </if>
         </trim>
     </update>
@@ -195,6 +204,10 @@
             <if test="endTime!=null and endTime!=''">
                 <![CDATA[and dateTime<=#{endTime}]]>
             </if>
+            <if test="status !=null and status !=''">
+                and status=#{status}
+            </if>
+
         </where>
     </select>
 

@@ -28,9 +28,9 @@
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
 		<property name="url"
-				  value="jdbc:mysql://50.116.38.30:3306/ymos?useUnicode=true&amp;characterEncoding=utf-8"></property>
+				  value="jdbc:mysql://127.0.0.1:3306/ymos?useUnicode=true&amp;characterEncoding=utf-8"></property>
 		<property name="username" value="root" />
-		<property name="password" value="p8#a-h>Pl7h!rk" />
+		<property name="password" value="root" />
 	</bean>
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 

@@ -14,6 +14,16 @@ public class SkuQuery extends Query {
 
     private String dateTime;
     private String endTime;
+    private String creator;
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+        this.addQstrs("creator",creator);
+    }
 
     public String getDateTime() {
         return dateTime;
@@ -78,6 +88,7 @@ public class SkuQuery extends Query {
                 ", spu='" + spu + '\'' +
                 ", name='" + name + '\'' +
                 ", endTime='" + endTime + '\'' +
+                ", creator='" + creator + '\'' +
                 '}';
     }
 }

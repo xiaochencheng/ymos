@@ -211,10 +211,10 @@ var addVerationFn = (function ($,W,D) {
          }*/
 
         if(iptVal){
-            if(isContainChinese(iptVal)){
-                $.fn.message({type:'error',msg:'属性值不能为中文'});
-                return;
-            }
+            // if(isContainChinese(iptVal)){
+            //     $.fn.message({type:'error',msg:'属性值不能为中文'});
+            //     return;
+            // }
             var skuLength = 1;
             $('#varListDiv [data-id="variationAttrAdd"]').each(function(){
                 var $this = $(this),
@@ -237,10 +237,10 @@ var addVerationFn = (function ($,W,D) {
                     $.fn.message({type: "error", msg: "请填写属性名"});
                     return;
                 }
-                if(isContainChinese(iptVal)){
-                    $.fn.message({type:'error',msg:'属性值不能为中文'});
-                    return;
-                }
+                // if(isContainChinese(iptVal)){
+                //     $.fn.message({type:'error',msg:'属性值不能为中文'});
+                //     return;
+                // }
                 var skuLength = 1;
                 $('#varListDiv [data-id="variationAttrAdd"]').each(function(){
                     var $this = $(this),
@@ -352,7 +352,7 @@ var addVerationFn = (function ($,W,D) {
             if(name && !obj[name]){
                 var arr = [];
                 $(this).find('.oneTag').each(function(){
-                    arr.push($(this).find('[data-uid="tagName"]').attr('data-value'));
+                    arr.push($(this).find('[data-uid="tagName"]').attr('data-text'));
                 });
                 if(arr.length > 0){
                     obj[name] = arr;
@@ -394,7 +394,7 @@ var addVerationFn = (function ($,W,D) {
     };
 
     //变种信息渲染到页面
-    var variationListHtml = function(str){
+    var variationListHtml = function(str,k){
         var variationListData = {
             proName: proName,
             masterImg: masterImg,
@@ -416,7 +416,7 @@ var addVerationFn = (function ($,W,D) {
             variationListData.variationListItem.push(item);
         });
         if(spu){
-            var itemsku = spu +'-'+ textArr.join('-');
+            var itemsku = spu +'-'+ (k+1);
             variationListData.sku = itemsku ? itemsku.replace(/[^a-zA-Z0-9-_+xX*#]*/g,'') : '';
             variationListData.ucSku = strToUc(itemsku);
         }
@@ -434,10 +434,10 @@ var addVerationFn = (function ($,W,D) {
             obj = l;
             if(idx + 1 == len){
                 if (node == ''){
-                    variationListHtml(obj.name+'%^%'+obj.value);
+                    variationListHtml(obj.name+'%^%'+obj.value,i);
                 }else{
                     obj = node+'$^$'+obj.name+'%^%'+obj.value;
-                    variationListHtml(obj);
+                    variationListHtml(obj,i);
                 }
             }else{
                 if (node == ''){

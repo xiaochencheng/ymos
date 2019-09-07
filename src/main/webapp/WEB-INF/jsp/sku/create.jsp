@@ -38,8 +38,9 @@
     .layui-upload-choose {
         margin-top: 10px;
     }
-    .layui-elem-field{
-        height:100%;
+
+    .layui-elem-field {
+        height: 100%;
     }
 </style>
 <body class="productAddVarient bg-light-blue" style="">
@@ -51,7 +52,8 @@
             <form class="layui-form" id="myform" name="myform" action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" value="${form.id }" name="id">
                 <input type="hidden" value="${form.pro_url }" name="pro_url">
-                <input type="hidden" id="hiddenInfo" value="" />
+                <input type="hidden" id="hiddenInfo" value=""/>
+                <input type="hidden" id="skuChName" value="${numsName}"/>
                 <div class="layui-form-item layui-form-pro-list">
                     <label class="layui-form-label">产品SPU分类:</label>
                     <div class="layui-input-block">
@@ -172,7 +174,6 @@
                                 onclick="javascript:history.go(-1)">
                             <i class="layui-icon">&#x1006;</i>取消
                         </button>
-
                     </div>
                 </div>
             </form>
@@ -186,12 +187,12 @@
 </body>
 
 <script type="text/javascript">
-$("#spuName").change(function(){
-var spuVal =  $(this).val();
-$("#spu").val(spuVal);
-/*    initVariation();
-variationListBuild('');*/
-});
+    $("#spuName").change(function () {
+        var spuVal = $(this).val();
+        $("#spu").val(spuVal);
+        /*    initVariation();
+        variationListBuild('');*/
+    });
 </script>
 
 
@@ -244,6 +245,7 @@ variationListBuild('');*/
     });
 
 
+
     layui.use(['form', 'jquery', 'upload', 'table'], function () {
         var laydate = layui.laydate;
         var form = layui.form;
@@ -251,17 +253,20 @@ variationListBuild('');*/
         var table = layui.table;
         form.render();
         form.on('submit(loading)', function (data) {
-            var ids=[];
+            var datas = new FormData($('#myform')[0]);
             var formData = customsClearanceFn.getPageData();
-            ids=formData;
-            console.info(JSON.stringify(formData.data));
-            if(formData.length>0){
-                for(var i in formData){
+            var ids= JSON.stringify(formData.data);
+            var vals = pageDom.varaitionObj;
+            var numsName = JSON.stringify(vals);
+
+            console.info(JSON.stringify(formData.data + ">>" + vals));
+            if (formData.length > 0) {
+                for (var i in formData) {
                     ids.push(formData[i].ids);
                 }
-               alert(ids);
+                alert(ids);
             }
-          /*console.log(formData.data);*/
+            /*console.log(formData.data);*/
             var formSelects = '';
             layui.use('formSelects', function () {
                 formSelects = layui.formSelects;
@@ -270,27 +275,35 @@ variationListBuild('');*/
             var url = '';
             if (id == '') {
                 url = 'create1';
-                 var file = $('input[type=file]').value;
-                 if ((file != null && file != "") && !(file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif") ||
-                     file.endsWith(".JPEG") || file.endsWith(".PNG") || file.endsWith(".GIF"))) {
-                     $('#test1').focus();
-                     layer.tips('图片文件格式不对!(后缀名如:jpg,png,jpeg,gif)', '#picSrc', {tips: [2, '#3595CC'], time: 3000});
-                     return false;
-                 }
+                var file = $('input[type=file]').value;
+                if ((file != null && file != "") && !(file.endsWith(".jpg") || file.endsWith(".png") || file.endsWith(".gif") ||
+                    file.endsWith(".JPEG") || file.endsWith(".PNG") || file.endsWith(".GIF"))) {
+                    $('#test1').focus();
+                    layer.tips('图片文件格式不对!(后缀名如:jpg,png,jpeg,gif)', '#picSrc', {tips: [2, '#3595CC'], time: 3000});
+                    return false;
+                }
             } else {
                 url = 'update';
             }
-          /*  {ids:JSON.stringify(formData.data)}*/
+            /*  {ids:JSON.stringify(formData.data)}*/
             var queryStr = "${queryStr}";
-           var ids= JSON.stringify(formData.data);
+            var json = JSON.stringify(formData.data);
+/*
+            for(var i=0,l=json.length;i<l;i++){
+                for(var key in json[i]){
+                    alert(key+':'+json[i][key]);
+                }
+            }*/
+
+
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/sku/" + url,
                 data:JSON.stringify(formData.data),
                 processData: false,
-                traditional:true,//必须加上设置为true
+                traditional: true,//必须加上设置为true
                 dataType: "json",
-                contentType:'application/json;charset=utf-8',
+                contentType: 'application/json;charset=utf-8',
                 success: function (reply) {
                     if (reply.flag) {
                         location.href = "${pageContext.request.contextPath }/sku/list?" + queryStr;
@@ -300,43 +313,43 @@ variationListBuild('');*/
             return false;
         });
 
-            upload.render({
-                elem: '#test1'
-                ,url: '${pageContext.request.contextPath }/sku/create1'
-                ,auto: true //选择文件后不自动上传
-                , bindAction: '#loading' //指向一个按钮触发上传
-                ,before: function(obj){
-                    layui.load;
-                    //预读本地文件示例，不支持ie8
-                    obj.preview(function(index, file, result){
-                        $('#imgCss').attr('src', result);
-                    });
+        upload.render({
+            elem: '#test1'
+            , url: '${pageContext.request.contextPath }/sku/create1'
+            , auto: true //选择文件后不自动上传
+            , bindAction: '#loading' //指向一个按钮触发上传
+            , before: function (obj) {
+                layui.load;
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#imgCss').attr('src', result);
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                if (res.code > 0) {
+                    alert('上传失败！')
                 }
-                ,done: function(res){
-                    //如果上传失败
-                    if(res.code > 0){
-                        alert('上传失败！')
-                    }
-                    //上传成功
-                    alert('上传成功！')
-                }
-            });
-
-
+                //上传成功
+                alert('上传成功！')
+            }
+        });
 
 
     });
 
 </script>
 
-<script id="variationListTable-template"  type="text/x-handlebars-template">
+<script id="variationListTable-template" type="text/x-handlebars-template">
     <tr id="{{sku}}" data-ucSku="{{ucSku}} "
         {{#if quote}}
         data-quote="{{quote}}"
         {{/if}}>
     <td class="f-left p-left15" style="word-break:break-all;">
         <p class="m-bottom10">SKU：
-            <input class="form-component w249 sku" type="text" value="{{sku}}" page-sku="{{sku}}" init-sku="{{sku}}" page-sourceurl="{{sourceUrl}}" onkeyup="value=value.replace(/[^a-zA-Z0-9-_+xX*#]*/g,'');" onblur="customsClearanceFn.skuInfoTableUpdete(this);">
+            <input class="form-component w249 sku" type="text" value="{{sku}}" page-sku="{{sku}}" init-sku="{{sku}}"
+                   page-sourceurl="{{sourceUrl}}" onkeyup="value=value.replace(/[^a-zA-Z0-9-_+xX*#]*/g,'');"
+                   onblur="customsClearanceFn.skuInfoTableUpdete(this);">
         </p>
         <p page-name="{{proName}}">
             {{#if proName}}

@@ -8,6 +8,16 @@ public class ProductQuery extends Query {
     private Integer size;
     private String dateTime;
     private String endTime;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+        this.addQstrs("status",status);
+    }
 
     public String getSpu() {
         return spu;

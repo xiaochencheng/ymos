@@ -17,5 +17,7 @@ public interface SkuMapper extends BaseMapper<Sku> {
 
   List<SkuReport> exportExcel(SkuReport skuReport);
 
+  int findSkunOne(String sku);
+
 
 }

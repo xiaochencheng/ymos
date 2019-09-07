@@ -19,6 +19,24 @@ public class SkuReport extends AbstractReport {
     private String spu;                     //spu
     private String create_date;             //创建时间
     private String endTime;
+    private String creator;
+    private String attributes;
+
+    public String getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
     public String getEndTime() {
         return endTime;

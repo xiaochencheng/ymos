@@ -46,4 +46,11 @@ public class SkuServiceImpl extends  BaseServiceImpl<Sku> implements SkuService 
         return skuMapper.exportExcel(skuReport);
     }
 
+    @Override
+    public int findSkunOne(String sku) {
+            int  result=  skuMapper.findSkunOne(sku);
+        return result;
+    }
+
+
 }

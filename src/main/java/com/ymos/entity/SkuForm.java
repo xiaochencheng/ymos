@@ -21,9 +21,27 @@ public class SkuForm extends IdForm<Sku> {
     private String weightBg;                //危险运输品
     private String spu;                     //spu
     private String create_date;             //创建时间
+    private String creator;                 //创建人
+    private String attributes;              //sku中文属性
 
     //=======================================================
 
+
+    public String getAttributes() {
+        return attributes;
+    }
+
+    public void setAttributes(String attributes) {
+        this.attributes = attributes;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
     public int getDangerDesBg() {
         return dangerDesBg;
@@ -172,6 +190,8 @@ public class SkuForm extends IdForm<Sku> {
                 ", weightBg='" + weightBg + '\'' +
                 ", spu='" + spu + '\'' +
                 ", create_date='" + create_date + '\'' +
+                ", creator='" + creator + '\'' +
+                ", attributes='" + attributes + '\'' +
                 '}';
     }
 
@@ -198,6 +218,8 @@ public class SkuForm extends IdForm<Sku> {
        sku.setSbm(sbm);
        sku.setNameEn(nameEn);
        sku.setNameEn(nameEn);
+       sku.setCreator(creator);
+       sku.setAttributes(attributes);
     }
 
 

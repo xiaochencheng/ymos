@@ -16,6 +16,8 @@ public interface SkuService extends BaseService<Sku> {
 
     List<SkuReport> exportExcel(SkuReport skuReport);
 
+    int findSkunOne(String sku);
+
 
 
 }

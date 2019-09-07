@@ -30,4 +30,19 @@ public class ReviewServiceImpl extends BaseServiceImpl<Review> implements Review
         return reviewMapper.queryExcelData(reviewReport);
 
     }
+
+    @Override
+    public int create(Product product) {
+        return reviewMapper.create(product);
+    }
+
+    @Override
+    public int queryMaxId() {
+        return reviewMapper.queryMaxId();
+    }
+
+    @Override
+    public int update(Product product) {
+        return reviewMapper.update(product);
+    }
 }

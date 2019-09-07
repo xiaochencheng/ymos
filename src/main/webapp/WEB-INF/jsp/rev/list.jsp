@@ -45,6 +45,7 @@
                                 <th>采购网址</th>
                                 <th>预售价</th>
                                 <th>运费</th>
+                                <th>创建人</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -59,13 +60,15 @@
                                                                                type="checkbox" lay-skin="primary"
                                                                                lay-filter="itemChoose" id="ids"
                                                                                name="ids" value="${data.id }"/></c:if>
-                                        <c:if test="${data.status==4}"> <input class="layui-input layui-disabled"
+                                        <c:if test="${data.status==3}"> <input class="layui-input layui-disabled"
                                                                                type="checkbox" lay-skin="primary"
                                                                                lay-filter="itemChoose" id="ids"
                                                                                name="ids" value="${data.id }"/></c:if>
                                     </td>
                                     <td>${data.id }</td>
-                                    <td>${data.spu}</td>
+                                    <td>
+                                        <c:if test="${data.status ==1}">
+                                              ${data.spu}</c:if></td>
                                     <td>${data.pro_ch_name}</td>
                                     <td>${data.pro_en_name}</td>
                                     <td>${data.cus_ch_name}</td>
@@ -79,6 +82,7 @@
                                     <td><a href="${data.url}" target="_blank">采购链接</a></td>
                                     <td>${data.presale_price}</td>
                                     <td>${data.freight}</td>
+                                    <td>${data.creator}</td>
                                     <td>
                                         <c:if test="${data.status ==1}">
                                             <button type="button" class="layui-btn layui-btn-xs" type="button"
@@ -91,12 +95,12 @@
                                                     type="button"
                                                     style="width: 62px">未通过
                                             </button>
-                                            <c:if test="${data.status ==3}">
-                                                <button type="button" class="layui-btn layui-btn-xs layui-btn-normal"
-                                                        type="button"
-                                                        style="width: 62px">待审核
-                                                </button>
-                                            </c:if>
+                                        </c:if>
+                                        <c:if test="${data.status ==3}">
+                                            <button type="button" class="layui-btn layui-btn-xs layui-btn-warm"
+                                                    type="button"
+                                                    style="width: 62px">待审核
+                                            </button>
                                         </c:if>
                                     </td>
                                 </tr>
@@ -112,8 +116,8 @@
     <div class="operator">
 
         <c:import url="../common/button.jsp">
-            <c:param name="create">${pageContext.request.contextPath }/pro/create</c:param>
-            <%--<c:param name="modify">${pageContext.request.contextPath }/pro/modify</c:param>--%>
+            <c:param name="create">${pageContext.request.contextPath }/rev/create</c:param>
+            <c:param name="review">${pageContext.request.contextPath }/rev/modify</c:param>
             <%--<c:param name="delete">${pageContext.request.contextPath }/pro/delete</c:param>--%>
             <%--<c:param name="deleteMsg">确认删除产品数据？</c:param>--%>
         </c:import>

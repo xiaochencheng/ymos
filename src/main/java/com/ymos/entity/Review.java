@@ -17,7 +17,7 @@ public class Review extends Id{
     private String url2;                    //采购网址2
     private String url3;                    //采购网址3
     private String presale_price;           //预售价
-    private int    creator;                 //创建者
+    private String    creator;                 //创建者
     private int    status;                  //审核状态
     private String remark;                  //备注
     private String dateTime;
@@ -152,11 +152,11 @@ public class Review extends Id{
         this.presale_price = presale_price;
     }
 
-    public int getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(int creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 

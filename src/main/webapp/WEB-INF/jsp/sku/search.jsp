@@ -60,7 +60,7 @@
     // $('.search-width').css('width', '120px');
     var size = '${param.size}';
     var name = '${param.name}';
-    var spuName='${param.spu}';
+    var spu='${param.spu}';
     var skuName='${param.skuName}';
 
     $('#size').find("option[value='" + size + "']").prop("selected", true);
@@ -72,11 +72,11 @@
         var name = $('#name').val();
 
 
-        var spuName = $('#spu').val();
+        var spu = $('#spu').val();
         var dateTime = $('#dateTime').val();
         var endTime = $('#endTime').val();
 
-        location.href = "${pageContext.request.contextPath}/sku/exportExcel/?title=" + title + "&pro_ch_name=" + name +"&skuName="+skuName+"&spuName="+spuName+ "&dateTime=" + dateTime+"&endTime="+endTime;
+        location.href = "${pageContext.request.contextPath}/sku/exportExcel/?title=" + title + "&name=" + name +"&skuName="+skuName+"&spu="+spu+ "&dateTime=" + dateTime+"&endTime="+endTime;
 
     })
 

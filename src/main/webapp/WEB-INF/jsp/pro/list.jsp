@@ -45,6 +45,7 @@
                                 <th>采购网址</th>
                                 <th>预售价</th>
                                 <th>运费</th>
+                                <th>创建人</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
@@ -78,6 +79,7 @@
                                     <td><a href="${data.url}" target="_blank">采购链接</a></td>
                                     <td>${data.presale_price}</td>
                                     <td>${data.freight}</td>
+                                    <td>${data.creator}</td>
                                     <td>
                                         <c:if test="${data.status ==1}">
                                             <button type="button" class="layui-btn layui-btn-xs" type="button"

@@ -2,25 +2,34 @@ package com.ymos.controller;
 
 
 import com.ymos.common.Constants;
+import com.ymos.common.LoginContext;
 import com.ymos.entity.*;
 import com.ymos.biz.ReviewService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +40,12 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
 
 
      ReviewService reviewService;
+
+    @Value("#{prop.uploadFile}")
+    private String uploadFile;
+    @Value("#{prop.filePath}")//图片上传服务器路径
+    private String filePath;
+
 
 
     public ReviewController() {
@@ -48,6 +63,36 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
     @Override
     protected void innerSave(ReviewForm form, BindingResult errors, Model model, HttpServletRequest request, HttpServletResponse response) {
 
+        try {
+            DecimalFormat df=new DecimalFormat("000000");
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Product product = new Product();
+            form.setDateTime(sdf.format(date));
+            form.setCreator(product.getCreator());
+            form.setCus_ch_name(product.getCus_ch_name());
+            form.setCus_en_name(product.getCus_en_name());
+            form.setCus_weight(product.getCus_weight());
+            form.setCus_price(product.getCus_price());
+            form.setPresale_price(product.getPresale_price());
+            form.setPro_ch_name(product.getPro_ch_name());
+            form.setPro_en_name(product.getPro_en_name());
+            form.setPro_list(product.getPro_list());
+            form.setPro_purchase_price(product.getPro_purchase_price());
+            form.setRemark(product.getRemark());
+            form.setSoureId(product.getSoureId());
+            form.setPro_url(product.getPro_url());
+            form.setStatus(product.getStatus());
+            form.setUrl(product.getUrl());
+            form.setUrl2(product.getUrl2());
+            form.setUrl3(product.getUrl3());
+            form.setPro_url(product.getPro_url());
+
+            this.service.saveOrUpdate(form.toObj());
+        } catch (Exception e) {
+            errors.addError(new ObjectError("error", "操作异常"));
+        }
+
     }
 
     @Override
@@ -55,6 +100,114 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
                               HttpServletResponse response) {
         paginator.setNeedTotal(true);
         return super.preList(query, paginator, model, request, response);
+    }
+
+
+    /**
+     * 修改
+     */
+    @ResponseBody
+    @RequestMapping(value = "/review", method = RequestMethod.POST)
+    public Result<Product> update(HttpServletRequest request, HttpServletResponse response, Product product, MultipartFile [] file,HttpSession session) {
+        String sp = product.getId();
+        User user= LoginContext.getUser(session);
+        String creator=user.getUsername();
+        DecimalFormat df=new DecimalFormat("000000");
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        product.setDateTime(sdf.format(date));
+        int maxId = reviewService.queryMaxId();
+        int num = (int) ((Math.random() * 9 + 1) * 10000);
+        product.setSoureId((num + "" + maxId));
+        String uuid=product.getPro_list();
+        String uuidAfter=product.getPro_list();
+        uuidAfter=uuidAfter.substring(0,uuidAfter.length()-2);
+        uuid= uuid.substring(uuid.length()-2,uuid.length());
+        product.setPro_list(uuidAfter);
+        product.setCreator(creator);
+        product.setStatus(3);
+        try {
+            if (file != null && file.length != 0) {
+                saveFiles(request, product, file);//文件上传
+            }
+
+            reviewService.update(product);
+            return new Result<Product>().setData(product).setFlag(true);
+        } catch (Exception e) {
+            return new Result<Product>().setFlag(false);
+        }
+    }
+
+
+
+
+    /**
+     * 新增产品数据
+     */
+    @ResponseBody
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public Result<Product> create(Product product, MultipartFile[] file, HttpServletRequest request, HttpSession session) {
+
+        User user= LoginContext.getUser(session);
+        String creator=user.getUsername();
+        DecimalFormat df=new DecimalFormat("000000");
+        //String date= String.valueOf(new Date());
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        product.setDateTime(sdf.format(date));
+        int maxId = reviewService.queryMaxId();
+        //System.out.println(maxId + "maxId");
+        //System.out.println(request.getParameter("pro_list"));
+        int num = (int) ((Math.random() * 9 + 1) * 10000);
+        product.setSoureId((num + "" + maxId));
+        String uuid=product.getPro_list();
+        String uuidAfter=product.getPro_list();
+        uuidAfter=uuidAfter.substring(0,uuidAfter.length()-2);
+        uuid= uuid.substring(uuid.length()-2,uuid.length());
+        product.setPro_list(uuidAfter);
+        product.setStatus(3);
+        product.setSpu(uuid+df.format(maxId));
+        product.setCreator(creator);
+
+        try {
+            if (file != null && file.length != 0) {
+                saveFiles(request, product, file);//文件上传
+            }
+
+            reviewService.create(product);
+            return new Result<Product>().setData(product).setFlag(true);
+        } catch (Exception e) {
+            return new Result<Product>().setFlag(false);
+        }
+
+    }
+
+    /**
+     * 文件上传
+     */
+    public void saveFiles(HttpServletRequest request, Product product, MultipartFile[] file) {
+        try {
+            String temp = "";
+            for (int i = 0; i < file.length; i++) {
+                String filename = file[i].getOriginalFilename();
+                //System.out.println(filename + "文件原始名");
+                String uploadPath = uploadFile + "/" + product.getSoureId() + i + filename.substring(filename.lastIndexOf("."));
+                String filePaths = filePath + "/" + product.getSoureId() + i + filename.substring(filename.lastIndexOf("."));
+                System.out.println("uploadPath: " + uploadPath + ">>>>>>>" + filePath);
+                temp += filePaths;
+                File file1 = new File(uploadPath);
+                if (!file1.exists()) {
+                    file1.mkdirs();
+                } else if (file1.exists()) {
+                    Boolean result = file1.delete();
+                }
+                file[i].transferTo(file1);
+            }
+            product.setPro_url(temp);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

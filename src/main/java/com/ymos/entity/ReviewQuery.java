@@ -7,6 +7,27 @@ public class ReviewQuery extends Query{
     private String spu;
     private String dateTime;
     private String endTime;
+    private int status;
+    private String creator;
+
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+        this.addQstrs("creator",creator);
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+        this.addQstrs("status",status);
+    }
 
     public String getSpu() {
         return spu;
@@ -61,6 +82,7 @@ public class ReviewQuery extends Query{
                 ", spu='" + spu + '\'' +
                 ", dateTime='" + dateTime + '\'' +
                 ", endTime='" + endTime + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

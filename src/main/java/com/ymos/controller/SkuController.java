@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import com.ymos.common.Constants;
+import com.ymos.common.LoginContext;
 import com.ymos.entity.*;
 import com.ymos.biz.SkuListService;
 import com.ymos.biz.SkuService;
@@ -26,6 +27,7 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
@@ -107,45 +109,54 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
      */
     @ResponseBody
     @RequestMapping(value = "/create1",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public Result<Sku> create(@RequestBody List<Sku> ids, HttpServletRequest request, HttpServletResponse response) {
-     //   System.out.println("dddddddddddddddddddddddddddddddddddddddddddddddddddd"+files.length);
-     //   System.out.println(ids);
+    public Result<Sku> create(@RequestBody List<Sku> ids, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+
+        User user= LoginContext.getUser(session);
+        String creator=user.getUsername();
         String sdate;
         Date ddate=new Date();
         sdate=(new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
         Sku sku=new Sku();
+
+
         for(int i=0;i<ids.size();i++){
-            //System.out.println("dddddddddddddddddddddddddddddddddddddddddddddddddddd"+ids.get(i).getFiles().length);
+            System.out.println(ids.size());
             String spu=ids.get(i).getSku();
             String spuName= spu.substring(0,spu.indexOf("-"));
-            sku.setName(ids.get(i).getName());
-            sku.setNameEn(ids.get(i).getNameEn());
-            sku.setNameCnBg(ids.get(i).getNameCnBg());
-            sku.setNameEnBg(ids.get(i).getNameEnBg());
-            sku.setSku(ids.get(i).getSku());
-            sku.setPriceBg(ids.get(i).getPriceBg());
-            sku.setImgUrl(ids.get(i).getImgUrl());
-            sku.setPrice(ids.get(i).getPrice());
-            sku.setSpu(spuName);
-            sku.setDangerDesBg(ids.get(i).getDangerDesBg());
-            sku.setHgbmBg(ids.get(i).getHgbmBg());
-            sku.setWeight(ids.get(i).getWeight());
-            sku.setCreate_date(sdate);
-            sku.setSbm(ids.get(i).getSbm());
-            sku.setSourceUrl(ids.get(i).getSourceUrl());
-            sku.setWeightBg(ids.get(i).getWeightBg());
-            skuService.create(sku);
+                sku.setName(ids.get(i).getName());
+                sku.setNameEn(ids.get(i).getNameEn());
+                sku.setNameCnBg(ids.get(i).getNameCnBg());
+                sku.setNameEnBg(ids.get(i).getNameEnBg());
+                sku.setSku(ids.get(i).getSku());
+                sku.setPriceBg(ids.get(i).getPriceBg());
+                sku.setImgUrl(ids.get(i).getImgUrl());
+                sku.setPrice(ids.get(i).getPrice());
+                sku.setSpu(spuName);
+                sku.setDangerDesBg(ids.get(i).getDangerDesBg());
+                sku.setHgbmBg(ids.get(i).getHgbmBg());
+                sku.setWeight(ids.get(i).getWeight());
+                sku.setCreate_date(sdate);
+                sku.setSbm(ids.get(i).getSbm());
+                sku.setSourceUrl(ids.get(i).getSourceUrl());
+                sku.setWeightBg(ids.get(i).getWeightBg());
+                sku.setCreator(creator);
+                sku.setAttributes(ids.get(i).getAttributes());
+                skuService.create(sku);
+                return new Result<Sku>().setData(new Sku()).setFlag(true);
         }
-
-
-
-
             return new Result<Sku>().setData(new Sku()).setFlag(true);
-        //} catch (Exception e) {
-        //    return new Result<Sku>().setFlag(false);
-        //}
 
     }
+
+/*    @ResponseBody
+    @RequestMapping("/skuChName")
+    public String getskuChName(@RequestBody List<Sku> skuChName,HttpServletResponse response,HttpServletRequest request){
+        System.out.println(skuChName.size());
+        for (int j=0;j<skuChName.size();j++){
+            skuChName.get(j).getAttributes();
+        }
+     return  null;
+    }*/
 
     /**
      * Excel表格导出方法
@@ -252,14 +263,14 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
                 row.createCell(3).setCellValue("");
                 row.createCell(4).setCellValue(report.getName());
                 row.createCell(5).setCellValue("在售");
-                row.createCell(6).setCellValue(report.getImgUrl());
+                row.createCell(6).setCellValue("");
                 row.createCell(7).setCellValue(report.getWeight());
                 row.createCell(8).setCellValue(report.getPrice());
                 row.createCell(9).setCellValue("无");
                 row.createCell(10).setCellValue("0");
                 row.createCell(11).setCellValue("0");
                 row.createCell(12).setCellValue("0");
-                row.createCell(13).setCellValue(report.getImgUrl());
+                row.createCell(13).setCellValue(report.getSourceUrl());
                 row.createCell(14).setCellValue("");
                 row.createCell(15).setCellValue(report.getNameEnBg());
                 row.createCell(16).setCellValue(report.getNameCnBg());

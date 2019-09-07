@@ -10,4 +10,10 @@ public interface ReviewMapper extends BaseMapper<Review>{
 
     List<ReviewReport> queryExcelData(ReviewReport reviewReport);
 
+    int create(Product product);
+
+    int queryMaxId();
+
+    int update(Product product);
+
 }

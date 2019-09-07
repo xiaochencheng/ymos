@@ -20,7 +20,7 @@ public class ProductForm extends IdForm<Product> {
     private String url2;                    //采购网址2
     private String url3;                    //采购网址3
     private String presale_price;           //预售价
-    private int    creator;                 //创建者
+    private String    creator;                 //创建者
     private Date createDate;                //创建时间
     private int   status;
     private String remark;                  //备注
@@ -190,11 +190,11 @@ public class ProductForm extends IdForm<Product> {
         this.presale_price = presale_price;
     }
 
-    public int getCreator() {
+    public String getCreator() {
         return creator;
     }
 
-    public void setCreator(int creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
@@ -262,5 +262,6 @@ public class ProductForm extends IdForm<Product> {
         product.setDateTime(dateTime);
         product.setSpu(spu);
         product.setFreight(freight);
+        product.setCreator(creator);
     }
 }

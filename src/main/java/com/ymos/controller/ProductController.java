@@ -2,6 +2,7 @@ package com.ymos.controller;
 
 
 import com.ymos.common.Constants;
+import com.ymos.common.LoginContext;
 import com.ymos.common.SnowFlake;
 import com.ymos.entity.*;
 import com.ymos.biz.ProductService;
@@ -20,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import sun.applet.Main;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -106,8 +109,8 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
      */
     @ResponseBody
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public Result<Product> create(Product product,  MultipartFile[] file, HttpServletRequest request) {
-
+    public Result<Product> create(Product product, MultipartFile[] file, HttpServletRequest request, HttpSession session) {
+        User user=LoginContext.getUser(session);
         DecimalFormat df=new DecimalFormat("000000");
         //String date= String.valueOf(new Date());
         Date date = new Date();
@@ -125,6 +128,7 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
         product.setPro_list(uuidAfter);
         product.setStatus(3);
         product.setSpu(uuid+df.format(maxId));
+        product.setCreator(user.getUsername());
 
         try {
             if (file != null && file.length != 0) {
@@ -314,5 +318,16 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
             wk.close();
         }
     }
+
+    public void getCurrentUser() {
+
+        String currentUser = System.getProperty("user.name");
+        System.out.println("Current user is " + currentUser);
+    }
+
+    public static void main(String[] args) {
+
+    }
+
 
 }

@@ -17,12 +17,17 @@
                 <input type="text"  class="layui-input" id="pro_en_name" name="pro_en_name" value="${param.pro_en_name}" placeholder="请输入产品英文名">
             </div>
         </div>
-        <%--<div class="layui-inline">--%>
-            <%--<div class="search-name" style="width: 30px">SPU:</div>--%>
-            <%--<div class="layui-input-inline search-width">--%>
-                <%--<input type="text"  class="layui-input" id="spu" name="spu" value="${param.spu}" placeholder="请输入SPU">--%>
-            <%--</div>--%>
-        <%--</div>--%>
+        <div class="layui-inline">
+            <div class="search-name" style="width: 40px">状态:</div>
+            <div class="layui-input-inline">
+                <select name="status" id="status" lay-search>
+                    <option value="">请选择状态</option>
+                    <option value="1">已通过</option>
+                    <option value="2">不通过</option>
+                    <option value="3">待审核</option>
+                </select>
+            </div>
+        </div>
 
         <div class="layui-inline">
             <div class="search-name" id="dateDiv">日期:</div>
@@ -38,16 +43,7 @@
             <input type="text" class="layui-input" id="endTime" name="endTime"
                    value="${param.endTime}" placeholder="请选择结束时间">
         </div>
-        <div class="layui-inline">
-            <div class="layui-input-inline">
-                <select name="size" id="size" lay-search>
-                    <option value="">每页显示数</option>
-                    <option value="20">20条每页</option>
-                    <option value="50">50条每页</option>
-                    <option value="100">100条每页</option>
-                </select>
-            </div>
-        </div>
+
         <button class="layui-btn layui-btn-normal layui-btn-sm" type="submit">
             <i class="layui-icon">&#xe615;</i>查询
         </button>
@@ -56,6 +52,8 @@
 </form>
 <script>
     // $('.search-width').css('width', '120px');
+    var status="${param.status}";
+    $('#status').find("option[value='"+status+"']").prop("selected","selected");
     var size = '${param.size}';
     var pro_ch_name = '${param.pro_ch_name}';
     var pro_en_name = '${param.pro_en_name}';

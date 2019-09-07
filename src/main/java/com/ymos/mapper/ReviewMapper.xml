@@ -24,22 +24,28 @@
         <result column="remark" property="remark"/>
         <result column="spu" property="spu"/>
         <result column="freight" property="freight"/>
+        <result column="creator" property="creator"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-    id,soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,status,remark,dateTime,freight
+    id,soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,status,remark,dateTime,freight,creator
   </sql>
 
 
     <select id="select" resultMap="BaseResultMap">
         select  <include refid="Base_Column_List"/>  from t_pro
         <where>
-            `status` =1
             <if test="query.pro_ch_name!=null and query.pro_ch_name!=''">
                 and  pro_ch_name=#{query.pro_ch_name}
             </if>
             <if test="query.spu!=null and query.spu!=''">
                 and  spu=#{query.spu}
+            </if>
+            <if test="query.creator!=null and query.creator!=''">
+                and  creator=#{query.creator}
+            </if>
+            <if test="query.status !=null and query.status !=''">
+                and status=#{query.status}
             </if>
              <if test="query.pro_en_name!=null and query.pro_en_name!=''">
                 and  pro_en_name=#{query.pro_en_name}
@@ -51,17 +57,23 @@
                 <![CDATA[and dateTime<=#{query.endTime}]]>
             </if>
         </where>
+        limit #{start},#{size}
     </select>
 
     <select id="count" parameterType="Paginator" resultType="int">
         select count(1) from t_pro
         <where>
-            `status` =1
             <if test="query.pro_ch_name!=null and query.pro_ch_name!=''">
                 and  pro_ch_name=#{query.pro_ch_name}
             </if>
             <if test="query.pro_en_name!=null and query.pro_en_name!=''">
                 and  pro_en_name=#{query.pro_en_name}
+            </if>
+             <if test="query.creator!=null and query.creator!=''">
+                and  creator=#{query.creator}
+            </if>
+            <if test="query.status !=null and query.status !=''">
+                and status=#{query.status}
             </if>
             <if test="query.spu!=null and query.spu!=''">
                 and  spu=#{query.spu}
@@ -78,7 +90,6 @@
     <select id="queryExcelData" parameterType="ReviewReport"  resultType="ReviewReport">
         select  <include refid="Base_Column_List"/>  from t_pro
         <where>
-            `status` =1
             <if test="pro_ch_name!=null and pro_ch_name!=''">
                 and  pro_ch_name=#{pro_ch_name}
             </if>
@@ -88,13 +99,103 @@
             <if test="pro_en_name!=null and pro_en_name!=''">
                 and  pro_en_name=#{pro_en_name}
             </if>
+            <if test="creator!=null and creator!=''">
+                and  creator=#{creator}
+            </if>
             <if test="dateTime!=null and dateTime!=''">
                 and  dateTime>=#{dateTime}
             </if>
             <if test="endTime!=null and endTime!=''">
                 <![CDATA[and dateTime<=#{endTime}]]>
             </if>
+            <if test="status !=null and status !=''">
+                and status=#{status}
+            </if>
         </where>
     </select>
+
+    <insert id="create" parameterType="Review">
+	 insert into t_pro (soureId,spu,pro_ch_name,pro_en_name,cus_ch_name,cus_en_name,cus_price,cus_weight,pro_list,pro_url,pro_purchase_price,weight,url,url2,url3,presale_price,dateTime,remark,status,freight,creator)
+	 values (#{soureId},#{spu},#{pro_ch_name},#{pro_en_name},#{cus_ch_name},#{cus_en_name},#{cus_price},#{cus_weight},#{pro_list},#{pro_url},#{pro_purchase_price},#{weight},#{url},#{url2},
+	 #{url3},#{presale_price},#{dateTime},#{remark},#{status},#{freight},#{creator})
+  </insert>
+
+    <select id="selectById" parameterType="Paginator"  resultType="Review">
+        select  <include refid="Base_Column_List" />  from t_pro where id=#{id}
+    </select>
+
+    <update id="update" parameterType="Review">
+        update t_pro
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+            <if test="soureId != null and soureId!=''">
+                soureId=#{soureId},
+            </if>
+            <if test="pro_ch_name != null and pro_ch_name!=''">
+                pro_ch_name=#{pro_ch_name},
+            </if>
+            <if test="pro_en_name != null and pro_en_name!=''">
+                pro_en_name=#{pro_en_name},
+            </if>
+            <if test="cus_ch_name != null and cus_ch_name!=''">
+                cus_ch_name=#{cus_ch_name},
+            </if>
+            <if test="cus_en_name != null and cus_en_name!=''">
+                cus_en_name=#{cus_en_name},
+            </if>
+            <if test="cus_price != null and cus_price!=''">
+                cus_price=#{cus_price},
+            </if>
+            <if test="cus_weight != null and cus_weight!=''">
+                cus_weight=#{cus_weight},
+            </if>
+            <if test="pro_list != null and pro_list!=''">
+                pro_list=#{pro_list},
+            </if>
+            <if test="pro_url != null and pro_url!=''">
+                pro_url=#{pro_url},
+            </if>
+            <if test="pro_purchase_price != null and pro_purchase_price!=''">
+                pro_purchase_price=#{pro_purchase_price},
+            </if>
+            <if test="weight != null and weight!=''">
+                weight=#{weight},
+            </if>
+            <if test="url != null and url!=''">
+                url=#{url},
+            </if>
+            <if test="url2 != null and url2!=''">
+                url2=#{url2},
+            </if>
+            <if test="url3 != null and url3!=''">
+                url3=#{url3},
+            </if>
+            <if test="presale_price != null and presale_price!=''">
+                presale_price=#{presale_price},
+            </if>
+            <if test="dateTime !=null and dateTime !=''">
+                dateTime=#{dateTime},
+            </if>
+            <if test="remark !=null and remark !=''">
+                remark=#{remark},
+            </if>
+            <if test="soureId !=null and soureId !=''">
+                soureId=#{soureId},
+            </if>
+            <if test="status !=null and status !=''">
+                status=#{status},
+            </if>
+            <if test="freight !=null and freight !=''">
+                freight=#{freight},
+            </if>
+             <if test="creator !=null and creator !=''">
+                 creator=#{creator},
+            </if>
+        </trim>
+    </update>
+
+
+    <select id="queryMaxId" resultType="int">
+        SELECT MAX(id)+1 from t_pro
+     </select>
 
 </mapper>
