@@ -264,6 +264,7 @@
                 contentType: false,
                 processData: false,
                 dataType: "json",
+                async:false,
                 success: function (reply) {
                     console.info("reply===="+reply);
                     if (reply.flag) {
