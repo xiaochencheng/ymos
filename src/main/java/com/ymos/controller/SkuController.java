@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -42,9 +43,9 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
 
     SkuListService skuListService;
 
-    private static String[][] xyz=new String[3][];
-    private static int counterIndex =xyz.length-1;
-    private static int[] counter={0,0,0};
+    private static String[][] xyz = new String[3][];
+    private static int counterIndex = xyz.length - 1;
+    private static int[] counter = {0, 0, 0};
 
     @Autowired
     public void setSkuListService(SkuListService skuListService) {
@@ -54,7 +55,7 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
     @Autowired
     public void setSkuService(SkuService skuService) {
         this.skuService = skuService;
-        this.service=skuService;
+        this.service = skuService;
     }
 
     public SkuController() {
@@ -96,55 +97,66 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
     //}
 
 
-
     @ResponseBody
     @RequestMapping("/spu")
-    public List<Product> getSpuName(){
-       List<Product> list= skuService.getFindSPU();
-       return list;
+    public List<Product> getSpuName() {
+        List<Product> list = skuService.getFindSPU();
+        return list;
     }
 
     /**
      * 新增产品数据
      */
     @ResponseBody
-    @RequestMapping(value = "/create1",method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public Result<Sku> create(@RequestBody List<Sku> ids, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
-        User user= LoginContext.getUser(session);
-        String creator=user.getUsername();
-        String sdate;
-        Date ddate=new Date();
-        sdate=(new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
-        Sku sku=new Sku();
-
-
-        for(int i=0;i<ids.size();i++){
-            System.out.println(ids.size());
-            String spu=ids.get(i).getSku();
-            String spuName= spu.substring(0,spu.indexOf("-"));
-                sku.setName(ids.get(i).getName());
-                sku.setNameEn(ids.get(i).getNameEn());
-                sku.setNameCnBg(ids.get(i).getNameCnBg());
-                sku.setNameEnBg(ids.get(i).getNameEnBg());
-                sku.setSku(ids.get(i).getSku());
-                sku.setPriceBg(ids.get(i).getPriceBg());
-                sku.setImgUrl(ids.get(i).getImgUrl());
-                sku.setPrice(ids.get(i).getPrice());
-                sku.setSpu(spuName);
-                sku.setDangerDesBg(ids.get(i).getDangerDesBg());
-                sku.setHgbmBg(ids.get(i).getHgbmBg());
-                sku.setWeight(ids.get(i).getWeight());
-                sku.setCreate_date(sdate);
-                sku.setSbm(ids.get(i).getSbm());
-                sku.setSourceUrl(ids.get(i).getSourceUrl());
-                sku.setWeightBg(ids.get(i).getWeightBg());
-                sku.setCreator(creator);
-                sku.setAttributes(ids.get(i).getAttributes());
-                skuService.create(sku);
-                return new Result<Sku>().setData(new Sku()).setFlag(true);
+    @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public Result<Sku> create(@RequestBody List<Sku> ids, @RequestParam("name") String name, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        try {
+            name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
+            JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
+            JSONArray jsonArray = jsonObject.getJSONArray("name");
+            for (int k = 0; k < jsonArray.size(); k++) {
+                String cu = jsonArray.get(k).toString();
+            }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
+
+        //List<String> list=  JSON.parseArray(name,String.class);
+        Sku sku = new Sku();
+
+        User user = LoginContext.getUser(session);
+        String creator = user.getUsername();
+        String sdate;
+        Date ddate = new Date();
+        sdate = (new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
+
+
+        for (int i = 0; i < ids.size(); i++) {
+            System.out.println(ids.size());
+            String spu = ids.get(i).getSku();
+            String spuName = spu.substring(0, spu.indexOf("-"));
+            sku.setName(ids.get(i).getName());
+            sku.setNameEn(ids.get(i).getNameEn());
+            sku.setNameCnBg(ids.get(i).getNameCnBg());
+            sku.setNameEnBg(ids.get(i).getNameEnBg());
+            sku.setSku(ids.get(i).getSku());
+            sku.setPriceBg(ids.get(i).getPriceBg());
+            sku.setImgUrl(ids.get(i).getImgUrl());
+            sku.setPrice(ids.get(i).getPrice());
+            sku.setSpu(spuName);
+            sku.setDangerDesBg(ids.get(i).getDangerDesBg());
+            sku.setHgbmBg(ids.get(i).getHgbmBg());
+            sku.setWeight(ids.get(i).getWeight());
+            sku.setCreate_date(sdate);
+            sku.setSbm(ids.get(i).getSbm());
+            sku.setSourceUrl(ids.get(i).getSourceUrl());
+            sku.setWeightBg(ids.get(i).getWeightBg());
+            sku.setCreator(creator);
+            sku.setAttributes(ids.get(i).getAttributes());
+            skuService.create(sku);
             return new Result<Sku>().setData(new Sku()).setFlag(true);
+        }
+        return new Result<Sku>().setData(new Sku()).setFlag(true);
 
     }
 
@@ -288,10 +300,6 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
             wk.close();
         }
     }
-
-
-
-
 
 
 }

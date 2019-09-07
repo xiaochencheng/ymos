@@ -319,15 +319,6 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
         }
     }
 
-    public void getCurrentUser() {
-
-        String currentUser = System.getProperty("user.name");
-        System.out.println("Current user is " + currentUser);
-    }
-
-    public static void main(String[] args) {
-
-    }
 
 
 }

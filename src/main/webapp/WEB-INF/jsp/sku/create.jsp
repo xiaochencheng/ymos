@@ -256,8 +256,6 @@
             var datas = new FormData($('#myform')[0]);
             var formData = customsClearanceFn.getPageData();
             var ids= JSON.stringify(formData.data);
-            var vals = pageDom.varaitionObj;
-            var numsName = JSON.stringify(vals);
 
             console.info(JSON.stringify(formData.data + ">>" + vals));
             if (formData.length > 0) {
@@ -295,10 +293,12 @@
                 }
             }*/
 
+            var vals = pageDom.varaitionObj;
+            var numsName = JSON.stringify(vals);
 
             $.ajax({
                 type: "POST",
-                url: "${pageContext.request.contextPath}/sku/" + url,
+                url: "${pageContext.request.contextPath}/sku/" + url+"?name="+encodeURIComponent(numsName),
                 data:JSON.stringify(formData.data),
                 processData: false,
                 traditional: true,//必须加上设置为true
