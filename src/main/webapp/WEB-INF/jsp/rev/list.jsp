@@ -117,7 +117,7 @@
 
         <c:import url="../common/button.jsp">
             <c:param name="create">${pageContext.request.contextPath }/rev/create</c:param>
-            <%--<c:param name="review">${pageContext.request.contextPath }/rev/modify</c:param>--%>
+            <c:param name="review">${pageContext.request.contextPath }/rev/modify</c:param>
             <%--<c:param name="delete">${pageContext.request.contextPath }/pro/delete</c:param>--%>
             <%--<c:param name="deleteMsg">确认删除产品数据？</c:param>--%>
         </c:import>

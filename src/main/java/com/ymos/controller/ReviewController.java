@@ -115,7 +115,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
 
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            product.setDateTime(new Date());
+            sdf.format(date);
             int maxId = reviewService.queryMaxId();
             int num = (int) ((Math.random() * 9 + 1) * 10000);
             product.setSoureId((num + "" + maxId));
@@ -146,7 +146,6 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
     @RequestMapping(value = "/create1", method = RequestMethod.POST)
     public Result<Product> create(Product product, MultipartFile[] file, HttpServletRequest request, HttpSession session) {
         try {
-            System.out.println("ddddddddddddddddsasaaaa");
             User user = LoginContext.getUser(session);
             String creator = user.getUsername();
             DecimalFormat df = new DecimalFormat("000000");
@@ -173,7 +172,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
             }
 
         } catch (Exception e) {
-            return new Result<Product>().setFlag(true);
+            return new Result<Product>().setFlag(false);
         }
         reviewService.create(product);
         return new Result<Product>().setData(product).setFlag(true);

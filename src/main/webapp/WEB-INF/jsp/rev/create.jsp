@@ -261,20 +261,16 @@
                 type: "POST",
                 url: "${pageContext.request.contextPath}/rev/" + url,
                 data: formData,
-                contentType: 'application/json;charset=utf-8',
+                contentType: false,
                 processData: false,
                 dataType: "json",
-                async:false,
                 success: function (reply) {
                     console.info("reply===="+reply);
                     if (reply.flag) {
                 //        layer.close(index);
                         location.href = "${pageContext.request.contextPath }/rev/list?" + queryStr;
-
                     }
-                },error:function (reply){
-                    console.info("error===="+reply);
-            }
+                }
             });
             return false;
         });
