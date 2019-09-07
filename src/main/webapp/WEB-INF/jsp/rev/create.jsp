@@ -272,7 +272,9 @@
                         location.href = "${pageContext.request.contextPath }/rev/list?" + queryStr;
 
                     }
-                }
+                },error:function (reply){
+                    console.info("error===="+reply);
+            }
             });
             return false;
         });

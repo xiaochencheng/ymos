@@ -146,6 +146,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
     @RequestMapping(value = "/create1", method = RequestMethod.POST)
     public Result<Product> create(Product product, MultipartFile[] file, HttpServletRequest request, HttpSession session) {
         try {
+            System.out.println("ddddddddddddddddsasaaaa");
             User user = LoginContext.getUser(session);
             String creator = user.getUsername();
             DecimalFormat df = new DecimalFormat("000000");
