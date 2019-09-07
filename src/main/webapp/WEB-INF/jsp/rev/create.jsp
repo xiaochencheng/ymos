@@ -261,8 +261,7 @@
                 type: "POST",
                 url: "${pageContext.request.contextPath}/rev/" + url,
                 data: formData,
-                contentType: false,
-                processData: false,
+
                 dataType: "json",
                 async:false,
                 success: function (reply) {
