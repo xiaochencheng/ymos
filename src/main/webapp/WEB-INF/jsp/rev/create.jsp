@@ -266,7 +266,6 @@
                 processData: false,
                 dataType: "json",
                 success: function (reply) {
-                    console.info("reply===="+reply);
                     if (reply.flag) {
                         layer.close(index);
                         location.href = "${pageContext.request.contextPath }/rev/list?" + queryStr;

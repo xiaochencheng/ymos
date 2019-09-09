@@ -270,7 +270,7 @@
             } else {
                 url = 'update';
             }
-
+            var index=layer.load(2, {shade:[0.5,'#fff']});
             var queryStr = "${queryStr}";
             $.ajax({
                 type: "POST",
@@ -281,6 +281,7 @@
                 dataType: "json",
                 success: function (reply) {
                     if (reply.flag) {
+                        layer.close(index);
                         location.href = "${pageContext.request.contextPath }/pro/list?" + queryStr;
                     }
                 }

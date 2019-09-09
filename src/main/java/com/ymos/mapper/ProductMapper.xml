@@ -45,7 +45,7 @@
             <if test="query.pro_ch_name !=null and query.pro_ch_name !=''">
                 and pro_ch_name=#{query.pro_ch_name}
             </if>
-            <if test="query.dateTime !=null and query.dateTime !=''">
+            <if test="query.dateTime !=null">
                 and dateTime>=#{query.dateTime}
             </if>
             <if test="query.endTime !=null and query.endTime !=''">
@@ -71,7 +71,7 @@
             <if test="query.pro_ch_name !=null and query.pro_ch_name !=''">
                 and pro_ch_name=#{query.pro_ch_name}
             </if>
-            <if test="query.dateTime !=null and query.dateTime !=''">
+            <if test="query.dateTime !=null">
                 and dateTime>=#{query.dateTime}
             </if>
             <if test="query.endTime !=null and query.endTime !=''">
@@ -167,7 +167,7 @@
             <if test="presale_price != null and presale_price!=''">
                 presale_price=#{presale_price},
             </if>
-            <if test="dateTime !=null and dateTime !=''">
+            <if test="dateTime !=null">
                 dateTime=#{dateTime},
             </if>
             <if test="remark !=null and remark !=''">
@@ -183,7 +183,8 @@
                 creator=#{creator},
             </if>
         </trim>
-    </update>
+
+</update>
 
 
     <select id="queryExcelData" parameterType="ProductReport"  resultType="ProductReport">
@@ -198,7 +199,7 @@
             <if test="pro_en_name!=null and pro_en_name!=''">
                 and  pro_en_name=#{pro_en_name}
             </if>
-            <if test="dateTime!=null and dateTime!=''">
+            <if test="dateTime!=null">
                 and  dateTime>=#{dateTime}
             </if>
             <if test="endTime!=null and endTime!=''">

@@ -6,6 +6,7 @@ import com.ymos.common.LoginContext;
 import com.ymos.common.SnowFlake;
 import com.ymos.entity.*;
 import com.ymos.biz.ProductService;
+import jdk.nashorn.internal.ir.CatchNode;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -86,7 +87,7 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
             form.setUrl2(product.getUrl2());
             form.setUrl3(product.getUrl3());
             form.setPro_url(product.getPro_url());
-
+            form.setDateTime(product.getDateTime());
             this.service.saveOrUpdate(form.toObj());
         } catch (Exception e) {
             errors.addError(new ObjectError("error", "操作异常"));
@@ -176,24 +177,26 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Result<Product> update(HttpServletRequest request, HttpServletResponse response, Product product, MultipartFile[] file) {
+        try {
+            String uuid = product.getPro_list();
+            String uuidAfter = product.getPro_list();
+            uuidAfter = uuidAfter.substring(0, uuidAfter.length() - 2);
+            uuid = uuid.substring(uuid.length() - 2, uuid.length());
+            product.setPro_list(uuidAfter);
+            product.setDateTime(new Date());
+            int maxId = productService.queryMaxId();
 
-        String uuid=product.getPro_list();
-        String uuidAfter=product.getPro_list();
-        uuidAfter=uuidAfter.substring(0,uuidAfter.length()-2);
-        uuid= uuid.substring(uuid.length()-2,uuid.length());
-        product.setPro_list(uuidAfter);
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        product.setDateTime(new Date());
-        int maxId=productService.queryMaxId();
+            if (file != null) {
+                saveFiles(request, product, file);
+            }
 
-        if (file != null) {
-            saveFiles(request, product, file);
+            productService.modify(product);
+
+            return new Result<Product>().setData(product).setFlag(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new Result<Product>().setData(product).setFlag(false);
         }
-
-        productService.modify(product);
-
-        return new Result<Product>().setData(product).setFlag(true);
 
     }
 

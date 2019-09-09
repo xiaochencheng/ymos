@@ -30,52 +30,12 @@ public class ProductForm extends IdForm<Product> {
     //=======================================================
 
 
-    public String getFreight() {
-        return freight;
-    }
-
-    public void setFreight(String freight) {
-        this.freight = freight;
-    }
-
-    public String getSpu() {
-        return spu;
-    }
-
-    public void setSpu(String spu) {
-        this.spu = spu;
-    }
-
-    public Date getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
-    }
-
     public String getSoureId() {
         return soureId;
     }
 
     public void setSoureId(String soureId) {
         this.soureId = soureId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getPro_ch_name() {
@@ -206,10 +166,51 @@ public class ProductForm extends IdForm<Product> {
         this.createDate = createDate;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public String getSpu() {
+        return spu;
+    }
+
+    public void setSpu(String spu) {
+        this.spu = spu;
+    }
+
+    public String getFreight() {
+        return freight;
+    }
+
+    public void setFreight(String freight) {
+        this.freight = freight;
+    }
+
     @Override
     public String toString() {
         return "ProductForm{" +
-                "pro_ch_name='" + pro_ch_name + '\'' +
+                "soureId='" + soureId + '\'' +
+                ", pro_ch_name='" + pro_ch_name + '\'' +
                 ", pro_en_name='" + pro_en_name + '\'' +
                 ", cus_ch_name='" + cus_ch_name + '\'' +
                 ", cus_en_name='" + cus_en_name + '\'' +
@@ -224,11 +225,10 @@ public class ProductForm extends IdForm<Product> {
                 ", url3='" + url3 + '\'' +
                 ", presale_price='" + presale_price + '\'' +
                 ", creator='" + creator + '\'' +
-                ", createDate='" + createDate + '\'' +
-                ", status='" + status + '\'' +
+                ", createDate=" + createDate +
+                ", status=" + status +
                 ", remark='" + remark + '\'' +
-                ", soureId='" + soureId + '\'' +
-                ", dateTime='" + dateTime + '\'' +
+                ", dateTime=" + dateTime +
                 ", spu='" + spu + '\'' +
                 ", freight='" + freight + '\'' +
                 '}';
