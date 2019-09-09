@@ -26,13 +26,6 @@ public class Review extends Id{
     private String spu;                     //标识产品唯一性id
     private String freight;                 //运费
 
-    public String getFreight() {
-        return freight;
-    }
-
-    public void setFreight(String freight) {
-        this.freight = freight;
-    }
 
     public String getSoureId() {
         return soureId;
@@ -194,6 +187,14 @@ public class Review extends Id{
         this.spu = spu;
     }
 
+    public String getFreight() {
+        return freight;
+    }
+
+    public void setFreight(String freight) {
+        this.freight = freight;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
@@ -212,10 +213,10 @@ public class Review extends Id{
                 ", url2='" + url2 + '\'' +
                 ", url3='" + url3 + '\'' +
                 ", presale_price='" + presale_price + '\'' +
-                ", creator=" + creator +
+                ", creator='" + creator + '\'' +
                 ", status=" + status +
                 ", remark='" + remark + '\'' +
-                ", dateTime='" + dateTime + '\'' +
+                ", dateTime=" + dateTime +
                 ", spu='" + spu + '\'' +
                 ", freight='" + freight + '\'' +
                 '}';
