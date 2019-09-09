@@ -276,8 +276,9 @@
                 type: "POST",
                 url: "${pageContext.request.contextPath}/pro/" + url,
                 data: formData,
-                contentType: false,
+                contentType: false ,
                 processData: false,
+                traditional: true,//必须加上设置为true
                 dataType: "json",
                 success: function (reply) {
                     if (reply.flag) {

@@ -262,7 +262,7 @@
                 url: "${pageContext.request.contextPath}/rev/" + url,
                 data: formData,
                 traditional: true,//必须加上设置为true
-                contentType: false,
+                contentType: false ,
                 processData: false,
                 dataType: "json",
                 success: function (reply) {
