@@ -1,10 +1,7 @@
 package com.ymos.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
 import com.ymos.common.Constants;
 import com.ymos.common.LoginContext;
 import com.ymos.entity.*;
@@ -20,18 +17,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 
-import javax.servlet.ServletInputStream;
+
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -125,7 +119,6 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
         JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
         String keyChName = jsonObject.toString();
         for (int i = 0; i < ids.size(); i++) {
-
 
             System.out.println(keyChName + ">>>>>>>>>>>>");
             Sku sku = new Sku();
