@@ -19,7 +19,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -111,48 +110,48 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
     @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Result<Sku> create(@RequestBody List<Sku> ids, @RequestParam("name") String name, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         try {
-            name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
+            //name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
+            JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
+            String keyChName = jsonObject.toString();
+            for (int i = 0; i < ids.size(); i++) {
+
+                System.out.println(keyChName + ">>>>>>>>>>>>");
+                Sku sku = new Sku();
+                User user = LoginContext.getUser(session);
+                String creator = user.getUsername();
+                String sdate;
+                Date ddate = new Date();
+                sdate = (new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
+
+                //System.out.println(ids.size());
+                String spu = ids.get(i).getSku();
+                String spuName = spu.substring(0, spu.indexOf("-"));
+                sku.setName(ids.get(i).getName());
+                sku.setNameEn(ids.get(i).getNameEn());
+                sku.setNameCnBg(ids.get(i).getNameCnBg());
+                sku.setNameEnBg(ids.get(i).getNameEnBg());
+                sku.setSku(ids.get(i).getSku());
+                sku.setPriceBg(ids.get(i).getPriceBg());
+                sku.setImgUrl(ids.get(i).getImgUrl());
+                sku.setPrice(ids.get(i).getPrice());
+                sku.setSpu(spuName);
+                sku.setDangerDesBg(ids.get(i).getDangerDesBg());
+                sku.setHgbmBg(ids.get(i).getHgbmBg());
+                sku.setWeight(ids.get(i).getWeight());
+                sku.setCreate_date(sdate);
+                sku.setSbm(ids.get(i).getSbm());
+                sku.setSourceUrl(ids.get(i).getSourceUrl());
+                sku.setWeightBg(ids.get(i).getWeightBg());
+                sku.setCreator(creator);
+                sku.setAttributes(keyChName);
+                skuService.create(sku);
+
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return new Result<Sku>().setData(new Sku()).setFlag(false);
         }
-        JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
-        String keyChName = jsonObject.toString();
-        for (int i = 0; i < ids.size(); i++) {
 
-            System.out.println(keyChName + ">>>>>>>>>>>>");
-            Sku sku = new Sku();
-            User user = LoginContext.getUser(session);
-            String creator = user.getUsername();
-            String sdate;
-            Date ddate = new Date();
-            sdate = (new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
-
-            //System.out.println(ids.size());
-            String spu = ids.get(i).getSku();
-            String spuName = spu.substring(0, spu.indexOf("-"));
-            sku.setName(ids.get(i).getName());
-            sku.setNameEn(ids.get(i).getNameEn());
-            sku.setNameCnBg(ids.get(i).getNameCnBg());
-            sku.setNameEnBg(ids.get(i).getNameEnBg());
-            sku.setSku(ids.get(i).getSku());
-            sku.setPriceBg(ids.get(i).getPriceBg());
-            sku.setImgUrl(ids.get(i).getImgUrl());
-            sku.setPrice(ids.get(i).getPrice());
-            sku.setSpu(spuName);
-            sku.setDangerDesBg(ids.get(i).getDangerDesBg());
-            sku.setHgbmBg(ids.get(i).getHgbmBg());
-            sku.setWeight(ids.get(i).getWeight());
-            sku.setCreate_date(sdate);
-            sku.setSbm(ids.get(i).getSbm());
-            sku.setSourceUrl(ids.get(i).getSourceUrl());
-            sku.setWeightBg(ids.get(i).getWeightBg());
-            sku.setCreator(creator);
-            sku.setAttributes(keyChName);
-            skuService.create(sku);
-
-
-        }
         return new Result<Sku>().setData(new Sku()).setFlag(true);
     }
 
