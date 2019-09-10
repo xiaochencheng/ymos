@@ -110,7 +110,7 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
     @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Result<Sku> create(@RequestBody List<Sku> ids, @RequestParam("name") String name, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         try {
-            //name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
+            name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
             JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
             String keyChName = jsonObject.toString();
             for (int i = 0; i < ids.size(); i++) {
