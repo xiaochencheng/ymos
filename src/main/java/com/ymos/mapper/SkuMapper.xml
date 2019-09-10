@@ -73,7 +73,9 @@
                 <![CDATA[and create_date<=#{query.endTime}]]>
             </if>
         </where>
+        order by id DESC
         limit #{start},#{size}
+
     </select>
 
     <select id="count" parameterType="Paginator" resultType="int">
@@ -96,6 +98,7 @@
                 <![CDATA[and create_date<=#{query.endTime}]]>
             </if>
         </where>
+        order by id desc
     </select>
 
     <sql id="Base_Column_List1">

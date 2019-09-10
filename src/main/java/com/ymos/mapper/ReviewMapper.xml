@@ -57,6 +57,7 @@
                 <![CDATA[and dateTime<=#{query.endTime}]]>
             </if>
         </where>
+        order by dateTime DESC
         limit #{start},#{size}
     </select>
 
