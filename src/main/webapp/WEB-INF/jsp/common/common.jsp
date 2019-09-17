@@ -11,7 +11,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>os管理系统</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/jsandcss/layui/layui/css/layui.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/jsandcss/zhspcss/zhsp.css">
     <script type="text/javascript" src="${pageContext.request.contextPath}/jsandcss/js/jquery-3.3.1.min.js"></script>
