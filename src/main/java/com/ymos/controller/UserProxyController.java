@@ -76,7 +76,7 @@ public class UserProxyController extends CUDController<User, UserQuery, UserForm
             //            //    form.setProxyChannelId(Integer.parseInt(channel.getId()));
             //            //}
             List<Role> roles=new ArrayList<>();
-            roles.add(new Role("7", null));
+            roles.add(new Role("2", null));
             form.setRoles(roles);
             if (form.getId()=="") {
                 form.setLastLoginIp(IpUtils.getIpAddr(request));

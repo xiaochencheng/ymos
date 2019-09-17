@@ -64,7 +64,7 @@
                                     <td>${data.imgUrl}"></td>
                                     <td>${data.price}"></td>
                                     <td>${data.priceBg}"></td>
-                                    <td>${data.sourceUrl}"></td>
+                                    <td style="width: 200px">${data.sourceUrl}"></td>
                                     <td>${data.weight}"></td>
                                     <td>${data.weightBg}"></td>
                                     <td>${data.dangerDesBg}"></td>
