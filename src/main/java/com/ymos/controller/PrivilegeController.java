@@ -5,6 +5,7 @@ import com.ymos.entity.Menu;
 import com.ymos.entity.Result;
 import com.ymos.entity.Role;
 import com.ymos.biz.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/privilege")
 public class PrivilegeController {
+    @Autowired
     RoleService roleService;
 	/**
 	 * 查询所有角色
