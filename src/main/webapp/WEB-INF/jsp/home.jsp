@@ -51,7 +51,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo"><a href="${pageContext.request.contextPath}/home"><img src="${pageContext.request.contextPath}/jsandcss/images/os.png" width="180"/></a></div>
+        <div class="layui-logo"><a href="${pageContext.request.contextPath}/home"><img src="${pageContext.request.contextPath}/jsandcss/images/ous.jpg" width="180"/></a></div>
         <ul class="layui-nav mobileMenu">
             <li class="layui-nav-item slide-sidebar" lay-unselect>
                 <a href="javascript:toggleMenu();" class="icon-font" id="left"> <i class="layui-icon" style="font-size: 25px;" title="侧边伸缩">&#xe668;</i></a>

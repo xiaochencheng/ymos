@@ -162,7 +162,7 @@
 
 <body>
 <div id="menu">
-    <fieldset class="layui-elem-field" style="background:#fff;border:1px solid #C2D1D8;height: 20%;width: 30%;float: left;overflow-x:auto;">
+    <fieldset class="layui-elem-field" style="background:#fff;border:1px solid #C2D1D8;height: 40%;width: 30%;float: left;overflow-x:auto;">
         <legend>菜单列表</legend>
         <div style="margin: 3px">
             <ul id="menuTree"></ul>
