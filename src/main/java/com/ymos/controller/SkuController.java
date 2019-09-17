@@ -209,6 +209,7 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
             headerNames.add("商品编码");
             headerNames.add("商品名称");
             headerNames.add("商品状态");
+            headerNames.add("中文SKU属性");
             headerNames.add("图片URL");
             headerNames.add("实际重量（g）");
             headerNames.add("采购价（RMB）");
@@ -226,6 +227,7 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
             headerNames.add("海关编码");
             headerNames.add("创建时间");
 
+            columnsWidths.add(3000);
             columnsWidths.add(3000);
             columnsWidths.add(3000);
             columnsWidths.add(3000);
@@ -270,7 +272,7 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
                 row.createCell(3).setCellValue("");
                 row.createCell(4).setCellValue(report.getName());
                 row.createCell(5).setCellValue("在售");
-                row.createCell(6).setCellValue("");
+                row.createCell(6).setCellValue(report.getAttributes());
                 row.createCell(7).setCellValue(report.getWeight());
                 row.createCell(8).setCellValue(report.getPrice());
                 row.createCell(9).setCellValue("无");

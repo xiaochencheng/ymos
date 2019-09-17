@@ -70,14 +70,16 @@ public class UserProxyController extends CUDController<User, UserQuery, UserForm
     @Override
     protected void innerSave(UserForm form, BindingResult errors, Model model, HttpServletRequest request, HttpServletResponse response) {
         try {
-            User user = (User) request.getSession().getAttribute(Constants.USER_SESSION_KEY);
-            //Channel channel = channelService.queryChannelByUserId(user.getUsername());
-            //            //if(channel!=null && "1".equals(channel.getIsProxyChannel())){
-            //            //    form.setProxyChannelId(Integer.parseInt(channel.getId()));
-            //            //}
-            List<Role> roles=new ArrayList<>();
-            roles.add(new Role("2", null));
-            form.setRoles(roles);
+
+            String roles = request.getParameter("role");
+            String[] role_ids = roles.split(",");
+            if (role_ids != null && role_ids.length > 0) {
+                List<Role> list = new ArrayList<Role>(role_ids.length);
+                for (String rid : role_ids) {
+                    list.add(new Role(rid, null));
+                }
+                form.setRoles(list);
+            }
             if (form.getId()=="") {
                 form.setLastLoginIp(IpUtils.getIpAddr(request));
             }

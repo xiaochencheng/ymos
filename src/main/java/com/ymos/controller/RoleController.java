@@ -37,6 +37,7 @@ public class RoleController extends CUDController<Role, RoleQuery, RoleForm, Rol
     @Autowired
     public void setRoleService(RoleService roleService) {
         this.roleService = roleService;
+        this.service=roleService;
     }
 
     @Override
