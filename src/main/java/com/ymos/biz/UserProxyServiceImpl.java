@@ -40,4 +40,10 @@ public class UserProxyServiceImpl extends BaseServiceImpl<User> implements UserP
     public int deleteUserRolesByIds(String ids) {
         return userProxyMapper.deleteUserRolesByIds(ids.split("-"));
     }
+
+    @Override
+    public int updatePassword(User user) {
+        int count=userProxyMapper.updatePassword(user);
+        return count;
+    }
 }

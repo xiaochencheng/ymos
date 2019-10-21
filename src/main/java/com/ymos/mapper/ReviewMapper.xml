@@ -33,57 +33,57 @@
 
 
     <select id="select" resultMap="BaseResultMap">
-        select  <include refid="Base_Column_List"/>  from t_pro
+        select p.*,(l.name) as listName from t_pro p LEFT JOIN t_pro_list l on p.pro_list=l.id
         <where>
             <if test="query.pro_ch_name!=null and query.pro_ch_name!=''">
-                and  pro_ch_name=#{query.pro_ch_name}
+                and  p.pro_ch_name=#{query.pro_ch_name}
             </if>
             <if test="query.spu!=null and query.spu!=''">
-                and  spu=#{query.spu}
+                and  p.spu=#{query.spu}
             </if>
             <if test="query.creator!=null and query.creator!=''">
-                and  creator=#{query.creator}
+                and  p.creator=#{query.creator}
             </if>
             <if test="query.status !=null and query.status !=''">
-                and status=#{query.status}
+                and p.status=#{query.status}
             </if>
              <if test="query.pro_en_name!=null and query.pro_en_name!=''">
-                and  pro_en_name=#{query.pro_en_name}
+                and  p.pro_en_name=#{query.pro_en_name}
             </if>
             <if test="query.dateTime!=null and query.dateTime!=''">
-                and  dateTime>=#{query.dateTime}
+                and  p.dateTime>=#{query.dateTime}
             </if>
             <if test="query.endTime!=null and query.endTime!=''">
-                <![CDATA[and dateTime<=#{query.endTime}]]>
+                <![CDATA[and p.dateTime<=#{query.endTime}]]>
             </if>
         </where>
-        order by dateTime DESC
+        order by p.id DESC
         limit #{start},#{size}
     </select>
 
     <select id="count" parameterType="Paginator" resultType="int">
-        select count(1) from t_pro
+        select count(1) from t_pro p LEFT JOIN t_pro_list l on p.pro_list=l.id
         <where>
             <if test="query.pro_ch_name!=null and query.pro_ch_name!=''">
-                and  pro_ch_name=#{query.pro_ch_name}
+                and  p.pro_ch_name=#{query.pro_ch_name}
             </if>
             <if test="query.pro_en_name!=null and query.pro_en_name!=''">
-                and  pro_en_name=#{query.pro_en_name}
+                and  p.pro_en_name=#{query.pro_en_name}
             </if>
              <if test="query.creator!=null and query.creator!=''">
-                and  creator=#{query.creator}
+                and  p.creator=#{query.creator}
             </if>
             <if test="query.status !=null and query.status !=''">
-                and status=#{query.status}
+                and p.status=#{query.status}
             </if>
             <if test="query.spu!=null and query.spu!=''">
-                and  spu=#{query.spu}
+                and  p.spu=#{query.spu}
             </if>
             <if test="query.dateTime!=null and query.dateTime!=''">
-                and  dateTime>=#{query.dateTime}
+                and  p.dateTime>=#{query.dateTime}
             </if>
             <if test="query.endTime!=null and query.endTime!=''">
-                <![CDATA[and dateTime<=#{query.endTime}]]>
+                <![CDATA[and p.dateTime<=#{query.endTime}]]>
             </if>
         </where>
     </select>
@@ -95,8 +95,8 @@
                 and  pro_ch_name=#{pro_ch_name}
             </if>
             <if test="spu!=null and spu!=''">
-                and  spu=#{query.spu}
-            </if>
+                and  spu=#{spu}
+        </if>
             <if test="pro_en_name!=null and pro_en_name!=''">
                 and  pro_en_name=#{pro_en_name}
             </if>
@@ -113,6 +113,10 @@
                 and status=#{status}
             </if>
         </where>
+    </select>
+
+    <select id="getFindProListName" parameterType="string">
+        select name from t_pro_list where t_pro_list.id={id};
     </select>
 
     <insert id="create" parameterType="Review">

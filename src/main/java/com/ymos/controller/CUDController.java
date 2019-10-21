@@ -19,11 +19,13 @@ public abstract class CUDController<T extends Id, Q extends Query, F extends IdF
 
     protected final String CREATE_MODIFY_PAGE;
     protected final String REDIRECT_PAGE;
+    protected final String UPDATE_PAGE;
 
     public CUDController(String model) {
         super(model);
         this.CREATE_MODIFY_PAGE = String.format("/%s/create", new Object[]{model});
         this.REDIRECT_PAGE = String.format("redirect:/%s/list", new Object[]{model});
+        this.UPDATE_PAGE=String.format("/%s/update",new Object[]{model});
     }
 
     @RequestMapping({"/create"})
@@ -39,7 +41,7 @@ public abstract class CUDController<T extends Id, Q extends Query, F extends IdF
         model.addAttribute("form", form);
         //String queryStr= request.getParameter("_queryStr");
         String queryString = request.getQueryString();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + request.getQueryString());
+       // System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + request.getQueryString());
         queryString = queryString.substring(8);
 
         if (!errors.hasErrors()) {
@@ -72,6 +74,16 @@ public abstract class CUDController<T extends Id, Q extends Query, F extends IdF
         model.addAttribute("queryStr", queryStr);
         this.postUpdate(id, obj, model);
         return this.CREATE_MODIFY_PAGE;
+    }
+
+    @RequestMapping({"/update/{id}"})
+    protected String updages(@PathVariable String id,Model model,HttpServletRequest request){
+        T obj = this.service.selectById(id);
+        model.addAttribute("form", obj);
+        String queryStr = request.getParameter("_queryStr");
+        model.addAttribute("queryStr", queryStr);
+        this.postUpdate(id, obj, model);
+        return this.UPDATE_PAGE;
     }
 
     @RequestMapping({"/review/{id}"})

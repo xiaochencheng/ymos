@@ -232,6 +232,68 @@
         //     elem: '#dateTime'
         // });
 
+        form.verify({
+            pro_list: function(value, item){
+                if(value==''){
+                    $('.layui-form-sp .layui-select-title .layui-input').focus();
+                    return '请选择产品分类';
+                }
+            },
+            pro_ch_name: function(value, item){
+                if(value=='' && value.trim()==''){
+                    return '产品中文名称不能为空';
+                }
+            },
+            pro_en_name: function(value, item){
+                if(value=='' && value.trim()==''){
+                    return '产品英文名称不能为空';
+                }
+            },
+            cus_ch_name: function(value, item){
+                if(value=='' && value.trim()==''){
+                    return '报关中文名称不能为空';
+                }
+            },
+            cus_en_name: function(value, item){
+                if(value=='' && value.trim()==''){
+                    return '报关英文名称不能为空';
+                }
+            },
+            cus_price: function(value, item){
+                if(value==''){
+                    $('.layui-form-country .layui-select-title .layui-input').focus();
+                    return '报关价格不能为空';
+                }
+                if(!value || isNaN(value)){
+                    return '报关价格只能填写数字!'
+                }
+            },
+            cus_weight:function(value,item){
+                if(value==''){
+                    $('.layui-form-country .layui-select-title .layui-input').focus();
+                    return '报关重量不能为空';
+                }
+            },
+            weight: function(value, item){
+                if(value==''){
+                    $('.layui-form-country .layui-select-title .layui-input').focus();
+                    return '重量不能为空';
+                }
+            },
+            presale_price:function(value,item){
+                if(value==''){
+                    $('.layui-form-type .layui-select-title .layui-input').focus();
+                    return '预售价不能为空';
+                }
+            },
+            freight:function(value,item){
+                if(value==''){
+                    $('.layui-form-type .layui-select-title .layui-input').focus();
+                    return '运费不能为空';
+                }
+            }
+        });
+
         form.on('submit(offerForm)', function (data) {
             var formData = new FormData($('#myform')[0]);
             var formSelects = '';

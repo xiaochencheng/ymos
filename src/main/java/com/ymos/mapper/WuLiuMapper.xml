@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.WuLiuMapper">
+
+    <resultMap id="BaseResultMap" type="Order">
+        <id column="id" property="id"/>
+        <result column="bgh" property="bgh"/>
+        <result column="orderId" property="orderId"/>
+        <result column="jyh" property="jyh"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="ptqd" property="ptqd"/>
+        <result column="dpzh" property="dpzh"/>
+        <result column="orderRamker" property="orderRamker"/>
+        <result column="jhRamker" property="jhRamker"/>
+        <result column="kfRamker" property="kfRamker"/>
+        <result column="tkly" property="tkly"/>
+        <result column="xdsj" property="xdsj"/>
+        <result column="fksj" property="fksj"/>
+        <result column="tjsj" property="tjsj"/>
+        <result column="fhsj" property="fhsj"/>
+        <result column="tksj" property="tksj"/>
+        <result column="mddysj" property="mddysj"/>
+        <result column="jhdysj" property="jhdysj"/>
+        <result column="fkfs" property="fkfs"/>
+        <result column="bzsx" property="bzsx"/>
+        <result column="orderMoney" property="orderMoney"/>
+        <result column="mjzfyf" property="mjzfyf"/>
+        <result column="tkMoney" property="tkMoney"/>
+        <result column="ygly" property="ygly"/>
+        <result column="cbly" property="cbly"/>
+        <result column="xsly" property="xsly"/>
+        <result column="ygfy" property="ygfy"/>
+        <result column="sku" property="sku"/>
+        <result column="proId" property="proId"/>
+        <result column="proName" property="proName"/>
+        <result column="proPrice" property="proPrice"/>
+        <result column="proNum" property="proNum"/>
+        <result column="proGuige" property="proGuige"/>
+        <result column="imgURL" property="imgURL"/>
+        <result column="lyURL" property="lyURL"/>
+        <result column="xslj" property="xslj"/>
+        <result column="dpm" property="dpm"/>
+        <result column="spSKU" property="spSKU"/>
+        <result column="spbm" property="spbm"/>
+        <result column="spmc" property="spmc"/>
+        <result column="kcl" property="kcl"/>
+        <result column="spcgj" property="spcgj"/>
+        <result column="kcjg" property="kcjg"/>
+        <result column="wxysp" property="wxysp"/>
+        <result column="fhck" property="fhck"/>
+        <result column="hjw" property="hjw"/>
+        <result column="mjzh" property="mjzh"/>
+        <result column="mjname" property="mjname"/>
+        <result column="mjEmail" property="mjEmail"/>
+        <result column="shrname" property="shrname"/>
+        <result column="shrcompany" property="shrcompany"/>
+        <result column="shrsh" property="shrsh"/>
+        <result column="shrmph" property="shrmph"/>
+        <result column="xxaddress" property="xxaddress"/>
+        <result column="addresOne" property="addresOne"/>
+        <result column="addressTwo" property="addressTwo"/>
+        <result column="addOneTwo" property="addOneTwo"/>
+        <result column="shrCity" property="shrCity"/>
+        <result column="shrShen" property="shrShen"/>
+        <result column="code" property="code"/>
+        <result column="shrCountry" property="shrCountry"/>
+        <result column="chCountry" property="chCountry"/>
+        <result column="countryS" property="countryS"/>
+        <result column="shrTel" property="shrTel"/>
+        <result column="shrIphone" property="shrIphone"/>
+        <result column="mjzdwl" property="mjzdwl"/>
+        <result column="wlfs" property="wlfs"/>
+        <result column="ydh" property="ydh"/>
+        <result column="czzl" property="czzl"/>
+        <result column="chbgName" property="chbgName"/>
+        <result column="enbgName" property="enbgName"/>
+        <result column="sbPrice" property="sbPrice"/>
+        <result column="bgWidth" property="bgWidth"/>
+        <result column="wuliu" property="wuliu"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+     id,bgh,orderId,jyh,orderStatus,ptqd,dpzh,orderRamker,jhRamker,kfRamker,tkly,xdsj,fksj,tjsj,fhsj,tksj,mddysj,jhdysj,fkfs,bzsx,orderMoney,mjzfyf,tkMoney,cbly,xsly,
+     ygfy,sku,proId,proName,proPrice,proNum,proGuige,imgURL,lyURL,xslj,dpm,spSKU,spbm,spmc,kcl,spcgj,kcjg,wxysp,fhck,hjw,
+     mjzh,mjname,mjEmail,shrname,shrcompany,shrsh,shrmph,xxaddress,addresOne,addressTwo,addOneTwo,shrCity,shrShen,code,shrCountry,chCountry,countryS,shrTel,
+     shrIphone,mjzdwl,wlfs,ydh,czzl,chbgName,enbgName,sbPrice,bgWidth,wuliu
+</sql>
+
+    <select id="select" resultType="com.ymos.entity.Order">
+        SELECT *,<![CDATA[TIMESTAMPDIFF(DAY,fksj,NOW())]]> as days FROM t_order
+        <where>
+            orderStatus
+            in('已付款','待审核','待处理','已审核')
+              AND   <![CDATA[DATE_ADD(fksj,INTERVAL 4 DAY) < NOW()]]>
+            <if test="query.ydh != null and query.ydh !='' ">
+                AND ydh=#{query.ydh}
+            </if>
+            <if test="query.orderId != null and query.orderId!=''">
+                AND orderId=#{query.orderId}
+            </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        SELECT COUNT(1) FROM t_order
+        <where>
+            orderStatus
+            in('已付款','待审核','待处理','已审核')
+             AND  <![CDATA[DATE_ADD(fksj,INTERVAL 4 DAY) < NOW()]]>
+            <if test="query.ydh != null and query.ydh !='' ">
+                AND ydh=#{query.ydh}
+            </if>
+            <if test="query.orderId != null and query.orderId!=''">
+                AND orderId=#{query.orderId}
+            </if>
+        </where>
+    </select>
+
+    <select id="AllCount" resultType="com.ymos.entity.Order">
+        SELECT id,ydh FROM t_order
+        <where>
+            orderStatus  IN ('查询不到','查询中','运输途中','到达待取','已发货')
+            AND  <![CDATA[DATE_ADD(fksj,INTERVAL 4 DAY) < NOW()]]>
+        </where>
+    </select>
+
+
+    <update id="update" parameterType="Order">
+        update t_order
+        <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
+            <if test="orderStatus != null and orderStatus!=''">
+                orderStatus=#{orderStatus},
+            </if>
+            <if test="ydh != null and ydh!=''">
+                ydh=#{ydh},
+            </if>
+            <if test="wuliu != null and wuliu!=''">
+                wuliu=#{wuliu},
+            </if>
+        </trim>
+    </update>
+
+</mapper>

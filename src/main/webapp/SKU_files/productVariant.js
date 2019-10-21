@@ -352,7 +352,7 @@ var addVerationFn = (function ($,W,D) {
             if(name && !obj[name]){
                 var arr = [];
                 $(this).find('.oneTag').each(function(){
-                    arr.push($(this).find('[data-uid="tagName"]').attr('data-text'));
+                    arr.push($(this).find('[data-uid="tagName"]').attr('data-value'));
                 });
                 if(arr.length > 0){
                     obj[name] = arr;
@@ -392,9 +392,10 @@ var addVerationFn = (function ($,W,D) {
         });
         return arr;
     };
-
+    var test = [];
     //变种信息渲染到页面
     var variationListHtml = function(str,k){
+        test.push(1);
         var variationListData = {
             proName: proName,
             masterImg: masterImg,
@@ -403,9 +404,11 @@ var addVerationFn = (function ($,W,D) {
             ucSku:'' ,
             variationListItem: []
         };
+
         var arr = str.split('$^$');
         var textArr = [];
         $.each(arr,function(i,j){
+
             var obj = j.split('%^%');
             var item = {
                 name : obj[0],
@@ -415,8 +418,9 @@ var addVerationFn = (function ($,W,D) {
             textArr.push(item.text);
             variationListData.variationListItem.push(item);
         });
+        // console.log(JSON.stringify(variationListData.variationListItem));
         if(spu){
-            var itemsku = spu +'-'+ (k+1);
+            var itemsku = spu +'-'+ (test.length);
             variationListData.sku = itemsku ? itemsku.replace(/[^a-zA-Z0-9-_+xX*#]*/g,'') : '';
             variationListData.ucSku = strToUc(itemsku);
         }
@@ -429,8 +433,14 @@ var addVerationFn = (function ($,W,D) {
 
     //递归解二维数组
     var recursiveSolutionArr = function(arr,idx,node,len){
+        // console.log(JSON.stringify(arr));
+        // console.log(arr.length);
+        // console.log(len);
+        // console.log(idx);
+        // console.log(node);
         var str = '', i,obj;
         $.each(arr[idx],function(i,l){
+            // console.log(i);
             obj = l;
             if(idx + 1 == len){
                 if (node == ''){
@@ -451,6 +461,7 @@ var addVerationFn = (function ($,W,D) {
 
     //生成变种属性列表
     var variationListBuild = function(sourceUrl){
+        test.length = 0;
         var obj = getVariationOption();
         if(!isEmptyObject(obj)){//判断是不是空对象
             var arr = [];
@@ -1533,6 +1544,12 @@ var customsClearanceFn = (function($,D,W){
                         return {flag: flag};
                     }
                 }
+
+                var skusId = $this.find('[data-name="sku"]').text();
+                var attributesBefore = $('#'+skusId+'').find('.variation-item-text').text();
+                var attributes = attributesBefore.replace(/\s*/g,"");
+
+                // console.log(kkk);
                 if(flag){
                     if(skuInfoTrlength/2 > i){  // 商品信息
                         var itemObj = {
@@ -1543,7 +1560,8 @@ var customsClearanceFn = (function($,D,W){
                             sbm: $.trim($this.find('[data-name="sbm"] textarea').val()),             //"识别码",
                             price: $.trim($this.find('[data-name="price"] input').val()),       //"默认采购价",
                             weight: $.trim($this.find('[data-name="weight"] input').val()),       //"商品重量",
-                            imgUrl:  imgUrl   //"",
+                            imgUrl:  imgUrl,   //"",
+                            attributes: attributes
                         };
                         productInfo.push(itemObj);
                     }else{  //报关列表信息

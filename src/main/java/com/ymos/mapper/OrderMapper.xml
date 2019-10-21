@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.OrderMapper" >
+
+    <resultMap id="BaseResultMap" type="Order">
+        <id column="id" property="id"/>
+        <result column="bgh" property="bgh"/>
+        <result column="orderId" property="orderId"/>
+        <result column="jyh" property="jyh"/>
+        <result column="orderStatus" property="orderStatus"/>
+        <result column="ptqd" property="ptqd"/>
+        <result column="dpzh" property="dpzh"/>
+        <result column="orderRamker" property="orderRamker"/>
+        <result column="jhRamker" property="jhRamker"/>
+        <result column="kfRamker" property="kfRamker"/>
+        <result column="tkly" property="tkly"/>
+        <result column="xdsj" property="xdsj"/>
+        <result column="fksj" property="fksj"/>
+        <result column="tjsj" property="tjsj"/>
+        <result column="fhsj" property="fhsj"/>
+        <result column="tksj" property="tksj"/>
+        <result column="mddysj" property="mddysj"/>
+        <result column="jhdysj" property="jhdysj"/>
+        <result column="fkfs" property="fkfs"/>
+        <result column="bzsx" property="bzsx"/>
+        <result column="orderMoney" property="orderMoney"/>
+        <result column="mjzfyf" property="mjzfyf"/>
+        <result column="tkMoney" property="tkMoney"/>
+        <result column="ygly" property="ygly"/>
+        <result column="cbly" property="cbly"/>
+        <result column="xsly" property="xsly"/>
+        <result column="ygfy" property="ygfy"/>
+        <result column="sku" property="sku"/>
+        <result column="proId" property="proId"/>
+        <result column="proName" property="proName"/>
+        <result column="proPrice" property="proPrice"/>
+        <result column="proNum" property="proNum"/>
+        <result column="proGuige" property="proGuige"/>
+        <result column="imgURL" property="imgURL"/>
+        <result column="lyURL" property="lyURL"/>
+        <result column="xslj" property="xslj"/>
+        <result column="dpm" property="dpm"/>
+        <result column="spSKU" property="spSKU"/>
+        <result column="spbm" property="spbm"/>
+        <result column="spmc" property="spmc"/>
+        <result column="kcl" property="kcl"/>
+        <result column="spcgj" property="spcgj"/>
+        <result column="kcjg" property="kcjg"/>
+        <result column="wxysp" property="wxysp"/>
+        <result column="fhck" property="fhck"/>
+        <result column="hjw" property="hjw"/>
+        <result column="mjzh" property="mjzh"/>
+        <result column="mjname" property="mjname"/>
+        <result column="mjEmail" property="mjEmail"/>
+        <result column="shrname" property="shrname"/>
+        <result column="shrcompany" property="shrcompany"/>
+        <result column="shrsh" property="shrsh"/>
+        <result column="shrmph" property="shrmph"/>
+        <result column="xxaddress" property="xxaddress"/>
+        <result column="addresOne" property="addresOne"/>
+        <result column="addressTwo" property="addressTwo"/>
+        <result column="addOneTwo" property="addOneTwo"/>
+        <result column="shrCity" property="shrCity"/>
+        <result column="shrShen" property="shrShen"/>
+        <result column="code" property="code"/>
+        <result column="shrCountry" property="shrCountry"/>
+        <result column="chCountry" property="chCountry"/>
+        <result column="countryS" property="countryS"/>
+        <result column="shrTel" property="shrTel"/>
+        <result column="shrIphone" property="shrIphone"/>
+        <result column="mjzdwl" property="mjzdwl"/>
+        <result column="wlfs" property="wlfs"/>
+        <result column="ydh" property="ydh"/>
+        <result column="czzl" property="czzl"/>
+        <result column="chbgName" property="chbgName"/>
+        <result column="enbgName" property="enbgName"/>
+        <result column="sbPrice" property="sbPrice"/>
+        <result column="bgWidth" property="bgWidth"/>
+        <result column="wuliu" property="wuliu"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+     id,bgh,orderId,jyh,orderStatus,ptqd,dpzh,orderRamker,jhRamker,kfRamker,tkly,xdsj,fksj,tjsj,fhsj,tksj,mddysj,jhdysj,fkfs,bzsx,orderMoney,mjzfyf,tkMoney,cbly,xsly,
+     ygfy,sku,proId,proName,proPrice,proNum,proGuige,imgURL,lyURL,xslj,dpm,spSKU,spbm,spmc,kcl,spcgj,kcjg,wxysp,fhck,hjw,
+     mjzh,mjname,mjEmail,shrname,shrcompany,shrsh,shrmph,xxaddress,addresOne,addressTwo,addOneTwo,shrCity,shrShen,code,shrCountry,chCountry,countryS,shrTel,
+     shrIphone,mjzdwl,wlfs,ydh,czzl,chbgName,enbgName,sbPrice,bgWidth,wuliu
+</sql>
+
+    <select id="select" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_order
+        <where>
+            <if test="query.bgh != null and query.bgh!=''">
+                and bgh=#{query.bgh}
+            </if>
+            <if test="query.ydh != null and query.ydh!=''">
+                and ydh=#{query.ydh}
+            </if>
+            <if test="query.orderId != null and query.orderId!=''">
+                and orderId=#{query.orderId}
+            </if>
+            <if test="query.fksj != null and query.fksj!=''">
+                and fksj like concat(#{query.fksj},'%')
+            </if>
+            <if test="query.orderStatus != null and query.orderStatus!=''">
+                and orderStatus=#{query.orderStatus}
+            </if>
+        </where>
+        order by id
+        limit #{start},#{size}
+    </select>
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        SELECT count(1) FROM t_order
+        <where>
+            <if test="query.bgh != null and query.bgh!=''">
+                and bgh=#{query.bgh}
+            </if>
+            <if test="query.ydh != null and query.ydh!=''">
+                and ydh=#{query.ydh}
+            </if>
+            <if test="query.orderId != null and query.orderId!=''">
+                and orderId=#{query.orderId}
+            </if>
+            <if test="query.fksj != null and query.fksj!=''">
+                and fksj like concat(#{query.fksj},'%')
+            </if>
+            <if test="query.orderStatus != null and query.orderStatus!=''">
+                and orderStatus=#{query.orderStatus}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="exportExcel" resultType="OrderReport">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM t_order
+        <where>
+            <if test="ydh != null and ydh!=''">
+                and ydh=#{ydh}
+            </if>
+            <if test="bgh != null and bgh!=''">
+                and bgh=#{bgh}
+            </if>
+            <if test="orderId != null and orderId!=''">
+                and orderId=#{orderId}
+            </if>
+            <if test="fksj != null and fksj!=''">
+                and fksj like concat(#{query.fksj},'%')
+            </if>
+            <if test="orderStatus != null and orderStatus!=''">
+                and orderStatus=#{orderStatus}
+            </if>
+        </where>
+        order by id
+    </select>
+
+
+    <select id="selectById" parameterType="string" resultType="Order">
+        select
+        <include refid="Base_Column_List"/>
+        from t_order where id=#{id}
+    </select>
+
+    <insert id="create" parameterType="java.util.List" > REPLACE INTO t_order(bgh,orderId,jyh,orderStatus,ptqd,dpzh,orderRamker,jhRamker,kfRamker,tkly,xdsj,fksj,tjsj,fhsj,tksj,mddysj,
+        jhdysj,fkfs,bzsx,orderMoney,mjzfyf,tkMoney,ygly,cbly,xsly,ygfy,sku,proId,proName,proPrice,proNum,proGuige,imgURL,lyURL,xslj,
+        dpm,spSKU,spbm,spmc,kcl,spcgj,kcjg,wxysp,fhck,hjw,mjzh,mjname,mjEmail,shrname,shrcompany,shrsh,shrmph,xxaddress,addresOne,
+        addressTwo,addOneTwo,shrCity,shrShen,code,shrCountry,chCountry,countryS,shrTel,shrIphone,mjzdwl,wlfs,ydh,czzl,chbgName,
+        enbgName,sbPrice,bgWidth) VALUES
+  <foreach collection ="list" item="order" separator =",">
+        ( #{order.bgh},#{order.orderId},#{order.jyh},#{order.orderStatus},#{order.ptqd},#{order.dpzh},#{order.orderRamker},#{order.jhRamker},#{order.kfRamker},#{order.tkly},
+          #{order.xdsj},#{order.fksj},#{order.tjsj},#{order.fhsj},#{order.tksj},#{order.mddysj},#{order.jhdysj},#{order.fkfs},#{order.bzsx},#{order.orderMoney},
+          #{order.mjzfyf},#{order.tkMoney},#{order.ygly},#{order.cbly},#{order.xsly},#{order.ygfy},#{order.sku},#{order.proId},#{order.proName},#{order.proPrice},
+          #{order.proNum},#{order.proGuige},#{order.imgURL},#{order.lyURL},#{order.xslj},#{order.dpm},#{order.spSKU},#{order.spbm},#{order.spmc},#{order.kcl},
+          #{order.spcgj},#{order.kcjg},#{order.wxysp},#{order.fhck},#{order.hjw},#{order.mjzh},#{order.mjname},#{order.mjEmail},#{order.shrname},#{order.shrcompany},
+          #{order.shrsh},#{order.shrmph},#{order.xxaddress},#{order.addresOne},#{order.addressTwo},#{order.addOneTwo},#{order.shrCity},#{order.shrShen},#{order.code},#{order.shrCountry},
+          #{order.chCountry},#{order.countryS},#{order.shrTel},#{order.shrIphone},#{order.mjzdwl},#{order.wlfs},#{order.ydh},#{order.czzl},#{order.chbgName},#{order.enbgName},
+          #{order.sbPrice},#{order.bgWidth}
+        ) </foreach>
+    </insert>
+
+
+    <!--<insert id="create" parameterType="Order">-->
+   <!---->
+	 <!--insert into t_order (bgh,orderId,jyh,orderStatus,ptqd,dpzh,orderRamker,jhRamker,kfRamker,tkly,xdsj,fksj,tjsj,fhsj,tksj,mddysj,-->
+	 <!--jhdysj,fkfs,bzsx,orderMoney,mjzfyf,tkMoney,ygly,cbly,xsly,ygfy,sku,proId,proName,proPrice,proNum,proGuige,imgURL,lyURL,xslj,-->
+	 <!--dpm,spSKU,spbm,spmc,kcl,spcgj,kcjg,wxysp,fhck,hjw,mjzh,mjname,mjEmail,shrname,shrcompany,shrsh,shrmph,xxaddress,addresOne,-->
+	 <!--addressTwo,addOneTwo,shrCity,shrShen,code,shrCountry,chCountry,countryS,shrTel,shrIphone,mjzdwl,wlfs,ydh,czzl,chbgName,-->
+	 <!--enbgName,sbPrice,bgWidth)-->
+
+	 <!--values (#{bgh},#{orderId},#{jyh},#{orderStatus},#{ptqd},#{dpzh},#{orderRamker},#{jhRamker},#{kfRamker},#{tkly},#{xdsj},#{fksj},#{tjsj},#{fhsj},#{tjsj},#{fhsj},#{tksj},#{mddysj},-->
+	 <!--#{jhdysj},#{fkfs},#{bzsx},#{orderMoney},#{mjzfyf},#{tkMoney},#{ygly},#{cbly},#{xsly},#{ygfy},#{sku},#{proId},#{proName},#{proPrice},#{proNum},#{proGuige},#{imgURL},#{lyURL},#{xslj},-->
+	 <!--#{dpm},#{spSKU},#{spbm},#{spmc},#{kcl},#{spcgj},#{kcjg},#{wxysp},#{fhck},#{hjw},#{mjzh},#{mjname},#{mjEmail},#{shrname},#{shrcompany},#{shrsh},#{shrmph},#{xxaddress},#{addresOne},-->
+	 <!--#{addressTwo},#{addOneTwo},#{shrCity},#{shrShen},#{code},#{shrCountry},#{chCountry},#{countryS},#{shrTel},#{shrIphone},#{mjzdwl},#{wlfs},#{ydh},#{czzl},#{chbgName},-->
+	 <!--#{enbgName},#{sbPrice},#{bgWidth})-->
+  <!--</insert>-->
+
+
+
+    <delete id="deleteByIds">
+        delete from t_order where id in
+        <foreach collection="array" item="ids" open="(" separator="," close=")">
+            #{ids}
+        </foreach>
+    </delete>
+
+
+
+
+
+
+
+
+
+</mapper>

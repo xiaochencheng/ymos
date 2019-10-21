@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -10,7 +11,9 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-4.2.xsd">
 
     <context:annotation-config/>
 
@@ -56,8 +59,15 @@
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
         <!-- 设置上传文件最大尺寸，单位为B -->
-        <property name="maxUploadSize" value="1000000000" />
+        <property name="maxUploadSize" value="100000000000" />
     </bean>
+
+    <!--spring定时器-->
+    <context:annotation-config/>
+    <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/>
+    <task:executor id="executor" pool-size="5" />
+    <task:scheduler id="scheduler" pool-size="10" />
+    <task:annotation-driven executor="executor" scheduler="scheduler" />
 
     <mvc:interceptors>
         <mvc:interceptor>

@@ -318,7 +318,7 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            wk.close();
+            //wk.close();
         }
     }
 

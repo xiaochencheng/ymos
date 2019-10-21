@@ -2,7 +2,7 @@ package com.ymos.entity;
 
 public class SkuReport extends AbstractReport {
 
-    private int dangerDesBg;                //是否危险品
+    private String dangerDesBg;                //是否危险品
     private String hgbmBg;                  //海关编码
     private String imgUrl;                  //图片url
     private String name;                    //产品中文名
@@ -13,6 +13,7 @@ public class SkuReport extends AbstractReport {
     private int priceBg;                    //默认采购价
     private String sbm;                        //是否液体
     private String skuName;                 //sku
+    private String sku;
     private String sourceUrl;                  //是否普通货物
     private String weight;                  //重量
     private String weightBg;                //危险运输品
@@ -21,6 +22,14 @@ public class SkuReport extends AbstractReport {
     private String endTime;
     private String creator;
     private String attributes;
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
 
     public String getAttributes() {
         return attributes;
@@ -46,11 +55,11 @@ public class SkuReport extends AbstractReport {
         this.endTime = endTime;
     }
 
-    public int getDangerDesBg() {
+    public String getDangerDesBg() {
         return dangerDesBg;
     }
 
-    public void setDangerDesBg(int dangerDesBg) {
+    public void setDangerDesBg(String dangerDesBg) {
         this.dangerDesBg = dangerDesBg;
     }
 

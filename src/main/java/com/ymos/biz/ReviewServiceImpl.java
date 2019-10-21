@@ -45,4 +45,9 @@ public class ReviewServiceImpl extends BaseServiceImpl<Review> implements Review
     public int update(Product product) {
         return reviewMapper.update(product);
     }
+
+    @Override
+    public String getFindProListName(int id) {
+        return reviewMapper.getFindProListName(id);
+    }
 }

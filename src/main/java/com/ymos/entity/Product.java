@@ -30,8 +30,19 @@ public class Product extends Id {
     private Date dateTime;
     private String spu;                     //标识产品唯一性id
     private String freight;                 //运费
+    private String listName;
+
+
 
    //=======================================================
+
+    public String getListName() {
+        return listName;
+    }
+
+    public void setListName(String listName) {
+        this.listName = listName;
+    }
 
 
     public String getSoureId() {

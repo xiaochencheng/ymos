@@ -33,21 +33,7 @@
 
     </style>
 </head>
-<script type="text/javascript">
-    function setIframeHeight(iframe) {
-        if (iframe) {
-            $('#Main').attr('height',600);
-            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
-            if (iframeWin.document.body) {
-                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
-            }
-        }
-    };
-    window.onload=function () {
-        setIframeHeight(document.getElementById('iframe'));
-    }
 
-</script>
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
@@ -65,8 +51,8 @@
                     ${user}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="${pageContext.request.contextPath }/user/information" target="main">基本资料</a></dd>
-                    <dd><a href="${pageContext.request.contextPath }/user/updatePassword" target="main">修改密码</a></dd>
+                    <dd class="loca"><a href="javascript:"  data-url="${pageContext.request.contextPath }/user/information">基本资料</a></dd>
+                    <dd class="loca"><a href="javascript:"  data-url="${pageContext.request.contextPath }/user/updatePassword">修改密码</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item"><a href="${pageContext.request.contextPath}/logout">退出</a></li>
@@ -82,7 +68,7 @@
                         <a class="" href="javascript:;">${menu.name }</a>
                         <c:forEach items="${datas[menu.id]}" var="sub_menu">
                             <dl class="layui-nav-child home-child">
-                                <dd class="loca"><a href="${pageContext.request.contextPath}${sub_menu.url}" target="main">${sub_menu.name }</a></dd>
+                                <dd class="loca"><a href="javascript:" data-url="${pageContext.request.contextPath}${sub_menu.url}">${sub_menu.name }</a></dd>
                             </dl>
                         </c:forEach>
                     </li>
@@ -94,11 +80,40 @@
     <div class="layui-body">
         <div id="content">
             <div class="main_box">
-                <iframe  onload="setIframeHeight(this)"  name="main" id="Main"  frameborder="no" scrolling="auto"  width="100%" height="806"></iframe>
+                <iframe  onload="setIframeHeight(this)"  src="" id="Main"  frameborder="no" scrolling="auto"  width="100%" height="100%"></iframe>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+
+    $(".loca a").click(function(){
+        var that            = $(this),
+            curUrl          = that.data("url");
+        $("#Main").attr('src',curUrl);
+
+
+    });
+
+
+</script>
+
+<script type="text/javascript">
+    function setIframeHeight(iframe) {
+        if (iframe) {
+            $('#Main').attr('height',600);
+            var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+            if (iframeWin.document.body) {
+                iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+            }
+        }
+    };
+    window.onload=function () {
+        setIframeHeight(document.getElementById('iframe'));
+    }
+
+</script>
+
 <script type="text/javascript">
     var stone="stone";
     window.onload = function () {

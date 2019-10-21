@@ -2,6 +2,8 @@ package com.ymos.entity;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+
 /**
  * sku
  */
@@ -9,17 +11,18 @@ public class Sku extends Id {
 
 
     //====================================================
-    private int dangerDesBg;                //是否危险品
+    private String dangerDesBg;                //是否危险品
     private String hgbmBg;                  //海关编码
     private String imgUrl;                  //图片url
     private String name;                    //产品中文名
     private String nameCnBg;                //报关产品中文名
     private String nameEn;                  //英文名称
     private String nameEnBg;                //报关英文名称
-    private int price;                      //价格
-    private int priceBg;                    //默认采购价
+    private BigDecimal price;                      //价格
+    private BigDecimal priceBg;                    //默认采购价
     private String sbm;                        //是否液体
     private String skuName;                 //sku
+    private String sku;
     private String sourceUrl;                  //是否普通货物
     private String weight;                  //重量
     private String weightBg;                //危险运输品
@@ -30,6 +33,14 @@ public class Sku extends Id {
 
 //=======================================================
 
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
 
     public String getAttributes() {
         return attributes;
@@ -47,11 +58,11 @@ public class Sku extends Id {
         this.creator = creator;
     }
 
-    public int getDangerDesBg() {
+    public String getDangerDesBg() {
         return dangerDesBg;
     }
 
-    public void setDangerDesBg(int dangerDesBg) {
+    public void setDangerDesBg(String dangerDesBg) {
         this.dangerDesBg = dangerDesBg;
     }
 
@@ -103,19 +114,19 @@ public class Sku extends Id {
         this.nameEnBg = nameEnBg;
     }
 
-    public int getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public int getPriceBg() {
+    public BigDecimal getPriceBg() {
         return priceBg;
     }
 
-    public void setPriceBg(int priceBg) {
+    public void setPriceBg(BigDecimal priceBg) {
         this.priceBg = priceBg;
     }
 
@@ -127,11 +138,11 @@ public class Sku extends Id {
         this.sbm = sbm;
     }
 
-    public String getSku() {
+    public String getSkuName() {
         return skuName;
     }
 
-    public void setSku(String skuName) {
+    public void setSkuName(String skuName) {
         this.skuName = skuName;
     }
 

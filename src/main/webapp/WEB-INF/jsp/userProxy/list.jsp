@@ -51,8 +51,9 @@
 						           <c:if test="${obj.status ==0}">禁用</c:if> 
 						           <c:if test="${obj.status ==1}">可用</c:if> 
 						           </td>
-						           <td>
-						          <a href="javascript:resetPassword('${obj.id }');" class="layui-btn layui-btn-xs layui-btn-danger" target="main">重置密码</a>
+						           <td class="loca">
+                                       <a href="javascript:resetPassword('${obj.id }');" class="layui-btn layui-btn-xs layui-btn-danger" >重置密码</a>
+                                       <%--<a href="javascript:"  data-url="${pageContext.request.contextPath }/user/resetPassword?id=${obj.id}" class="layui-btn layui-btn-xs layui-btn-danger">重置密码</a>--%>
 						           </td>
 						        </tr>
 					       </c:forEach>
@@ -77,9 +78,12 @@
  </div>
 </body>
 <script type="text/javascript">
-	function resetPassword(id){
-		location.href="${base}/user/resetPassword?id="+id;
-	}
+
+
+    function resetPassword(id){
+        window.location.href="${pageContext.request.contextPath }/userProxy/resetPassword?id="+id;
+    }
+
 
     function IsPC() {
         var userAgentInfo = navigator.userAgent;

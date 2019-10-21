@@ -2,6 +2,7 @@ package com.ymos.controller;
 
 import com.ymos.common.Constants;
 import com.ymos.common.IpUtils;
+import com.ymos.common.StringUtils;
 import com.ymos.entity.*;
 import com.ymos.biz.UserProxyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,9 +103,45 @@ public class UserProxyController extends CUDController<User, UserQuery, UserForm
         try {
             userProxyService.deleteByIds(ids);
             userProxyService.deleteUserRolesByIds(ids);
-            return "/userProxy/list";
+            return "redirect:/userProxy/list";
         } catch (Exception e) {
             return null;
         }
     }
+
+    /**
+     * 返回重置密码页面
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="/resetPassword",method= RequestMethod.GET)
+    public String resetPassword( String id,Model model){
+        model.addAttribute("userId", id);
+        return "/userProxy/resetPassword";
+    }
+    /**
+     * 重置密码
+     * @param user
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/resetPasswords",method=RequestMethod.POST)
+    public Result<User> resetPasswords(User user){
+        try {
+            User existUser = userProxyService.selectById(user.getId());
+            if(existUser.getUsername().equals(user.getPasswd())){
+                return new Result<User>().setPrompt("密码不能与用户名一致").setFlag(true);
+            }
+            user.setUsername(existUser.getUsername());
+            user.setPasswd(StringUtils.md5Encode(user.getPasswd(), user.getUsername()));
+            userProxyService.updatePassword(user);
+            return new Result<User>().setFlag(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<User>().setFlag(false);
+        }
+    }
+
+
 }

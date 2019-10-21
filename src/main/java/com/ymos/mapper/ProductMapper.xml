@@ -32,9 +32,7 @@
   </sql>
 
     <select id="select" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from t_pro
+        select p.*,(l.name) as listName from t_pro p LEFT JOIN t_pro_list l on p.pro_list=l.id
         <where>
             <if test="query.spu!=null and query.spu!=''">
                 and spu=#{query.spu}
@@ -61,7 +59,7 @@
     </select>
 
     <select id="count" parameterType="Paginator" resultType="int">
-        select count(1) from t_pro
+        select count(1) from t_pro p LEFT JOIN t_pro_list l on p.pro_list=l.id
         <where>
             <if test="query.spu!=null and query.spu!=''">
                 and spu=#{query.spu}

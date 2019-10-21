@@ -22,6 +22,7 @@
         <result column="spu" property="spu"/>
         <result column="create_date" property="create_date"/>
         <result column="attributes" property="attributes"/>
+        <result column="creator" property="creator"/>
     </resultMap>
 
     <resultMap id="BaseResultMap1" type="Product">
@@ -48,7 +49,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-    id,dangerDesBg,hgbmBg,imgUrl,name,nameCnBg,nameEn,nameEnBg,price,priceBg,sbm,skuName,sourceUrl,weight,weightBg,spu,create_date,attributes
+    id,dangerDesBg,hgbmBg,imgUrl,name,nameCnBg,nameEn,nameEnBg,price,priceBg,sbm,skuName,sourceUrl,weight,weightBg,spu,create_date,attributes,creator
    </sql>
 
     <!--,p.pro_ch_name,p.cus_ch_name,p.pro_en_name,p.cus_en_name,p.cus_price,p.url-->
@@ -57,6 +58,7 @@
         <include refid="Base_Column_List"/>
         FROM t_sku
         <where>
+            spu IN (SELECT p.spu FROM t_pro p WHERE p.status=1)
             <if test="query.skuName != null and query.skuName!=''">
                 and skuName=#{query.skuName}
             </if>
@@ -81,7 +83,7 @@
     <select id="count" parameterType="Paginator" resultType="int">
         SELECT count(1) FROM t_sku
         <where>
-
+            spu IN (SELECT p.spu FROM t_pro p WHERE p.status=1)
             <if test="query.skuName != null and query.skuName!=''">
                 and skuName=#{query.skuName}
             </if>
@@ -128,6 +130,12 @@
         </where>
     </select>
 
+    <select id="selectById" parameterType="string" resultType="Sku">
+        select
+        <include refid="Base_Column_List"/>
+        from t_sku where id=#{id}
+    </select>
+
     <select id="getSpuInfo" resultMap="BaseResultMap1" parameterType="string">
         select
         <include refid="Base_Column_List1"/>
@@ -135,7 +143,7 @@
     </select>
 
     <select id="getFindSPU" resultType="Product">
-        SELECT spu FROM t_pro where status=1;
+        select p.spu from t_pro  p where p.status=1 ;
     </select>
 
     <select id="findSkunOne" resultType="int" parameterType="String">
@@ -143,8 +151,8 @@
     </select>
 
     <insert id="create" parameterType="Sku">
-	 insert into t_sku (dangerDesBg,hgbmBg,imgUrl,name,nameCnBg,nameEn,nameEnBg,price,priceBg,sbm,skuName,sourceUrl,weight,weightBg,spu,create_date,attributes)
-	 values (#{dangerDesBg},#{hgbmBg},#{imgUrl},#{name},#{nameCnBg},#{nameEn},#{nameEnBg},#{price},#{priceBg},#{sbm},#{skuName},#{sourceUrl},#{weight},#{weightBg},#{spu},#{create_date},#{attributes})
+	 insert into t_sku (dangerDesBg,hgbmBg,imgUrl,name,nameCnBg,nameEn,nameEnBg,price,priceBg,sbm,skuName,sourceUrl,weight,weightBg,spu,create_date,attributes,creator)
+	 values (#{dangerDesBg},#{hgbmBg},#{imgUrl},#{name},#{nameCnBg},#{nameEn},#{nameEnBg},#{price},#{priceBg},#{sbm},#{skuName},#{sourceUrl},#{weight},#{weightBg},#{spu},#{create_date},#{attributes},#{creator})
   </insert>
 
     <update id="update" parameterType="Sku">
@@ -202,6 +210,10 @@
             <if test="attributes != null and attributes!=''">
                 attributes=#{attributes},
             </if>
+            <if test="creator != null and creator!=''">
+                creator=#{creator},
+            </if>
+
         </trim>
     </update>
 

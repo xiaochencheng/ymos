@@ -14,11 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -206,6 +204,13 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/proListName")
+    public String getFindProListName(int id, HttpServletResponse response, HttpServletRequest request){
+        String proListName=reviewService.getFindProListName(id);
+        return proListName;
+    }
+
     /**
      * Excel表格导出方法
      */
@@ -324,7 +329,7 @@ public class ReviewController extends CUDController<Review, ReviewQuery, ReviewF
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            wk.close();
+            //wk.close();
         }
     }
 

@@ -71,6 +71,7 @@
                 });
                 return false;
             }
+
         }
         $(function(){
             $('#username').keyup(function(){
@@ -101,7 +102,7 @@
                         <input name="passwd" class="text"  id="passwd"  type="password" placeholder="请输入密码" value='${form.passwd }'>
                     </div>
                     <div class="mb2">
-                        <button class="btn-block act-but submit" type="submit">登陆</button>
+                        <button class="btn-block act-but submit" type="submit">登录</button>
                     </div>
                 </form>
             </div>

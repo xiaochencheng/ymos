@@ -1,7 +1,9 @@
 package com.ymos.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
+
+
+import com.ymos.biz.SkuServiceImpl;
 import com.ymos.common.Constants;
 import com.ymos.common.LoginContext;
 import com.ymos.entity.*;
@@ -18,13 +20,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -32,7 +32,7 @@ import java.util.*;
 @RequestMapping("/sku")
 public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuService> {
 
-    SkuService skuService;
+     SkuService skuService;
 
     SkuListService skuListService;
 
@@ -92,15 +92,42 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
 
     @ResponseBody
     @RequestMapping("/spu")
-    public List<Product> getSpuName() {
+    public  List<Product> getSpuName() {
         List<Product> list = skuService.getFindSPU();
         return list;
     }
 
-    public static String createJsonString(String key, Object value) {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(key, value);
-        return jsonObject.toString();
+
+
+
+
+    /**
+     * 递归实现
+     * 原理：从原始list的0开始依次遍历到最后
+     *
+     * @param originalList 原始list
+     * @param position     当前递归在原始list的position
+     * @param returnList   返回结果
+     * @param cacheList    临时保存的list
+     */
+    private static <T> void descartesRecursive(List<List<T>> originalList, int position, List<List<T>> returnList, List<T> cacheList) {
+        List<T> originalItemList = originalList.get(position);
+        for (int i = 0; i < originalItemList.size(); i++) {
+            //最后一个复用cacheList，节省内存
+            List<T> childCacheList = (i == originalItemList.size() - 1) ? cacheList : new ArrayList<>(cacheList);
+            childCacheList.add(originalItemList.get(i));
+            if (position == originalList.size() - 1) {//遍历到最后退出递归
+                returnList.add(childCacheList);
+                continue;
+            }
+            descartesRecursive(originalList, position + 1, returnList, childCacheList);
+        }
+    }
+
+    private static <T> List<List<T>> getDescartes(List<List<T>> list) {
+        List<List<T>> returnList = new ArrayList<>();
+        descartesRecursive(list, 0, returnList, new ArrayList<T>());
+        return returnList;
     }
 
     /**
@@ -110,32 +137,59 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
     @RequestMapping(value = "/create1", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public Result<Sku> create(@RequestBody List<Sku> ids, @RequestParam("name") String name, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         try {
-            name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
-            JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
-            String keyChName = jsonObject.toString();
-            for (int i = 0; i < ids.size(); i++) {
+            //name = new String(name.getBytes("ISO-8859-1"), "UTF-8");
+            //JSONObject jsonObject = (JSONObject) JSONObject.parse(name);
+            //String keyChName = jsonObject.toString();
 
-                System.out.println(keyChName + ">>>>>>>>>>>>");
+           // System.out.println(ids.size()+">>>>>>>>>>>>");
+            for (int i = 0; i < ids.size(); i++) {
                 Sku sku = new Sku();
                 User user = LoginContext.getUser(session);
                 String creator = user.getUsername();
                 String sdate;
                 Date ddate = new Date();
-                sdate = (new SimpleDateFormat("yyyy-MM-dd")).format(ddate);
+                sdate = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(ddate);
 
                 //System.out.println(ids.size());
                 String spu = ids.get(i).getSku();
                 String spuName = spu.substring(0, spu.indexOf("-"));
+                //String attri=spu.substring(spuName.length()+1,spu.length());
                 sku.setName(ids.get(i).getName());
                 sku.setNameEn(ids.get(i).getNameEn());
                 sku.setNameCnBg(ids.get(i).getNameCnBg());
                 sku.setNameEnBg(ids.get(i).getNameEnBg());
-                sku.setSku(ids.get(i).getSku());
+                sku.setSkuName(ids.get(i).getSku());
                 sku.setPriceBg(ids.get(i).getPriceBg());
                 sku.setImgUrl(ids.get(i).getImgUrl());
                 sku.setPrice(ids.get(i).getPrice());
                 sku.setSpu(spuName);
-                sku.setDangerDesBg(ids.get(i).getDangerDesBg());
+                int dangerDesBg= Integer.parseInt(ids.get(i).getDangerDesBg());
+                switch (dangerDesBg)
+                {
+                    case 0:
+                        sku.setDangerDesBg("无");
+                        break;
+                    case 1:
+                        sku.setDangerDesBg("含电");
+                        break;
+                     case 2:
+                        sku.setDangerDesBg("液体");
+                        break;
+                     case 3:
+                        sku.setDangerDesBg("粉末");
+                        break;
+                     case 4:
+                        sku.setDangerDesBg("纯电");
+                        break;
+                     case 5:
+                        sku.setDangerDesBg("膏体");
+                        break;
+                     case 6:
+                        sku.setDangerDesBg("带磁");
+                        break;
+
+                }
+
                 sku.setHgbmBg(ids.get(i).getHgbmBg());
                 sku.setWeight(ids.get(i).getWeight());
                 sku.setCreate_date(sdate);
@@ -143,9 +197,12 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
                 sku.setSourceUrl(ids.get(i).getSourceUrl());
                 sku.setWeightBg(ids.get(i).getWeightBg());
                 sku.setCreator(creator);
-                sku.setAttributes(keyChName);
+                String att=ids.get(i).getAttributes();
+                String attributes=att.substring(0,att.length()-1);
+                sku.setAttributes(attributes);
                 skuService.create(sku);
 
+            //}
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -164,6 +221,43 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
         }
      return  null;
     }*/
+
+    @ResponseBody
+    @RequestMapping("/update")
+    public Result<Sku> update(HttpServletRequest request, HttpServletResponse response, Sku sku,HttpSession session) {
+        String sp = sku.getId();
+        User user = LoginContext.getUser(session);
+        String creator = user.getUsername();
+        int ids=Integer.parseInt(sku.getDangerDesBg());
+        switch (ids){
+            case 0:
+                sku.setDangerDesBg("无");
+                break;
+             case 1:
+                sku.setDangerDesBg("含电");
+                break;
+             case 2:
+                sku.setDangerDesBg("液体");
+                break;
+             case 3:
+                sku.setDangerDesBg("粉末");
+                break;
+             case 4:
+                sku.setDangerDesBg("纯电");
+                break;
+             case 5:
+                sku.setDangerDesBg("膏体");
+                break;
+             case 6:
+                sku.setDangerDesBg("带磁");
+                break;
+
+        }
+         sku.setCreator(creator);
+        skuService.update(sku);
+        return new Result<Sku>().setData(sku).setFlag(true);
+    }
+
 
     /**
      * Excel表格导出方法
@@ -203,21 +297,19 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
             Row row = sheet.createRow(0);
             List<String> headerNames = new ArrayList<>();
             List<Integer> columnsWidths = new ArrayList<>();
-            headerNames.add("sku(必填)");
+            headerNames.add("*sku(必填)");
             headerNames.add("平台SKU");
             headerNames.add("识别码");
             headerNames.add("商品编码");
             headerNames.add("商品名称");
-            headerNames.add("商品状态");
-            headerNames.add("中文SKU属性");
-            headerNames.add("图片URL");
-            headerNames.add("实际重量（g）");
+            headerNames.add("图片URL（必须以http://或https：//开头）");
+            headerNames.add("商品重量（g）");
             headerNames.add("采购价（RMB）");
-            headerNames.add("采购员");
+            headerNames.add("采购员（输入子账号姓名或名称）");
             headerNames.add("长(cm)");
             headerNames.add("宽(cm)");
             headerNames.add("高(cm)");
-            headerNames.add("来源url（超始值为：http://）");
+            headerNames.add("来源URL（必须以http://或https：//开头）");
             headerNames.add("备注");
             headerNames.add("英文报关");
             headerNames.add("中文报关");
@@ -225,9 +317,8 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
             headerNames.add("申报金额（USD）");
             headerNames.add("危险运输品");
             headerNames.add("海关编码");
-            headerNames.add("创建时间");
+            headerNames.add("开发员（输入子账号姓名或名称）");
 
-            columnsWidths.add(3000);
             columnsWidths.add(3000);
             columnsWidths.add(3000);
             columnsWidths.add(3000);
@@ -271,30 +362,54 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
                 row.createCell(2).setCellValue("");
                 row.createCell(3).setCellValue("");
                 row.createCell(4).setCellValue(report.getName());
-                row.createCell(5).setCellValue("在售");
-                row.createCell(6).setCellValue(report.getAttributes());
-                row.createCell(7).setCellValue(report.getWeight());
-                row.createCell(8).setCellValue(report.getPrice());
-                row.createCell(9).setCellValue("无");
+                row.createCell(5).setCellValue("");
+                row.createCell(6).setCellValue(report.getWeight());
+                row.createCell(7).setCellValue(report.getPrice());
+                row.createCell(8).setCellValue(report.getCreator());
+                row.createCell(9).setCellValue("0");
                 row.createCell(10).setCellValue("0");
                 row.createCell(11).setCellValue("0");
-                row.createCell(12).setCellValue("0");
-                row.createCell(13).setCellValue(report.getSourceUrl());
-                row.createCell(14).setCellValue("");
-                row.createCell(15).setCellValue(report.getNameEnBg());
-                row.createCell(16).setCellValue(report.getNameCnBg());
-                row.createCell(17).setCellValue(report.getWeightBg());
-                row.createCell(18).setCellValue(report.getPriceBg());
-                row.createCell(19).setCellValue(report.getDangerDesBg());
-                row.createCell(20).setCellValue(report.getHgbmBg());
-                row.createCell(21).setCellValue(report.getCreate_date());
+                row.createCell(12).setCellValue(report.getSourceUrl());
+                row.createCell(13).setCellValue("");
+                row.createCell(14).setCellValue(report.getNameEnBg());
+                row.createCell(15).setCellValue(report.getNameCnBg());
+                row.createCell(16).setCellValue(report.getWeightBg());
+                row.createCell(17).setCellValue(report.getPriceBg());
+                String dangours=  report.getDangerDesBg();
+                switch (dangours){
+                    case "无":
+                        row.createCell(18).setCellValue(0);
+                        break;
+                     case "含电":
+                        row.createCell(18).setCellValue(1);
+                        break;
+                     case "液体":
+                        row.createCell(18).setCellValue(2);
+                        break;
+                     case "粉末":
+                        row.createCell(18).setCellValue(3);
+                        break;
+                     case "纯电":
+                        row.createCell(18).setCellValue(4);
+                        break;
+                     case "膏体":
+                        row.createCell(18).setCellValue(5);
+                        break;
+                     case "带磁":
+                        row.createCell(18).setCellValue(6);
+                        break;
+
+                }
+
+                row.createCell(19).setCellValue(report.getHgbmBg());
+                row.createCell(20).setCellValue("");
                 i++;
             }
             wk.write(outputStream);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            wk.close();
+            //wk.close();
         }
     }
 

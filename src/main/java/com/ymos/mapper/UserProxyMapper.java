@@ -8,4 +8,6 @@ public interface UserProxyMapper extends BaseMapper<User> {
     int insertUserRole(Map<String, Object> dataMap);
 
     int deleteUserRolesByIds(String[] ids);
+
+    int updatePassword(User user);
 }

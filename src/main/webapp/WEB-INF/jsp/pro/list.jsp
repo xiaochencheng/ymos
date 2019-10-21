@@ -72,11 +72,14 @@
                                     <td>${data.cus_en_name}</td>
                                     <td>${data.cus_price}</td>
                                     <td>${data.cus_weight}</td>
-                                    <td>${data.pro_list }</td>
-                                    <td><img src="${data.pro_url}" width="100%" height="50px"></td>
+                                    <td>${data.listName }</td>
+                                    <td>
+                                        <c:if test="${empty data.pro_url}"></c:if>
+                                        <c:if test="${not empty data.pro_url}"><img src="${data.pro_url}" width="100%" height="50px"></c:if>
+                                    </td>
                                     <td>${data.pro_purchase_price}</td>
                                     <td>${data.weight}</td>
-                                    <td><a href="${data.url}" target="_blank">采购链接</a></td>
+                                    <td><a href="${data.url}" target="_blank" style="color:deepskyblue;">采购链接</a></td>
                                     <td>${data.presale_price}</td>
                                     <td>${data.freight}</td>
                                     <td>${data.creator}</td>

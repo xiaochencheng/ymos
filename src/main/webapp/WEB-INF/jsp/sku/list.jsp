@@ -38,7 +38,6 @@
                                 <th>SKU中文属性</th>
                                 <th>产品英文名</th>
                                 <th>报关英文名</th>
-                                <th>图片img</th>
                                 <th>价格</th>
                                 <th>报关价格</th>
                                 <th>资源URL</th>
@@ -47,32 +46,33 @@
                                 <th>是否危险品</th>
                                 <th>海关编码</th>
                                 <th>时间</th>
+                                <th>创建人</th>
                             </tr>
                             </thead>
-                            <tbody>
+
                             <c:forEach items="${datas}" var="data">
                                 <tr>
                                     <td><input type="checkbox" lay-skin="primary" lay-filter="itemChoose" id="ids" name="ids" value="${data.id }"/></td>
                                     <td>${data.id }</td>
-                                    <td>${data.sku }</td>
+                                    <td>${data.skuName }</td>
                                     <td>${data.spu }</td>
                                     <td>${data.name}</td>
                                     <td>${data.nameCnBg}</td>
                                     <td>${data.attributes}</td>
                                     <td>${data.nameEn}</td>
                                     <td>${data.nameEnBg}</td>
-                                    <td>${data.imgUrl}"></td>
-                                    <td>${data.price}"></td>
-                                    <td>${data.priceBg}"></td>
-                                    <td style="width: 200px">${data.sourceUrl}"></td>
-                                    <td>${data.weight}"></td>
-                                    <td>${data.weightBg}"></td>
-                                    <td>${data.dangerDesBg}"></td>
-                                    <td>${data.hgbmBg}"></td>
-                                    <td>${data.create_date}"></td>
+                                    <td>${data.price}</td>
+                                    <td>${data.priceBg}</td>
+                                    <td><a style="color:deepskyblue;" target="_blank" href="${data.sourceUrl}">链接</a></td>
+                                    <td>${data.weight}</td>
+                                    <td>${data.weightBg}</td>
+                                    <td>${data.dangerDesBg}</td>
+                                    <td>${data.hgbmBg}</td>
+                                    <td>${data.create_date}</td>
+                                    <td>${data.creator}</td>
                                 </tr>
                             </c:forEach>
-                            </tbody>
+
                         </table>
                     </form>
                 </div>
@@ -84,7 +84,7 @@
 
         <c:import url="../common/button.jsp">
             <c:param name="create">${pageContext.request.contextPath }/sku/create</c:param>
-            <%--<c:param name="review">${pageContext.request.contextPath }/sku/modify</c:param>--%>
+            <c:param name="review">${pageContext.request.contextPath }/sku/update</c:param>
             <%--<c:param name="delete">${pageContext.request.contextPath }/sku/delete</c:param>--%>
             <c:param name="deleteMsg">确认删除产品数据？</c:param>
         </c:import>
@@ -95,6 +95,8 @@
 </div>
 </body>
 <script>
+
+
 
     function IsPC() {
         var userAgentInfo = navigator.userAgent;

@@ -16,4 +16,6 @@ public interface ReviewMapper extends BaseMapper<Review>{
 
     int update(Product product);
 
+    String getFindProListName(int id);
+
 }

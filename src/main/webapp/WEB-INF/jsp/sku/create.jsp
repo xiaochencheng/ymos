@@ -229,8 +229,8 @@
     }).extend({
         formSelects: 'formSelects-v4'
     });
-    var spuName = "${form.spuName}";
-    // pro_list.substringAfter(pro_list,";");
+    var spuName = "${form.spuame}";
+    // pro_list.substringAfteNr(pro_list,";");
     $.getJSON('${pageContext.request.contextPath }/sku/spu', function (result) {
         if (result) {
             $.each(result, function (index, obj) {
@@ -294,8 +294,21 @@
             }*/
 
             var vals = pageDom.varaitionObj;
+           /* var vals=attrus.arr;*/
+            var attrs=pageDom.variantAttr;
             var numsName = JSON.stringify(vals);
 
+   /*         var ss= $.each(numsName,function(i,j){
+                var listArr = [];
+                $.each(j,function(k,l){
+                    listArr.push({name:i,value:l});
+                });
+                arr.push(listArr);
+            });*/
+
+
+            console.info(numsName);
+            /*encodeURIComponent(numsName)*/
             $.ajax({
                 type: "POST",
                 url: "${pageContext.request.contextPath}/sku/" + url+"?name="+encodeURIComponent(numsName),
@@ -363,7 +376,7 @@
     <td style="width:150px;min-width:150px;max-width:150px;">
         <p class="gray-c variation-item-text" style="word-break:break-all;">
             {{#each variationListItem}}
-            <span variation-name="{{name}}" variation-value="{{value}}">{{text}}</span><span>*</span>
+            <span variation-name="{{name}}" variation-value="{{value}}">[{{name}}:{{text}}]</span><span>*</span>
             {{/each}}
         </p>
     </td>
@@ -373,40 +386,7 @@
     </tr>
 </script>
 
-<script id="variationListTable-template" type="text/x-handlebars-template">
-    <tr id="{{sku}}" data-ucSku="{{ucSku}}"
-        {{#if quote}}
-        data-quote="{{quote}}"
-        {{/if}}>
 
-    <td class="f-left p-left15" style="word-break:break-all;">
-        <p class="m-bottom10">SKU：
-            <input class="form-component w249 sku" type="text" value="{{sku}}" page-sku="{{sku}}" init-sku="{{sku}}"
-                   page-sourceurl="{{sourceUrl}}" onkeyup="value=value.replace(/[^a-zA-Z0-9-_+xX*#]*/g,'');"
-                   onblur="customsClearanceFn.skuInfoTableUpdete(this);">
-        </p>
-        <p page-name="{{proName}}">
-            {{#if proName}}
-            {{proName}}
-            {{/if}}
-            {{#unless proName}}
-            --
-            {{/unless}}
-        </p>
-    </td>
-    <td style="width:150px;min-width:150px;max-width:150px;">
-        <p class="gray-c variation-item-text" style="word-break:break-all;">
-            {{#each variationListItem}}
-            <span variation-name="{{name}}" variation-value="{{value}}">{{text}}</span><span>*</span>
-            {{/each}}
-        </p>
-    </td>
-    <td class="action" style="width:30px;min-width:30px;max-width:30px;">
-        <a class="removeVariationListItem" href="javascript:"><i class="layui-icon layui-icon-close-fill"
-                                                                 style="font-size: 30px;"></i></a>
-    </td>
-    </tr>
-</script>
 
 
 </html>

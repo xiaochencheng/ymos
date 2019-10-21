@@ -16,4 +16,6 @@ public interface ReviewService extends BaseService<Review> {
 
     int update(Product product);
 
+    String getFindProListName(int id);
+
 }
