@@ -13,6 +13,7 @@
              </if>
          </where>
         GROUP BY dpzh,DATE(fksj)
+        order by DATE(fksj) DESC
         limit #{start},#{size}
     </select>
 
@@ -39,6 +40,7 @@
             </if>
         </where>
         GROUP BY dpzh,DATE(fksj)
+        order by DATE(fksj) DESC
     </select>
 
 

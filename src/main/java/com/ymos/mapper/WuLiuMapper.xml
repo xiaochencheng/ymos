@@ -99,6 +99,7 @@
                 AND orderId=#{query.orderId}
             </if>
         </where>
+        order by fksj desc
         limit #{start},#{size}
     </select>
 

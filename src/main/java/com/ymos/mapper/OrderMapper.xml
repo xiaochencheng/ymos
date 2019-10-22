@@ -107,7 +107,7 @@
                 and orderStatus=#{query.orderStatus}
             </if>
         </where>
-        order by id
+        order by fksj desc
         limit #{start},#{size}
     </select>
 
@@ -154,7 +154,7 @@
                 and orderStatus=#{orderStatus}
             </if>
         </where>
-        order by id
+        order by fksj desc
     </select>
 
 

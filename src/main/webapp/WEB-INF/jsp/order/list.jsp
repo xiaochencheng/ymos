@@ -627,10 +627,12 @@
                                     </td>
 
                                     <td>
+                                        <c:if test="${not empty  data.ydh}">
                                         <button type="button" class="layui-btn  layui-btn-xs"
                                                 onclick="browses('${data.ydh}')">
                                         查看物流
                                     </button>
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>

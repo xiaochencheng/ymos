@@ -3,10 +3,12 @@ package com.ymos.controller;
 import com.github.binarywang.java.emoji.EmojiConverter;
 import com.ymos.biz.OrderService;
 import com.ymos.common.Constants;
+import com.ymos.common.ImportExcelUtil;
 import com.ymos.entity.*;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.WorkbookSettings;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.aspectj.weaver.ast.Or;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -117,6 +120,9 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
         Integer success = 0;//成功数
         Integer fail = 0;//失败数
         Integer flag = 1;//判断是否有有用的表
+        WorkbookSettings settings = new WorkbookSettings();
+        settings.setGCDisabled(true);
+        //Workbook workbook = Workbook.getWorkbook(new FileInputStream(""), settings);
         jxl.Workbook workbook = null;
         order = new Order();
         try {
@@ -132,12 +138,9 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
 
                 //通过当前类获取文件的绝对路径
                 String path1 =uploadFiles + "/" + fileName;
-                //URL url=new URL(path1);
-                //URLConnection  conn = url.openConnection();
-                //BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
-                        //String ous=path1.replaceAll("\\\\","/");
+
                 //获取excel文件
-                workbook = Workbook.getWorkbook(new File(path1));
+                workbook = Workbook.getWorkbook(new File(path1),settings);
                 int oSheet = 100;
                 //获取表名所对应的sheet,workbook.getNumberOfSheets()获取excel中有几张表
                 for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
@@ -616,9 +619,9 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
                         //批量添加订单数据
                         if (orders.size() > 0) {
                             orderService.create(orders);
-
                         }
                     }
+
 
                     //判断是否有有用的表
                     if (oSheet == 100) {
@@ -650,6 +653,17 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
         return new Result<Order>().setData(order).setFlag(true);
     }
 
+
+    //@ResponseBody
+    //@RequestMapping(value = "/improt")
+    //public String improtExcel(MultipartFile file,HttpServletRequest request, HttpServletResponse response, String path, Order order)
+    //{
+    //
+    //    ImportExcelUtil util=new ImportExcelUtil();
+    //    util.getBankListByExcel(file,"");
+    //
+    //  return  null;
+    //}
 
     /**
      * Excel表格导出方法
