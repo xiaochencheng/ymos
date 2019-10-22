@@ -11,6 +11,16 @@ public class OrderQuery extends Query {
     private String bgh;
     private String ydh;
     private Integer size;
+    private String dpzh;
+
+    public String getDpzh() {
+        return dpzh;
+    }
+
+    public void setDpzh(String dpzh) {
+        this.dpzh = dpzh;
+        this.addQstrs("dpzh",dpzh);
+    }
 
     public Integer getSize() {
         return size;

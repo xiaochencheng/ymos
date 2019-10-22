@@ -300,6 +300,9 @@
                     $('.layui-form-type .layui-select-title .layui-input').focus();
                     return '预售价不能为空';
                 }
+                if(!value || isNaN(value)){
+                    return '预售价只能填写数字!'
+                }
             },
             freight:function(value,item){
                 if(value==''){

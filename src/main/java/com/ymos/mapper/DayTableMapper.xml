@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ymos.mapper.DayTableMapper">
+
+    <select id="select" resultType="Order">
+        SELECT COUNT(bgh) as bgh,SUM(orderMoney) as orderMoney,DATE(fksj) as fksj,dpzh FROM t_order
+         <where>
+             <if test="query.dpzh != null and query.dpzh !='' ">
+                 AND dpzh=#{query.dpzh}
+             </if>
+             <if test="query.fksj != null and query.fksj!=''">
+                 AND DATE(fksj)=#{query.fksj}
+             </if>
+         </where>
+        GROUP BY dpzh,DATE(fksj)
+        limit #{start},#{size}
+    </select>
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        SELECT COUNT(1) FROM (SELECT COUNT(bgh),SUM(orderMoney),fksj,dpzh FROM t_order GROUP BY dpzh,DATE(fksj))AS t
+        <where>
+            <if test="query.dpzh != null and query.dpzh !='' ">
+                AND  t.dpzh=#{query.dpzh}
+            </if>
+            <if test="query.fksj != null and query.fksj!=''">
+                AND DATE(t.fksj)=#{query.fksj}
+            </if>
+        </where>
+    </select>
+
+    <select id="exportExcel" resultType="OrderReport">
+        SELECT COUNT(bgh) as bgh,SUM(orderMoney) as orderMoney,DATE(fksj) as fksj,dpzh FROM t_order
+        <where>
+            <if test="dpzh != null and dpzh !='' ">
+                AND dpzh=#{dpzh}
+            </if>
+            <if test="fksj != null and fksj!=''">
+                AND DATE(fksj)=#{fksj}
+            </if>
+        </where>
+        GROUP BY dpzh,DATE(fksj)
+    </select>
+
+
+
+</mapper>
