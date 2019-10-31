@@ -94,8 +94,8 @@
             <if test="query.bgh != null and query.bgh!=''">
                 and bgh=#{query.bgh}
             </if>
-            <if test="query.ydh != null and query.ydh!=''">
-                and ydh=#{query.ydh}
+            <if test="query.sku != null and query.sku!=''">
+                and sku=#{query.sku}
             </if>
             <if test="query.orderId != null and query.orderId!=''">
                 and orderId=#{query.orderId}
@@ -117,8 +117,8 @@
             <if test="query.bgh != null and query.bgh!=''">
                 and bgh=#{query.bgh}
             </if>
-            <if test="query.ydh != null and query.ydh!=''">
-                and ydh=#{query.ydh}
+            <if test="query.sku != null and query.sku!=''">
+                and sku=#{query.sku}
             </if>
             <if test="query.orderId != null and query.orderId!=''">
                 and orderId=#{query.orderId}
@@ -138,8 +138,8 @@
         <include refid="Base_Column_List"/>
         FROM t_order
         <where>
-            <if test="ydh != null and ydh!=''">
-                and ydh=#{ydh}
+            <if test="sku != null and sku!=''">
+                and sku=#{sku}
             </if>
             <if test="bgh != null and bgh!=''">
                 and bgh=#{bgh}
@@ -148,7 +148,7 @@
                 and orderId=#{orderId}
             </if>
             <if test="fksj != null and fksj!=''">
-                and fksj like concat(#{query.fksj},'%')
+                and fksj like concat(#{fksj},'%')
             </if>
             <if test="orderStatus != null and orderStatus!=''">
                 and orderStatus=#{orderStatus}
@@ -164,7 +164,7 @@
         from t_order where id=#{id}
     </select>
 
-    <insert id="create" parameterType="java.util.List" > REPLACE INTO t_order(bgh,orderId,jyh,orderStatus,ptqd,dpzh,orderRamker,jhRamker,kfRamker,tkly,xdsj,fksj,tjsj,fhsj,tksj,mddysj,
+    <insert id="create" parameterType="java.util.List" > INSERT INTO t_order(bgh,orderId,jyh,orderStatus,ptqd,dpzh,orderRamker,jhRamker,kfRamker,tkly,xdsj,fksj,tjsj,fhsj,tksj,mddysj,
         jhdysj,fkfs,bzsx,orderMoney,mjzfyf,tkMoney,ygly,cbly,xsly,ygfy,sku,proId,proName,proPrice,proNum,proGuige,imgURL,lyURL,xslj,
         dpm,spSKU,spbm,spmc,kcl,spcgj,kcjg,wxysp,fhck,hjw,mjzh,mjname,mjEmail,shrname,shrcompany,shrsh,shrmph,xxaddress,addresOne,
         addressTwo,addOneTwo,shrCity,shrShen,code,shrCountry,chCountry,countryS,shrTel,shrIphone,mjzdwl,wlfs,ydh,czzl,chbgName,
@@ -179,6 +179,7 @@
           #{order.chCountry},#{order.countryS},#{order.shrTel},#{order.shrIphone},#{order.mjzdwl},#{order.wlfs},#{order.ydh},#{order.czzl},#{order.chbgName},#{order.enbgName},
           #{order.sbPrice},#{order.bgWidth}
         ) </foreach>
+        ON DUPLICATE KEY UPDATE orderStatus=values(orderStatus),tjsj=values(tjsj),fhsj=values(fhsj),tksj=values(tksj),mddysj=values(mddysj),ydh=values(ydh)
     </insert>
 
 

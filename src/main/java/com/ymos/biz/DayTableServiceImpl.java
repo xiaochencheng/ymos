@@ -1,5 +1,7 @@
 package com.ymos.biz;
 
+import com.ymos.entity.DayTable;
+import com.ymos.entity.DayTableReport;
 import com.ymos.entity.Order;
 import com.ymos.entity.OrderReport;
 import com.ymos.mapper.DayTableMapper;
@@ -7,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service("dayTableService")
-public class DayTableServiceImpl extends BaseServiceImpl<Order> implements DayTableService {
+public class DayTableServiceImpl extends BaseServiceImpl<DayTable> implements DayTableService {
 
     DayTableMapper dayTableMapper;
 
@@ -20,8 +23,26 @@ public class DayTableServiceImpl extends BaseServiceImpl<Order> implements DayTa
     }
 
     @Override
-    public List<OrderReport> exportExcel(OrderReport orderReport) {
-        List<OrderReport> list=dayTableMapper.exportExcel(orderReport);
+    public List<DayTableReport> exportExcel(DayTableReport dayTableReport) {
+        List<DayTableReport> list=dayTableMapper.exportExcel(dayTableReport);
         return list;
+    }
+
+    @Override
+    public List<DayTable> selectFind() {
+        List<DayTable> dayTable=dayTableMapper.selectFind();
+        return dayTable;
+    }
+
+    @Override
+    public int create(List<DayTable> dayTables) {
+        int count=dayTableMapper.create(dayTables);
+        return count;
+    }
+
+    @Override
+    public int update(List<DayTable> dayTables) {
+        int count=dayTableMapper.update(dayTables);
+        return count;
     }
 }

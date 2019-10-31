@@ -1,9 +1,23 @@
-
 <%@ include file="../common/common.jsp" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <script src="${pageContext.request.contextPath }/jsandcss/js/layer/layer.js"></script>
+<style type="text/css">
+                body{font-size:20px;}
+                ul li{list-style:none;}
+                .track-list{margin:20px; padding-left:5px; position:relative;}
+                .track-list li{position:relative; padding:9px 0 0 25px; line-height:18px; border-left:1px solid #d9d9d9; color: #999;}
+                .track-list li:first-child{color:red; padding-top:0; border-left-color:#fff;}
+           
+           
+                .track-list li span .time{margin-right:20px; position:relative; top:4px; display:inline-block; vertical-align:middle;}
+                .track-list li span .txt{max-width:600px; position:relative; top:4px; display:inline-block; vertical-align:middle;}
+                .track-list li:first-child .time{margin-right:20px; }
+                .track-list li:first-child .txt{max-width:600px; }
+
+            </style>
+
 <style>
     #ordertrack td {
         vertical-align: top;
@@ -207,6 +221,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/jsandcss/layui/layui/css/layui.css">
 </head>
 <body>
+
 <style>
     /*#mohe-kuaidi_new ::-webkit-scrollbar {
         width: 10px;
@@ -569,12 +584,12 @@
     <div>
         <div>
             <fieldset class="layui-elem-field fieldset">
-                <legend>订单产品列表
+                <legend>订单物流信息
                 </legend>
                 <div class="layui-field-box">
                     <div id="">
                         <c:import url="search.jsp">
-                            <c:param name="action" value="${pageContext.request.contextPath }/order/list"/>
+                            <c:param name="action" value="${pageContext.request.contextPath }/wuliu/list"/>
                         </c:import>
                     </div>
                     <form class="layui-form list-form" id="download" action="">
@@ -589,23 +604,15 @@
                                 </th>
                                 <th>包裹号</th>
                                 <th>订单号</th>
-                                <th>店铺账号</th>
-                                <th>付款时间</th>
-                                <th>发货时间</th>
-                                <th>退款时间</th>
-                                <th>订单金额</th>
-                                <th>产品售价</th>
-                                <th>产品数量</th>
-                                <th>SKU</th>
-                                <th>买家账号</th>
-                                <th>买家姓名</th>
-                                <th>买家Email</th>
-                                <th>物流方式</th>
                                 <th>运单号</th>
-                                <th>称重重量</th>
-                                <th>拣货备注</th>
-                                <th>客服备注</th>
-
+                                <th>物流状态</th>
+                                <th>店铺账号</th>
+                                <th>发货时间</th>
+                                <th>付款时间</th>
+                                <th>物流方式</th>
+                                <th>物流最新信息</th>
+                                <th>运输时间</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -613,29 +620,25 @@
                                 <tr>
                                     <td>
                                         <input type="checkbox" lay-skin="primary"
-                                                                               lay-filter="itemChoose" id="ids"
-                                                                               name="ids" value="${data.id }"/>
+                                               lay-filter="itemChoose" id="ids"
+                                               name="ids" value="${data.id }"/>
                                     </td>
                                     <td>${data.bgh}</td>
-
                                     <td>${data.orderId}</td>
-                                    <td>${data.dpzh}</td>
-                                    <td>${data.fksj}</td>
-                                    <td>${data.fhsj}</td>
-                                    <td>${data.tksj}</td>
-                                    <td>${data.orderMoney}</td>
-                                    <td>${data.proPrice}</td>
-                                    <td>${data.proNum}</td>
-                                    <td>${data.sku}</td>
-                                    <td>${data.mjzh}</td>
-                                    <td>${data.mjname}</td>
-                                    <td>${data.mjEmail}</td>
-                                    <td>${data.wlfs}</td>
                                     <td>${data.ydh}</td>
-                                    <td>${data.czzl}</td>
-                                    <td>${data.jhRamker}</td>
-                                    <td>${data.kfRamker}</td>
-
+                                    <td class="status">${data.orderStatus}</td>
+                                    <td>${data.dpzh}</td>
+                                    <td>${data.fhsj}</td>
+                                    <td>${data.fksj}</td>
+                                    <td>${data.wlfs}</td>
+                                    <td>${data.wuliu}</td>
+                                    <td>${data.itemTimeLength}</td>
+                                    <td>
+                                        <button type="button" class="layui-btn  layui-btn-xs"
+                                                onclick="browses('${data.ydh}')">
+                                            查看物流
+                                        </button>
+                                    </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
@@ -662,14 +665,13 @@
 </body>
 <script>
 
-
     function browses(ydh) {
         var id = ydh;
-        /* alert("id:" + id);*/
+       /* alert("id:" + id);*/
         $.ajax({
             type: "GET",
             url: "${pageContext.request.contextPath}/wuliu/wuInfo/" + ydh,
-            contentType: "application/json;charset=utf-8",
+            contentType: false,
             processData: false,
             dataType: "json",
             success: function (data) {
@@ -677,26 +679,18 @@
                 var obj = eval(data);
                 var datas = data;
                 var ss = eval(datas);
-                /* alert("eval>" + ss.data);*/
+               /* alert("eval>" + ss.data);*/
                 var datajson = ss.data;
                 var obj1=eval(datajson.origin_info);
-
                 var status=datajson.status;
                 var sta=JSON.stringify(status);
-                /*alert("物流状态："+sta);*/
-                if(sta=='"pending"'){
-                    layer.msg('查询中,请稍后查询');
-                }
-                if(sta=='"notfound"'){
-                    layer.msg('查询不到');
-                }
                 $(".status").val(sta);
                 /*alert("status:"+datajson.status);
                 alert("ojb1"+obj1);*/
                 var json1=obj1.trackinfo;
 
                 var obj2=eval(json1);
-                /*  alert("obj2"+obj2);*/
+              /*  alert("obj2"+obj2);*/
 
 
                 var show = JSON.stringify(obj2);
@@ -709,17 +703,16 @@
                 $('.track-list ul').html(deliver1);//清空ul并添加最新一条物流信息\*/
                 var deliver="";
                 for(var i = 1;i<obj1.trackinfo.length;i++){
-                    /* alert(deliver);*/
-                    deliver +=
-                        '<li class="first">'+
-                        '<p class=time>'+obj1.trackinfo[i].Date +'</p></br>'+
-                        '<p class="txt">' +obj1.trackinfo[i].StatusDescription+'</p><span class="before"></span><span class="after"></span></li>';
+                   /* alert(deliver);*/
+                         deliver +=
+                            '<li class="first">'+
+                             '<p class=time>'+obj1.trackinfo[i].Date +'</p></br>'+
+                             '<p class="txt">' +obj1.trackinfo[i].StatusDescription+'</p><span class="before"></span><span class="after"></span></li>';
                     $('.mh-list ul').html(deliver);//添加之前的物流轨迹
 
-                }
+                     }
 
-
-
+               /* alert(show + ">>>>>>>>>>>>>>>>");*/
                 layer.open({
                     type: 0,
                     title: "物流信息",
@@ -729,7 +722,6 @@
                     content: '<div data-mohe-type="kuaidi_new" class="g-mohe " id="mohe-kuaidi_new"><div id="mohe-kuaidi_new_nucom"><div class="mohe-wrap mh-wrap"><div class="mh-cont mh-list-wrap mh-unfold"><div class="mh-list"><ul>'+deliver+'</ul></div></div></div></div></div>'
 
                 });
-
             }
         })
 
@@ -747,6 +739,7 @@
         }
         return flag;
     }
+
 
     //手机适配
     function mobile() {

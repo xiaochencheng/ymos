@@ -18,13 +18,13 @@
             </div>
         </div>
         <div class="layui-inline">
-            <div class="search-name" style="width: 30px">运单号:</div>
+            <div class="search-name" style="width: 30px">sku:</div>
             <div class="layui-input-inline search-width">
-                <input type="text"  class="layui-input" id="ydh" name="ydh" value="${param.ydh}" placeholder="请输入运单号">
+                <input type="text"  class="layui-input" id="sku" name="sku" value="${param.sku}" placeholder="请输入SKU">
             </div>
         </div>
         <div class="layui-inline">
-            <div class="search-name" style="width: 40px">状态:</div>
+            <div class="search-name" style="width: 40px">订单状态:</div>
             <div class="layui-input-inline">
                 <select name="orderStatus" id="orderStatus" lay-search>
                     <option value="">请选择订单状态</option>
@@ -33,14 +33,6 @@
                     <option value="已退款">已退款</option>
                     <option value="待审核">待审核</option>
                     <option value="已审核">已审核</option>
-                    <option value="查询中">查询中</option>
-                    <option value="查询不到">查询不到</option>
-                    <option value="运输途中">运输途中</option>
-                    <option value="到达待取">到达待取</option>
-                    <option value="成功签收">成功签收</option>
-                    <option value="投递失败">投递失败</option>
-                    <option value="可能异常">可能异常</option>
-                    <option value="运输过久">运输过久</option>
                 </select>
             </div>
         </div>
@@ -67,7 +59,7 @@
     var size = '${param.size}';
     var orderId = '${param.orderId}';
     var bgh = '${param.bgh}';
-    var ydh = '${param.ydh}';
+    var sku = '${param.sku}';
     var fksj= '${param.fksj}';
     $('#size').find("option[value='" + size + "']").prop("selected", true);
 
@@ -76,11 +68,11 @@
         var title = document.title;
         var orderId = $('#orderId').val();
         var bgh = $('#bgh').val();
-        var ydh=$('#ydh').val();
+        var sku=$('#sku').val();
         var fksj = $('#fksj').val();
         var orderStatus = $('#orderStatus').val();
 
-        location.href = "${pageContext.request.contextPath}/order/exportExcel/?title=" + title + "&orderId=" + orderId +"&bgh=" +bgh+ "&ydh=" + ydh+"&fksj="+fksj+"&orderStatus="+ orderStatus;
+        location.href = "${pageContext.request.contextPath}/order/exportExcel/?title=" + title + "&orderId=" + orderId +"&bgh=" +bgh+ "&sku=" + sku+"&fksj="+fksj+"&orderStatus="+ orderStatus;
     })
 
 

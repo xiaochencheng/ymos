@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.ymos.mapper.WuLiuMapper">
+<mapper namespace="com.ymos.mapper.WuliuInfoMapper">
 
     <resultMap id="BaseResultMap" type="Order">
         <id column="id" property="id"/>
@@ -88,19 +88,23 @@
 </sql>
 
     <select id="select" resultType="com.ymos.entity.Order">
-        SELECT *,<![CDATA[TIMESTAMPDIFF(DAY,fksj,NOW())]]> as days FROM t_order
+        SELECT <include refid="Base_Column_List"/>  FROM t_order
         <where>
-            orderStatus
-            in('已付款','待审核','待处理','已审核')
-              AND   <![CDATA[DATE_ADD(fksj,INTERVAL 4 DAY) < NOW()]]>
-            <if test="query.ydh != null and query.ydh !='' ">
+            ydh !=''
+            <if test="query.ydh != null and query.ydh!=''">
                 AND ydh=#{query.ydh}
             </if>
-            <if test="query.orderId != null and query.orderId!=''">
-                AND orderId=#{query.orderId}
+            <if test="query.orderStatus != null and query.orderStatus!=''">
+                AND orderStatus=#{query.orderStatus}
+            </if>
+            <if test="query.fhsj != null and query.fhsj!=''">
+                AND  fhsj like concat(#{query.fhsj},'%')
+            </if>
+            <if test="query.fksj != null and query.fksj!=''">
+                and fksj like concat(#{query.fksj},'%')
             </if>
         </where>
-        order by fksj desc
+        order by  fhsj desc
         limit #{start},#{size}
     </select>
 
@@ -108,14 +112,18 @@
     <select id="count" parameterType="Paginator" resultType="int">
         SELECT COUNT(1) FROM t_order
         <where>
-            orderStatus
-            in('已付款','待审核','待处理','已审核')
-             AND  <![CDATA[DATE_ADD(fksj,INTERVAL 4 DAY) < NOW()]]>
-            <if test="query.ydh != null and query.ydh !='' ">
-                AND ydh=#{query.ydh}
+            ydh !=''
+            <if test="query.ydh != null and query.ydh!=''">
+                AND  ydh=#{query.ydh}
             </if>
-            <if test="query.orderId != null and query.orderId!=''">
-                AND orderId=#{query.orderId}
+            <if test="query.orderStatus != null and query.orderStatus!=''">
+                AND   orderStatus=#{query.orderStatus}
+            </if>
+            <if test="query.fhsj != null and query.fhsj!=''">
+                AND  fhsj like concat(#{query.fhsj},'%')
+            </if>
+            <if test="query.fksj != null and query.fksj!=''">
+                and fksj like concat(#{query.fksj},'%')
             </if>
         </where>
     </select>
@@ -133,19 +141,36 @@
         update t_order
         <trim prefix="set" suffixOverrides="," suffix="where id=#{id}">
             <if test="orderStatus != null and orderStatus!=''">
-                orderStatus=#{orderStatus},
+                 orderStatus=#{orderStatus},
             </if>
             <if test="ydh != null and ydh!=''">
-                ydh=#{ydh},
+                 ydh=#{ydh},
             </if>
             <if test="wuliu != null and wuliu!=''">
                 wuliu=#{wuliu},
             </if>
-            <if test="itemTimeLength != null and itemTimeLength!=''">
-                itemTimeLength=#{itemTimeLength},
-            </if>
         </trim>
     </update>
+
+    <select id="exportExcel" resultType="OrderReport">
+        SELECT  <include refid="Base_Column_List"/>  FROM t_order
+        <where>
+            ydh !=''
+            <if test="ydh != null and ydh!=''">
+                AND ydh=#{ydh}
+            </if>
+            <if test="orderStatus != null and orderStatus!=''">
+                AND orderStatus=#{orderStatus}
+            </if>
+            <if test="fhsj != null and fhsj!=''">
+                AND  fhsj like concat(#{fhsj},'%')
+            </if>
+            <if test="fksj != null and fksj!=''">
+                and fksj like concat(#{fksj},'%')
+            </if>
+        </where>
+        order by  fhsj desc
+    </select>
 
 
 

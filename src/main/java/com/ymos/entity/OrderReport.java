@@ -43,7 +43,7 @@ public class OrderReport  extends AbstractReport {
     private String spSKU;                            //商品SKU
     private String spbm;                             //商品编码
     private String spmc;                             //商品名称
-    private int kcl;                                 //库存量
+    private String kcl;                                 //库存量
     private String spcgj;                        //商品采购价
     private String kcjg;                         //库存价格
     private String wxysp;                            //危险运输品
@@ -75,11 +75,20 @@ public class OrderReport  extends AbstractReport {
     private String chbgName;                         //中文报关名
     private String enbgName;                         //英文报关名
     private String sbPrice;                      //申报单价
-    private int bgWidth;                             //报关重量
+    private String bgWidth;                             //报关重量
     private String days;                             //天数
     private String wuliu;
+    private String itemTimeLength;
     // ==============================================================
 
+
+    public String getItemTimeLength() {
+        return itemTimeLength;
+    }
+
+    public void setItemTimeLength(String itemTimeLength) {
+        this.itemTimeLength = itemTimeLength;
+    }
 
     public String getWuliu() {
         return wuliu;
@@ -409,11 +418,11 @@ public class OrderReport  extends AbstractReport {
         this.spmc = spmc;
     }
 
-    public int getKcl() {
+    public String getKcl() {
         return kcl;
     }
 
-    public void setKcl(int kcl) {
+    public void setKcl(String kcl) {
         this.kcl = kcl;
     }
 
@@ -665,11 +674,11 @@ public class OrderReport  extends AbstractReport {
         this.sbPrice = sbPrice;
     }
 
-    public int getBgWidth() {
+    public String getBgWidth() {
         return bgWidth;
     }
 
-    public void setBgWidth(int bgWidth) {
+    public void setBgWidth(String bgWidth) {
         this.bgWidth = bgWidth;
     }
 

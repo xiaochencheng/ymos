@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
 import java.util.List;
 
 @Component
@@ -54,11 +55,10 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
         return super.preList(query, paginator, model, request, response);
     }
 
-
-    //@ResponseBody
-    //@RequestMapping(value = "/showStau")
-    //@Scheduled(cron = "0 0 0-3 * * ?")
-    @Scheduled(cron = "0 0 0-3 * * ? ")
+    //@Scheduled(cron = "0 0 0-3 * * ? ")
+    @ResponseBody
+    @RequestMapping(value = "/showStau")
+    @Scheduled(cron = "0 1-10 * * * ? ")
     public List<Order> AllCount() {
         List<Order> list = wuLiuService.AllCount();
         System.out.println(list.size());
@@ -73,12 +73,15 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
             String sss = JSONObject.valueToString(ss.getJSONObject("data"));
             com.alibaba.fastjson.JSONObject sss1 = JSON.parseObject(sss);
             Object sta = sss1.get("status");
+            Object days=sss1.get("itemTimeLength");
+            System.out.println("days:"+days);
             Object wuliu=sss1.get("origin_info");
             System.out.println("wuliu"+wuliu);
             String obj1= JSONObject.valueToString(wuliu);
             com.alibaba.fastjson.JSONObject s1=JSON.parseObject(obj1);
             JSONArray array=s1.getJSONArray("trackinfo");
             Object track=array.getJSONObject(0).get("StatusDescription");
+            Object times=array.getJSONObject(0).get("Date");
             //System.out.println(array.getJSONObject(0).get("StatusDescription"));
 
             switch (sta.toString()) {
@@ -108,7 +111,8 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
                     break;
             }
             order.setId(id);
-            order.setWuliu(track.toString());
+            order.setItemTimeLength(days.toString());
+            order.setWuliu("时间："+times+"状态"+track.toString());
             //System.out.println("111" + sss1.get("status"));
             int count = wuLiuService.update(order);
 
@@ -124,7 +128,7 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/wuInfo/{ydh}")
+    @RequestMapping(value = "/wuInfo/{ydh}",produces = {"text/html; charset=utf-8"})
     public static String getWuliuInfo(@PathVariable String ydh) {
 
         String urlStr = null;
@@ -132,6 +136,7 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
         String result = null;
         String jsonDate = null;
         String su = null;
+        String queryCon =null;
         try {
             result = new Tracker().orderOnlineByJson(requestData, urlStr, "carriers/detect");
             System.out.println("result>>>>>> " + result);
@@ -147,7 +152,13 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
             System.out.println(su);
             System.out.println(result);
             jsonDate = getShowCode(su, ydh);
+            //jsonDate = new String(jsonDate.getBytes("GBK"), "utf-8");
             System.out.println(jsonDate);
+            //HttpServletRequest request=null;
+            // queryCon = request.getParameter(jsonDate);
+            //if(queryCon != null && queryCon != ""){
+            //    queryCon= URLDecoder.decode(queryCon,"utf-8");
+            //}
 
         } catch (Exception e) {
             e.printStackTrace();

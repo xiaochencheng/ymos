@@ -2,47 +2,152 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.ymos.mapper.DayTableMapper">
 
-    <select id="select" resultType="Order">
-        SELECT COUNT(bgh) as bgh,SUM(orderMoney) as orderMoney,DATE(fksj) as fksj,dpzh FROM t_order
-         <where>
-             <if test="query.dpzh != null and query.dpzh !='' ">
-                 AND dpzh=#{query.dpzh}
-             </if>
-             <if test="query.fksj != null and query.fksj!=''">
-                 AND DATE(fksj)=#{query.fksj}
-             </if>
-         </where>
-        GROUP BY dpzh,DATE(fksj)
-        order by DATE(fksj) DESC
-        limit #{start},#{size}
-    </select>
+    <resultMap id="BaseResultMap" type="DayTable">
+        <id column="id" property="id"/>
+        <result column="bgh" property="bgh"/>
+        <result column="fksj" property="fksj"/>
+        <result column="rate" property="rate"/>
+        <result column="orderMoney" property="orderMoney"/>
+        <result column="salesMoney" property="salesMoney"/>
+        <result column="dpzh" property="dpzh"/>
+        <result column="channelFeel" property="channelFeel"/>
+        <result column="wuliuMoney" property="wuliuMoney"/>
+        <result column="wuliuChen" property="wuliuChen"/>
+        <result column="caiguo" property="caiguo"/>
+        <result column="caiguoChen" property="caiguoChen"/>
+        <result column="toufang" property="toufang"/>
+        <result column="toufangChen" property="toufangChen"/>
+        <result column="yugulirun" property="yugulirun"/>
+        <result column="chenBen" property="chenBen"/>
+        <result column="salesLirun" property="salesLirun"/>
+    </resultMap>
 
-    <select id="count" parameterType="Paginator" resultType="int">
-        SELECT COUNT(1) FROM (SELECT COUNT(bgh),SUM(orderMoney),fksj,dpzh FROM t_order GROUP BY dpzh,DATE(fksj))AS t
+    <sql id="Base_Column_List">
+     id,bgh,fksj,rate,salesMoney,orderMoney,dpzh,channelFeel,wuliuMoney,wuliuChen,caiguo,caiguoChen,toufang,toufangChen,yugulirun,chenBen,salesLirun
+</sql>
+
+    <select id="select" resultType="DayTable">
+        select  <include refid="Base_Column_List"/> from t_daytable
         <where>
             <if test="query.dpzh != null and query.dpzh !='' ">
-                AND  t.dpzh=#{query.dpzh}
+                AND dpzh=#{query.dpzh}
             </if>
             <if test="query.fksj != null and query.fksj!=''">
-                AND DATE(t.fksj)=#{query.fksj}
+                AND DATE(fksj)>=#{query.fksj}
+            </if>
+            <if test="query.endTime !=null and query.endTime !=''">
+                <![CDATA[and DATE(fksj)<=#{query.endTime}]]>
+            </if>
+        </where>
+        order by DATE(fksj) DESC
+        limit #{start},#{size}
+</select>
+
+
+    <select id="count" parameterType="Paginator" resultType="int">
+        SELECT COUNT(1) FROM t_daytable
+        <where>
+            <if test="query.dpzh != null and query.dpzh !='' ">
+                AND  dpzh=#{query.dpzh}
+            </if>
+            <if test="query.fksj != null and query.fksj!=''">
+                AND DATE(fksj)>=#{query.fksj}
+            </if>
+            <if test="query.endTime !=null and query.endTime !=''">
+                <![CDATA[and DATE(fksj)<=#{query.endTime}]]>
             </if>
         </where>
     </select>
 
-    <select id="exportExcel" resultType="OrderReport">
+    <select id="selectFind" resultType="DayTable">
         SELECT COUNT(bgh) as bgh,SUM(orderMoney) as orderMoney,DATE(fksj) as fksj,dpzh FROM t_order
+        GROUP BY dpzh,DATE(fksj)
+    </select>
+
+
+
+    <select id="exportExcel" resultType="DayTableReport">
+        SELECT <include refid="Base_Column_List"/> FROM t_daytable
         <where>
             <if test="dpzh != null and dpzh !='' ">
                 AND dpzh=#{dpzh}
             </if>
             <if test="fksj != null and fksj!=''">
-                AND DATE(fksj)=#{fksj}
+                AND DATE(fksj)>=#{fksj}
+            </if>
+            <if test="endTime !=null and endTime !=''">
+                <![CDATA[and DATE(fksj)<=#{endTime}]]>
             </if>
         </where>
         GROUP BY dpzh,DATE(fksj)
         order by DATE(fksj) DESC
     </select>
 
+    <insert id="create" parameterType="java.util.List">
+        insert into t_daytable (bgh,fksj,orderMoney,dpzh)
+        values
+        <foreach collection ="list" item="dayTable" separator =",">(#{dayTable.bgh},#{dayTable.fksj},#{dayTable.orderMoney},#{dayTable.dpzh})
+        </foreach>
+        ON DUPLICATE KEY UPDATE bgh=values(bgh),fksj=values(fksj),orderMoney=values(orderMoney),dpzh=values(dpzh)
+    </insert>
+
+
+    <update id="update" parameterType="java.util.List">
+        <foreach collection="list"  item="item" index="index" open="" close="" separator=";">
+            UPDATE t_daytable
+            <set>
+                <if test="item.bgh != null and item.bgh!=''">
+                    bgh=#{item.bgh},
+                </if>
+                <if test="item.fksj != null and item.fksj!=''">
+                    fksj = #{item.fksj},
+                </if>
+                <if test="item.rate != null">
+                    rate = #{item.rate},
+                </if>
+                <if test="item.salesMoney != null">
+                    salesMoney = #{item.salesMoney},
+                </if>
+                <if test="item.orderMoney != null">
+                    orderMoney = #{item.orderMoney},
+                </if>
+                <if test="item.dpzh != null">
+                    dpzh = #{item.dpzh},
+                </if>
+                <if test="item.channelFeel != null">
+                    channelFeel = #{item.channelFeel},
+                </if>
+                <if test="item.wuliuMoney != null">
+                    wuliuMoney = #{item.wuliuMoney},
+                </if>
+                <if test="item.wuliuChen != null">
+                    wuliuChen = #{item.wuliuChen},
+                </if>
+                <if test="item.caiguo != null">
+                    caiguo = #{item.caiguo},
+                </if>
+                <if test="item.caiguoChen != null">
+                    caiguoChen = #{item.caiguoChen},
+                </if>
+                <if test="item.toufang != null">
+                    toufang = #{item.toufang},
+                </if>
+                <if test="item.toufangChen != null">
+                    toufangChen = #{item.toufangChen},
+                </if>
+                <if test="item.yugulirun != null">
+                    yugulirun = #{item.yugulirun},
+                </if>
+                <if test="item.chenBen != null">
+                    chenBen = #{item.chenBen},
+                </if>
+                <if test="item.salesLirun != null">
+                    salesLirun = #{item.salesLirun},
+                </if>
+            </set>
+            WHERE id=#{item.id}
+        </foreach>
+    </update>
 
 
 </mapper>

@@ -6,12 +6,32 @@ public class OrderQuery extends Query {
     private String sku;
     private String orderId;
     private String   fksj;
+    private String   fhsj;
     private String orderStatus;
     private String xdsj;
     private String bgh;
     private String ydh;
     private Integer size;
     private String dpzh;
+    private String endTime;
+
+    public String getFhsj() {
+        return fhsj;
+    }
+
+    public void setFhsj(String fhsj) {
+        this.fhsj = fhsj;
+        this.addQstrs("fhsj",fhsj);
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+        this.addQstrs("endTime",endTime);
+    }
 
     public String getDpzh() {
         return dpzh;

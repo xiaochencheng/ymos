@@ -76,8 +76,8 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
             String temp = "";
             //for (int i=0;i<file.length;i++) {
             String filename = file.getOriginalFilename();
-            String uploadPath =uploadFiles + "/" + filename;
-            path =filePaths + "/" + filename;
+            String uploadPath = uploadFiles + "/" + filename;
+            path = filePaths + "/" + filename;
             //if(file.length>0){
             //    temp+=filePaths+",";
             //}else {
@@ -99,9 +99,9 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
     }
 
 
-
     /**
      * Excel导入
+     *
      * @param file
      * @param request
      * @param response
@@ -124,9 +124,9 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
         settings.setGCDisabled(true);
         //Workbook workbook = Workbook.getWorkbook(new FileInputStream(""), settings);
         jxl.Workbook workbook = null;
-        order = new Order();
+
         try {
-            System.out.println("path"+path);
+            System.out.println("path" + path);
             if (file != null) {
                 //由于项目中使用的springMvc获取的文件类型为MultipartFile类型
                 //Workbook.getWorkbook获取的是file类型,尝试强转获取的文件类型为File,运行时报错
@@ -137,10 +137,10 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
                 String fileName = file.getOriginalFilename();
 
                 //通过当前类获取文件的绝对路径
-                String path1 =uploadFiles + "/" + fileName;
+                String path1 = uploadFiles + "/" + fileName;
 
                 //获取excel文件
-                workbook = Workbook.getWorkbook(new File(path1),settings);
+                workbook = Workbook.getWorkbook(new File(path1), settings);
                 int oSheet = 100;
                 //获取表名所对应的sheet,workbook.getNumberOfSheets()获取excel中有几张表
                 for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
@@ -154,472 +154,136 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
                     int lastRowNum = sheet3.getRows() - 1;
                     //循环行sheet2.getRows(),导入的excel信息是直接从第一行开始的
                     for (int i = 1; i < sheet3.getRows(); i++) {
-                        boolean ssheet = true;
 
+                        boolean ssheet = true;
                         //信息数
                         sum++;
-                        int cou = sheet3.getColumns();
-                        //循环列,从0开始,本次导入的excel格式是从第二列开始的
-                        for (int j = 0; j < sheet3.getColumns(); j++) {
-                            //当前行列对应的单元格
-                            Cell cell = sheet3.getCell(j, i);
-                            //获取行列所对应的内容
-                            String contents = cell.getContents();
-                            //当前行数据校验通过,导入数据到对象
-                            if (ssheet) {
-                                //满足条件的条数++
-                                success++;
+                        if (ssheet) {
+                            //满足条件的条数++
+                            success++;
 
-                                if (j == 0) {
-                                    //包裹号
-                                    order.setBgh(contents);
-                                }
-                                if (j == 1) {
-                                    //订单号
-                                    order.setOrderId(contents);
-                                }
-                                if (j == 2) {
-                                    //交易号
-                                    order.setJyh(contents);
-                                }
-                                if (j == 3) {
-                                    //订单状态
-                                    order.setOrderStatus(contents);
-                                }
-                                if (j == 4) {
-                                    //平台渠道
-                                    order.setPtqd(contents);
-                                }
-                                if (j == 5) {
-                                    //店铺账号
-                                    order.setDpzh(contents);
-                                }
-                                if (j == 6) {
-                                    //订单备注
-                                    order.setOrderRamker(contents);
-                                }
-                                if (j == 7) {
-                                    //拣货备注
-                                    order.setJhRamker(contents);
-                                }
-                                if (j == 8) {
-                                    //客服备注
-                                    order.setKfRamker(contents);
-                                }
-                                if (j == 9) {
-                                    //退款理由
-                                    order.setTkly(contents);
-                                }
-                                if (j == 10) {
-                                    //下单时间
-                                    String str = contents;
-                                    if(str=="" || str==null){
-                                        order.setXdsj(null);
-                                    }else {
-                                        order.setXdsj(str);
-                                    }
-                                }
-                                if (j == 11) {
-                                    //付款时间
-                                    String str = contents;
-                                    if(str==""|| str==null){
-                                        order.setFksj(null);
-                                    }else {
-                                        order.setFksj(str);
-                                    }
-                                }
-                                if (j == 12) {
-                                    //提交时间
-                                    String str = contents;
-                                    if(str==""|| str==null){
-                                        order.setTjsj(null);
-                                    }else {
-                                        order.setTjsj(str);
-                                    }
-                                }
-                                if (j == 13) {
-                                    //发货时间
-                                    String str = contents;
-                                    if(str==""|| str==null){
-                                        order.setFhsj(null);
-                                    }else {
-                                        order.setFhsj(str);
-                                    }
-                                }
-                                if (j == 14) {
-                                    //退款时间
-                                    String str = contents;
-                                    if(str==""||str==null){
-                                        order.setTksj(null);
-                                    }else {
-                                        order.setTksj(str);
-                                    }
-                                }
-                                if (j == 15) {
-                                    //面单打印时间
-                                    String str = contents;
-
-                                    if(str==""||str==null){
-                                        order.setMddysj(null);
-                                    }else if(str.length()>20){
-                                        str =str.substring(0,19);
-                                        order.setMddysj(str);
-                                    }else {
-                                        order.setMddysj(str);
-                                    }
-
-                                }
-                                if (j == 16) {
-                                    //拣货单打印时间
-                                    String str = contents;
-                                    if(str==""||str==null){
-                                        order.setJhdysj(null);
-                                    }else {
-                                        order.setJhdysj(str);
-                                    }
-                                }
-                                if (j == 17) {
-                                    //付款方式
-                                    order.setFkfs(contents);
-                                }
-                                if (j == 18) {
-                                    //币种缩写
-                                    order.setBzsx(contents);
-                                }
-                                if (j == 19) {
-                                    //订单金额
-                                    String str = contents;
-                                    if (str == "") {
-                                        order.setOrderMoney(null);
-                                    } else {
-                                        //String stre = str.replaceAll("\\n*", " ");
-                                        order.setOrderMoney(str);
-
-                                    }
-
-                                }
-                                if (j == 20) {
-                                    //买家支付运费
-                                    String str = contents;
-                                    if (str == "") {
-                                        order.setMjzfyf(null);
-                                    } else {
-                                        //String stre = str.replaceAll("\\n*", " ");
-                                        order.setMjzfyf(str);
-                                    }
-
-                                }
-                                if (j == 21) {
-                                    //退款金额
-                                    String str = contents;
-                                    if (str == "") {
-                                        order.setTkMoney(null);
-                                    } else {
-                                        String stre = str.replaceAll("\\n*", " ");
-                                        order.setTkMoney(stre);
-                                    }
-
-                                }
-                                if (j == 22) {
-                                    //预估利润
-                                    order.setYgly(contents);
-                                }
-                                if (j == 23) {
-                                    //成本利润率
-                                    order.setCbly(contents);
-                                }
-
-                                if (j == 24) {
-                                    //销售利润率
-                                    order.setXsly(contents);
-                                }
-                                if (j == 25) {
-                                    //预估运费
-                                    String str = contents;
-                                    String strs;
-
-                                    if (str == "") {
-                                        order.setYgfy(null);
-                                    } else {
-                                        String stre = str.replaceAll("\\n*", "");
-                                        order.setYgfy(stre);
-                                    }
-                                }
-                                if (j == 26) {
-                                    //sku
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setSku(stre);
-                                }
-                                if (j == 27) {
-                                    //产品ID
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setProId(stre);
-                                }
-                                if (j == 28) {
-                                    //产品名称
-                                    String str = contents;
-                                    EmojiConverter emojiConverter = EmojiConverter.getInstance();
-                                    str= emojiConverter.toAlias(str);//将聊天内容进行转义
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setProName(stre);
-                                }
-                                if (j == 29) {
-                                    //产品售价
-                                    String str = contents;
-                                    //String stre = str.replaceAll("\\t", " ");
-                                    if (str == "") {
-                                        order.setProPrice(null);
-                                    } else {
-                                        order.setProPrice(str);
-                                    }
-
-                                }
-                                if (j == 30) {
-                                    //产品数量
-                                    String str = contents;
-                                    if (str == "") {
-                                        order.setProNum(0);
-                                    } else {
-                                        order.setProNum(Integer.parseInt(contents));
-                                    }
-
-                                }
-                                if (j == 31) {
-                                    //产品规格
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setProGuige(stre);
-                                }
-                                if (j == 32) {
-                                    //图片网址
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-
-                                    order.setImgURL(stre);
-                                }
-                                if (j == 33) {
-                                    //来源URL
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setLyURL(stre);
-                                }
-                                if (j == 34) {
-                                    //销售链接
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setXslj(stre);
-
-                                }
-                                if (j == 35) {
-                                    //多品名
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setDpm(stre);
-                                }
-                                if (j == 36) {
-                                    //商品SKU
-                                    String str = contents;
-                                    //String stre = str.replaceAll("\\n*", "");
-                                    order.setSpSKU(str);
-                                }
-                                if (j == 37) {
-                                    //商品编码
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setSpbm(stre);
-                                }
-                                if (j == 38) {
-                                    //商品名称
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setSpmc(stre);
-                                }
-                                if (j == 39) {
-                                    //库存量
-                                    String str = contents;
-
-                                    if (str == "") {
-                                        order.setKcl(0);
-                                    } else {
-                                        String stre = str.replaceAll("\\n*", "");
-                                        order.setKcl(Integer.parseInt(stre));
-                                    }
-
-                                }
-                                if (j == 40) {
-                                    String str = contents;
-                                    if (str == "") {
-
-                                        order.setSpcgj(null);
-                                    } else {
-                                        String stre = str.replaceAll("\\n*", "");
-                                        order.setSpcgj(stre);
-                                    }
-
-                                }
-                                if (j == 41) {
-                                    String str = contents;
-                                    if (str == "") {
-
-                                        order.setKcjg(null);
-                                    } else {
-                                        String stre = str.replaceAll("\\n*", "");
-                                        order.setKcjg(stre);
-                                    }
-
-                                }
-                                if (j == 42) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setWxysp(stre);
-                                }
-                                if (j == 43) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setFhck(stre);
-                                }
-                                if (j == 44) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setHjw(stre);
-                                }
-                                if (j == 45) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setMjzh(stre);
-                                }
-                                if (j == 46) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setMjname(stre);
-                                }
-                                if (j == 47) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setMjEmail(stre);
-                                }
-                                if (j == 48) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setShrname(stre);
-                                }
-                                if (j == 49) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setShrcompany(stre);
-                                }
-                                if (j == 50) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setShrsh(stre);
-                                }
-                                if (j == 51) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setShrmph(stre);
-                                }
-                                if (j == 52) {
-                                    String str = contents;
-                                    String cons;
-                                    cons = str.replace(",", "/");
-                                    order.setXxaddress(cons);
-                                }
-                                if (j == 53) {
-                                    order.setAddresOne(contents);
-                                }
-                                if (j == 54) {
-                                    order.setAddressTwo(contents);
-                                }
-                                if (j == 55) {
-                                    order.setAddOneTwo(contents);
-                                }
-                                if (j == 56) {
-                                    order.setShrCity(contents);
-                                }
-                                if (j == 57) {
-                                    order.setShrShen(contents);
-                                }
-                                if (j == 58) {
-                                    order.setCode(contents);
-                                }
-                                if (j == 59) {
-                                    order.setShrCountry(contents);
-                                }
-                                if (j == 60) {
-                                    order.setChCountry(contents);
-                                }
-                                if (j == 61) {
-                                    order.setCountryS(contents);
-                                }
-                                if (j == 62) {
-                                    order.setShrTel(contents);
-                                }
-                                if (j == 63) {
-                                    order.setShrIphone(contents);
-                                }
-                                if (j == 64) {
-                                    order.setMjzdwl(contents);
-                                }
-                                if (j == 65) {
-                                    order.setWlfs(contents);
-                                }
-                                if (j == 66) {
-                                    order.setYdh(contents);
-                                }
-                                if (j == 67) {
-                                    String str = contents;
-                                    if (str == "") {
-
-                                        order.setCzzl(null);
-                                    } else {
-                                        String stre = str.replaceAll("\\n*", "");
-                                        order.setCzzl(stre);
-                                    }
-
-                                }
-                                if (j == 68) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setChbgName(stre);
-                                }
-                                if (j == 69) {
-                                    String str = contents;
-                                    String stre = str.replaceAll("\\n*", "");
-                                    order.setEnbgName(stre);
-                                }
-                                if (j == 70) {
-                                    String str = contents;
-                                    if (str == "") {
-
-                                        order.setSbPrice(null);
-                                    } else {
-                                        //String stre = str.replaceAll("\\n*", "");
-                                        order.setSbPrice(str);
-                                    }
-
-                                }
-                                if (j == 71) {
-                                    String str = contents;
-                                    if (str == "") {
-                                        order.setBgWidth(0);
-                                    } else {
-                                        order.setBgWidth(Integer.parseInt(contents));
-                                    }
-                                }
-                            } else {
-                                //数据校验未通过
-                                fail++;
+                            Cell[] cells = sheet3.getRow(i);
+                            order = new Order();
+                            order.setBgh(cells[0].getContents());//包裹号
+                            order.setOrderId(cells[1].getContents());//订单号
+                            order.setJyh(cells[2].getContents());//交易号
+                            order.setOrderStatus(cells[3].getContents());//订单状态
+                            order.setPtqd(cells[4].getContents());//平台渠道
+                            order.setDpzh(cells[5].getContents());//店铺账号
+                            order.setOrderRamker(cells[6].getContents());//订单备注
+                            order.setJhRamker(cells[7].getContents());//拣货备注
+                            order.setKfRamker(cells[8].getContents());//客服备注
+                            order.setTkly(cells[9].getContents());//退款理由
+                            if(cells[10].getContents()==""||cells[10].getContents()==null){
+                                order.setXdsj(null);
+                            }else{
+                                order.setXdsj(cells[10].getContents());//下单时间
                             }
+                            if(cells[11].getContents()==""||cells[11].getContents()==null){
+                                order.setFksj(null);
+                            }else {
+                                order.setFksj(cells[11].getContents());//付款时间
+                            }
+                            if(cells[12].getContents()==""||cells[12].getContents()==null){
+                                order.setTjsj(null);
+                            }else {
+                                order.setTjsj(cells[12].getContents());//提交时间
+                            }
+                            if(cells[13].getContents()==""||cells[13].getContents()==null){
+                                order.setFhsj(null);
+                            }else {
+                                order.setFhsj(cells[13].getContents());//发货时间
+                            }
+                            if(cells[14].getContents()==""||cells[14].getContents()==null){
+                                order.setTksj(null);
+                            }else {
+                                order.setTksj(cells[14].getContents());//退款时间
+                            }
+                            if(cells[15].getContents()==""||cells[15].getContents()==null){
+                                order.setMddysj(null);
+                            }else if(cells[15].getContents().length()>20){
+                                order.setMddysj(cells[15].getContents().substring(0,19));
+                            }else {
+                                order.setMddysj(cells[15].getContents());//面单打印时间
+                            }
+                            if(cells[16].getContents()==""||cells[16].getContents()==null){
+                                order.setJhdysj(null);
+                            }else {
+                                order.setJhdysj(cells[16].getContents());//拣货单打印时间
+                            }
+                            order.setFkfs(cells[17].getContents());//付款方式
+                            order.setBzsx(cells[18].getContents());//币种缩写
+                            order.setOrderMoney(cells[19].getContents());//订单金额
+                            order.setMjzfyf(cells[20].getContents());//买家支付运费
+                            order.setTkMoney(cells[21].getContents());//退款金额
+                            order.setYgly(cells[22].getContents());//预估利润
+                            order.setCbly(cells[23].getContents());//成本利润率
+                            order.setXsly(cells[24].getContents());//销售利润率
+                            order.setYgfy(getTrim(cells[25].getContents()));//预估运费
+                            order.setSku(getTrim(cells[26].getContents()));//sku
+                            order.setProId(getTrim(cells[27].getContents()));//产品ID
+                            String em=cells[28].getContents();
+                            EmojiConverter emojiConverter = EmojiConverter.getInstance();
+                            em= emojiConverter.toAlias(em);//将聊天内容进行转义
+                            order.setProName(getTrim(em));//产品名称
+                            order.setProPrice(cells[29].getContents());//产品售价
+                            order.setProNum(Integer.parseInt(cells[30].getContents()));//产品数量
+                            order.setProGuige(getTrim(cells[31].getContents()));//产品规格
+                            order.setImgURL(getTrim(cells[32].getContents())); //图片网址
+                            order.setLyURL(getTrim(cells[33].getContents()));//来源URL
+                            order.setXslj(getTrim(cells[34].getContents()));//销售链接
+                            order.setDpm(getTrim(cells[35].getContents()));//多品名
+                            order.setSpSKU(cells[36].getContents());//商品SKU
+                            order.setSpbm(getTrim(cells[37].getContents()));//商品编码
+                            order.setSpmc(getTrim(cells[38].getContents()));//商品名称
+                            order.setKcl(getTrim(cells[39].getContents())); //库存量
+                            order.setSpcgj(getTrim(cells[40].getContents()));
+                            order.setKcjg(getTrim(cells[41].getContents()));
+                            order.setWxysp(getTrim(cells[42].getContents()));
+                            order.setFhck(getTrim(cells[43].getContents()));
+                            order.setHjw(getTrim(cells[44].getContents()));
+                            order.setMjzh(getTrim(cells[45].getContents()));
+                            order.setMjname(getTrim(cells[46].getContents()));
+                            order.setMjEmail(getTrim(cells[47].getContents()));
+                            order.setShrname(getTrim(cells[48].getContents()));
+                            order.setShrcompany(getTrim(cells[49].getContents()));
+                            order.setShrsh(getTrim(cells[50].getContents()));
+                            order.setShrmph(getTrim(cells[51].getContents()));
+                            order.setXxaddress(getTrim1(cells[52].getContents()));
+                            order.setAddresOne(cells[53].getContents());
+                            order.setAddressTwo(cells[54].getContents());
+                            order.setAddOneTwo(cells[55].getContents());
+                            order.setShrCity(cells[56].getContents());
+                            order.setShrShen(cells[57].getContents());
+                            order.setCode(cells[58].getContents());
+                            order.setShrCountry(cells[59].getContents());
+                            order.setChCountry(cells[60].getContents());
+                            order.setCountryS(cells[61].getContents());
+                            order.setShrTel(cells[62].getContents());
+                            order.setShrIphone(cells[63].getContents());
+                            order.setMjzdwl(cells[64].getContents());
+                            order.setWlfs(cells[65].getContents());
+                            order.setYdh(cells[66].getContents());
+                            order.setCzzl(cells[67].getContents());
+                            order.setChbgName(getTrim(cells[68].getContents()));
+                            order.setEnbgName(getTrim(cells[69].getContents()));
+                            order.setSbPrice(cells[70].getContents());
+                            order.setBgWidth(cells[71].getContents());
 
+                        } else {
+                            //数据校验未通过
+                            fail++;
                         }
                         //此处orders 数据添加...
                         orders.add(order);
                         //批量添加订单数据
-                        if (orders.size() > 0) {
+                    }
+                    System.out.println(orders.size()+"???????????????");
+
+
+                    if (orders.size() > 0) {
                             orderService.create(orders);
-                        }
+
                     }
 
 
@@ -653,17 +317,33 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
         return new Result<Order>().setData(order).setFlag(true);
     }
 
+    /**
+     * 去换行
+     * @param controns
+     * @return
+     */
+    public String getTrim(String controns){
+        String contents=controns.replaceAll("\\n*", "");
+        return contents;
+    }
 
-    //@ResponseBody
-    //@RequestMapping(value = "/improt")
-    //public String improtExcel(MultipartFile file,HttpServletRequest request, HttpServletResponse response, String path, Order order)
-    //{
+    public String getTrim1(String controns){
+        String contents=controns.replace(",", "/");
+        return contents;
+    }
+
+    //public String getTime(String controns){
+    //    if(controns=="" || controns==null){
     //
-    //    ImportExcelUtil util=new ImportExcelUtil();
-    //    util.getBankListByExcel(file,"");
+    //    }else {
     //
-    //  return  null;
+    //    }
+    //    return  controns;
+    //
     //}
+
+
+
 
     /**
      * Excel表格导出方法
@@ -704,19 +384,29 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
             List<String> headerNames = new ArrayList<>();
             List<Integer> columnsWidths = new ArrayList<>();
             headerNames.add("包裹号");
-            headerNames.add("SKU");
-            headerNames.add("产品规格");
-            headerNames.add("币种");
-            headerNames.add("金额");
-            headerNames.add("预估利润");
-            headerNames.add("收件人");
-            headerNames.add("国家");
-            headerNames.add("买家指定");
             headerNames.add("订单号");
+            headerNames.add("店铺账号");
+            headerNames.add("付款时间");
+            headerNames.add("发货时间");
+            headerNames.add("退款时间");
+            headerNames.add("订单金额");
+            headerNames.add("产品售价");
+            headerNames.add("产品数量");
+            headerNames.add("SKU");
+            headerNames.add("买家账号");
+            headerNames.add("买家姓名");
+            headerNames.add("买家Email");
+            headerNames.add("物流方式");
             headerNames.add("运单号");
-            headerNames.add("时间");
-            headerNames.add("状态");
+            headerNames.add("称重重量");
+            headerNames.add("拣货备注");
+            headerNames.add("客服备注");
 
+            columnsWidths.add(3000);
+            columnsWidths.add(3000);
+            columnsWidths.add(3000);
+            columnsWidths.add(3000);
+            columnsWidths.add(3000);
             columnsWidths.add(3000);
             columnsWidths.add(3000);
             columnsWidths.add(3000);
@@ -747,18 +437,23 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
                     continue;
                 }
                 row.createCell(0).setCellValue(report.getBgh());
-                row.createCell(1).setCellValue(report.getSku());
-                row.createCell(2).setCellValue(report.getProGuige());
-                row.createCell(3).setCellValue(report.getBzsx());
-                row.createCell(4).setCellValue(report.getOrderMoney());
-                row.createCell(5).setCellValue(report.getYgly());
-                row.createCell(6).setCellValue(report.getShrname());
-                row.createCell(7).setCellValue(report.getChCountry());
-                row.createCell(8).setCellValue(report.getMjzdwl());
-                row.createCell(9).setCellValue(report.getOrderId());
-                row.createCell(10).setCellValue(report.getYdh());
-                row.createCell(11).setCellValue(report.getFksj());
-                row.createCell(12).setCellValue(report.getOrderStatus());
+                row.createCell(1).setCellValue(report.getOrderId());
+                row.createCell(2).setCellValue(report.getDpzh());
+                row.createCell(3).setCellValue(report.getFksj());
+                row.createCell(4).setCellValue(report.getFhsj());
+                row.createCell(5).setCellValue(report.getTksj());
+                row.createCell(6).setCellValue(report.getOrderMoney());
+                row.createCell(7).setCellValue(report.getProPrice());
+                row.createCell(8).setCellValue(report.getProNum());
+                row.createCell(9).setCellValue(report.getSku());
+                row.createCell(10).setCellValue(report.getMjzh());
+                row.createCell(11).setCellValue(report.getMjname());
+                row.createCell(12).setCellValue(report.getMjEmail());
+                row.createCell(13).setCellValue(report.getWlfs());
+                row.createCell(14).setCellValue(report.getYdh());
+                row.createCell(15).setCellValue(report.getCzzl());
+                row.createCell(16).setCellValue(report.getJhRamker());
+                row.createCell(17).setCellValue(report.getKfRamker());
                 i++;
             }
             wk.write(outputStream);

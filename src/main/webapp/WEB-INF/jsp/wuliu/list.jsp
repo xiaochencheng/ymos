@@ -602,10 +602,13 @@
                                 <th>
                                     <input type="checkbox" lay-skin="primary" lay-filter="allChoose"/>
                                 </th>
+                                <th>包裹号</th>
                                 <th>订单号</th>
-                                <th>运单号</th>
+                                <th>sku</th>
+                                <th>店铺名</th>
+                                <th>付款时间</th>
                                 <th>订单状态</th>
-                                <th>天数</th>
+                                <th>延迟天数</th>
                                <%-- <th>操作</th> --%>
                             </tr>
                             </thead>
@@ -617,10 +620,13 @@
                                                lay-filter="itemChoose" id="ids"
                                                name="ids" value="${data.id }"/>
                                     </td>
+                                    <td>${data.bgh}</td>
                                     <td>${data.orderId}</td>
-                                    <td>${data.ydh}</td>
-                                    <td class="status">${data.orderStatus}</td>
-                                    <td style="color:deepskyblue;">${data.days}</td>
+                                    <td>${data.sku}</td>
+                                    <td class="status">${data.dpzh}</td>
+                                    <td>${data.fksj}</td>
+                                    <td>${data.orderStatus}</td>
+                                    <td style="color:red;">${data.days}</td>
                                     <%--<td>--%>
                                         <%--<button type="button" class="layui-btn  layui-btn-xs"--%>
                                                 <%--onclick="browses('${data.ydh}')">--%>
