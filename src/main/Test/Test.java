@@ -3,6 +3,7 @@ import com.ymos.biz.WuLiuServiceImpl;
 import com.ymos.common.Tracker;
 import com.ymos.entity.Order;
 
+import java.io.InputStream;
 import java.util.List;
 
 public class Test {
@@ -119,7 +120,7 @@ public class Test {
             // String requestData="[{\"tracking_number\":\"LK032051658CN\",\"carrier_code\":\"china-ems\",\"title\": \"testtitle\",\"customer_name\":\"javatest\",\"customer_email\":\"942632688@qq.com\",\"order_id\":\"#123\",\"logistics_channel\":\"chase chen\",\"destination_code\":\"US\",\"status\":\"7\"},{\"tracking_number\":\"RM111516216CN\",\"carrier_code\":\"china-post\",\"title\": \"testtitle\",\"customer_name\":\"javatest\",\"customer_email\":\"942632688@qq.com\",\"order_id\":\"#123\",\"logistics_channel\":\"chase chen\",\"destination_code\":\"US\",\"status\":\"7\"}]";
             // String result = new Tracker().orderOnlineByJson(requestData,urlStr,"updatemore");
             // System.out.println("result======="+result);
-
+            InputStream in=null;
 
         } catch (Exception e) {
             e.printStackTrace();

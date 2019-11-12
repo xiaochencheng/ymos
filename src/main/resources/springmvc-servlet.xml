@@ -77,16 +77,6 @@
             <!--<mvc:exclude-mapping path="/home"/>-->
             <!-- spID   -->
             <mvc:exclude-mapping path="/proList/querySpName"/>
-            <!--国家-->
-            <!--<mvc:exclude-mapping path="/country/queryAllcountry"/>-->
-            <!--渠道-->
-            <!--<mvc:exclude-mapping path="/channel/queryAllChannel"/>-->
-            <!--运营商-->
-            <!--<mvc:exclude-mapping path="/isp/queryAllIsp"/>-->
-
-            <!--<mvc:exclude-mapping path="/channelProxy/queryChildChannel"/>-->
-
-
             <mvc:exclude-mapping path="/user/information"/>
             <mvc:exclude-mapping path="/user/updatePassword"/>
             <mvc:exclude-mapping path="/webapp/jsandcss/**"/>
@@ -106,6 +96,9 @@
             </list>
         </property>
     </bean>
+
+
+
 
     <!-- 防止ie解析json出错-->
     <bean id="mappingJackson2HttpMessageConverter"

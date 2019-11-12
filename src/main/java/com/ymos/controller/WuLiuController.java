@@ -58,7 +58,7 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
     //@Scheduled(cron = "0 0 0-3 * * ? ")
     @ResponseBody
     @RequestMapping(value = "/showStau")
-    @Scheduled(cron = "0 1-10 * * * ? ")
+    @Scheduled(cron = "0 0 0/3 * * ? ")
     public List<Order> AllCount() {
         List<Order> list = wuLiuService.AllCount();
         System.out.println(list.size());
@@ -74,7 +74,7 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
             com.alibaba.fastjson.JSONObject sss1 = JSON.parseObject(sss);
             Object sta = sss1.get("status");
             Object days=sss1.get("itemTimeLength");
-            System.out.println("days:"+days);
+            //System.out.println("days:"+days);
             Object wuliu=sss1.get("origin_info");
             System.out.println("wuliu"+wuliu);
             String obj1= JSONObject.valueToString(wuliu);
@@ -139,9 +139,9 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
         String queryCon =null;
         try {
             result = new Tracker().orderOnlineByJson(requestData, urlStr, "carriers/detect");
-            System.out.println("result>>>>>> " + result);
+            //System.out.println("result>>>>>> " + result);
             su = result.substring(result.lastIndexOf(":") + 2);
-            System.out.println("su:>>>>>>>" + su);
+            //System.out.println("su:>>>>>>>" + su);
             if (su.length() != 0) {
                 su = su.substring(0, su.length() - 4);
             }
@@ -149,11 +149,11 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
 
             result = new Tracker().orderOnlineByJson(requestData, urlStr, "post");
 
-            System.out.println(su);
-            System.out.println(result);
+            //System.out.println(su);
+            //System.out.println(result);
             jsonDate = getShowCode(su, ydh);
             //jsonDate = new String(jsonDate.getBytes("GBK"), "utf-8");
-            System.out.println(jsonDate);
+            //System.out.println(jsonDate);
             //HttpServletRequest request=null;
             // queryCon = request.getParameter(jsonDate);
             //if(queryCon != null && queryCon != ""){
@@ -180,7 +180,7 @@ public class WuLiuController extends CUDController<Order, OrderQuery, OrderForm,
         String result = null;
         try {
             result = new Tracker().orderOnlineByJson(requestData, urlStr, "codeNumberGet");
-            System.out.println("物流详细信息" + result);
+            //System.out.println("物流详细信息" + result);
             //System.out.println("result=======" + result);
             //System.out.println(result);
         } catch (Exception e) {

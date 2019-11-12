@@ -1,16 +1,10 @@
 package com.ymos.controller;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.ymos.biz.DayTableService;
 import com.ymos.common.Constants;
 import com.ymos.entity.*;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.formula.functions.T;
-import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 
 @Controller
 @RequestMapping("/dayTable")
@@ -88,6 +86,7 @@ public class DayTableController extends CUDController<DayTable, DayTableQuery, D
         return paginator;
     }
 
+    //@ApiOperation(value="用户名验证",httpMethod = "GET", protocols = "HTTP", produces = "application/json", response = Dto.class,notes="验证是否已存在该用户名")
     @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public Result<DayTable> update(@RequestBody List<DayTable> dayTable,@RequestParam String name, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
@@ -150,7 +149,7 @@ public class DayTableController extends CUDController<DayTable, DayTableQuery, D
         try {
             //List<Review> list = reviewService.AllCountry();
             List<DayTableReport> cpsChannelList = dayTableService.exportExcel(dayTableReport);
-            System.out.println(cpsChannelList.size());
+            //System.out.println(cpsChannelList.size());
             //HSSFCellStyle hssfCellStyle=((HSSFWorkbook) wk).createCellStyle();//设置Excel表格样式
             //创建工作表
             org.apache.poi.ss.usermodel.Sheet sheet = wk.createSheet(dayTableReport.getTitle());

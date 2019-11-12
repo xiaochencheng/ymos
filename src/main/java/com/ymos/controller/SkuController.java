@@ -1,14 +1,11 @@
 package com.ymos.controller;
 
 
-
-
-import com.ymos.biz.SkuServiceImpl;
+import com.ymos.biz.SkuListService;
+import com.ymos.biz.SkuService;
 import com.ymos.common.Constants;
 import com.ymos.common.LoginContext;
 import com.ymos.entity.*;
-import com.ymos.biz.SkuListService;
-import com.ymos.biz.SkuService;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -26,7 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/sku")
@@ -289,7 +288,7 @@ public class SkuController extends CUDController<Sku, SkuQuery, SkuForm, SkuServ
         try {
             //List<Review> list = reviewService.AllCountry();
             List<SkuReport> cpsChannelList = skuService.exportExcel(skuReport);
-            System.out.println(cpsChannelList.size());
+            //System.out.println(cpsChannelList.size());
 
             //创建工作表
             Sheet sheet = wk.createSheet(skuReport.getTitle());

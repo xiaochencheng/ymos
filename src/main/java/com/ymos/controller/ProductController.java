@@ -1,12 +1,10 @@
 package com.ymos.controller;
 
 
+import com.ymos.biz.ProductService;
 import com.ymos.common.Constants;
 import com.ymos.common.LoginContext;
-import com.ymos.common.SnowFlake;
 import com.ymos.entity.*;
-import com.ymos.biz.ProductService;
-import jdk.nashorn.internal.ir.CatchNode;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import sun.applet.Main;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +30,6 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -155,7 +151,7 @@ public class ProductController extends CUDController<Product, ProductQuery,Produ
                 //System.out.println(filename + "文件原始名");
                 String uploadPath = uploadFile + "/" + product.getSoureId() + i + filename.substring(filename.lastIndexOf("."));
                 String filePaths = filePath + "/" + product.getSoureId() + i + filename.substring(filename.lastIndexOf("."));
-                System.out.println("uploadPath: " + uploadPath + ">>>>>>>" + filePath);
+                //System.out.println("uploadPath: " + uploadPath + ">>>>>>>" + filePath);
                 temp += filePaths;
                 File file1 = new File(uploadPath);
                 if (!file1.exists()) {

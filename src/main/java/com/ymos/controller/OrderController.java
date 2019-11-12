@@ -3,7 +3,6 @@ package com.ymos.controller;
 import com.github.binarywang.java.emoji.EmojiConverter;
 import com.ymos.biz.OrderService;
 import com.ymos.common.Constants;
-import com.ymos.common.ImportExcelUtil;
 import com.ymos.entity.*;
 import jxl.Cell;
 import jxl.Sheet;
@@ -11,7 +10,6 @@ import jxl.Workbook;
 import jxl.WorkbookSettings;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -24,13 +22,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 
 @Controller
@@ -375,7 +368,7 @@ public class OrderController extends CUDController<Order, OrderQuery, OrderForm,
         try {
             //List<Review> list = reviewService.AllCountry();
             List<OrderReport> cpsChannelList = orderService.exportExcel(orderReport);
-            System.out.println(cpsChannelList.size());
+            //System.out.println(cpsChannelList.size());
 
             //创建工作表
             org.apache.poi.ss.usermodel.Sheet sheet = wk.createSheet(orderReport.getTitle());

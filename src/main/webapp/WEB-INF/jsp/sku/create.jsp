@@ -49,7 +49,7 @@
     <fieldset class="layui-elem-field">
         <legend>${empty form.id?'新增SKU':'修改SKU'}</legend>
         <div class="layui-field-box" style="">
-            <form class="layui-form" id="myform" name="myform" action="" method="post" enctype="multipart/form-data">
+            <form class="layui-form layui-form-pane" id="myform" name="myform" action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" value="${form.id }" name="id">
                 <input type="hidden" value="${form.pro_url }" name="pro_url">
                 <input type="hidden" id="hiddenInfo" value=""/>
