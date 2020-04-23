@@ -45,7 +45,7 @@
     <quartz-scheduler.version>1.8.6</quartz-scheduler.version>
     <httpclient.version>4.5.5</httpclient.version>
     <jackson.version>1.9.10</jackson.version>
-    <jackson-core.version>2.9.5</jackson-core.version>
+    <jackson-core.version>2.9.10.4</jackson-core.version>
     <fastjson.version>1.2.4</fastjson.version>
     <jedis.version>2.1.0</jedis.version>
     <guava-jdk5.version>17.0</guava-jdk5.version>
