@@ -43,7 +43,7 @@
     <zookeeper.version>3.4.8</zookeeper.version>
     <javassist.version>3.18.1-GA</javassist.version>
     <quartz-scheduler.version>1.8.6</quartz-scheduler.version>
-    <httpclient.version>4.5.5</httpclient.version>
+    <httpclient.version>4.5.13</httpclient.version>
     <jackson.version>1.9.10</jackson.version>
     <jackson-core.version>2.9.5</jackson-core.version>
     <fastjson.version>1.2.4</fastjson.version>
