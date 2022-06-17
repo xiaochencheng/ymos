@@ -46,7 +46,7 @@
     <httpclient.version>4.5.5</httpclient.version>
     <jackson.version>1.9.10</jackson.version>
     <jackson-core.version>2.9.5</jackson-core.version>
-    <fastjson.version>1.2.4</fastjson.version>
+    <fastjson.version>1.2.83</fastjson.version>
     <jedis.version>2.1.0</jedis.version>
     <guava-jdk5.version>17.0</guava-jdk5.version>
     <commons-io.version>2.3</commons-io.version>
